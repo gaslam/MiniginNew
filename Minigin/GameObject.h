@@ -1,20 +1,27 @@
 #pragma once
 #include <memory>
 #include "Transform.h"
+#include <vector>
+#include "string"
+#include <memory>
+#include <unordered_map>
+#include <typeindex>
+#include <vector>
 
+class Component;
 namespace dae
 {
-	class Texture2D;
 
 	// todo: this should become final.
-	class GameObject 
+	class GameObject final
 	{
 	public:
-		virtual void Update();
+		virtual void Update(float deltaTime);
 		virtual void Render() const;
 
-		void SetTexture(const std::string& filename);
-		void SetPosition(float x, float y);
+		void SetParent(GameObject* parent, bool keepWorldPosition);
+		void RemoveChild(GameObject* child);
+		void AddChild(GameObject* child);
 
 		GameObject() = default;
 		virtual ~GameObject();
@@ -23,9 +30,58 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		template <typename T, typename... Args> T* AddComponent(Args&&... args) {
+			if (IsComponentAdded<T>()) {
+				return GetComponent<T>();
+			}
+
+			const std::type_index typeIndex = std::type_index(typeid(T));
+			auto component = std::make_unique<T>(this, std::forward<Args>(args)...);
+			auto pointer = component.get();
+
+			m_Components.emplace(typeIndex, std::move(component));
+
+			return pointer;
+		};
+
+
+		template<typename T>
+		T* GetComponent() const
+		{
+			const std::type_index typeIndex = std::type_index(typeid(T));
+			if (!IsComponentAdded<T>())
+			{
+				return nullptr;
+			}
+			auto component = dynamic_cast<T*>(m_Components.at(typeIndex).get());
+			return component;
+		}
+		template<typename T>
+		void RemoveComponent()
+		{
+			const std::type_index typeIndex = std::type_index(typeid(T));
+			auto component = m_Components.at(typeIndex);
+
+			if (component)
+			{
+				m_Components.erase(typeIndex);
+			}
+		}
+
+		template<typename T>
+		bool IsComponentAdded() const
+		{
+			const std::type_index typeIndex = std::type_index(typeid(T));
+
+			return m_Components.contains(typeIndex);
+		}
+
+		GameObject* GetParent() const { return m_Parent; };
+
 	private:
-		Transform m_transform{};
-		// todo: mmm, every gameobject has a texture? Is that correct?
-		std::shared_ptr<Texture2D> m_texture{};
+		std::unordered_map<std::type_index,std::unique_ptr<Component>> m_Components{};
+
+		GameObject* m_Parent{ nullptr };
+		std::vector<GameObject*> m_Children{};
 	};
 }
