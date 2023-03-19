@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL.h>
 #include "Singleton.h"
+#include <vector>
+
 
 namespace dae
 {
@@ -14,6 +16,17 @@ namespace dae
 		SDL_Window* m_window{};
 		SDL_Color m_clearColor{};
 		bool m_ShowDemo{ true };
+		void DrawGUI();
+		void DrawPlotForTranshCash();
+		void DrawPlotForGameObject3D();
+		std::vector<float> m_TrashCashData{};
+		int m_TrashCashDataSize{};
+		int m_TrashCashSteps{};
+		std::vector<float> m_TrashCashDataObject3D {};
+		std::vector<float> m_TrashCashDataObject3DAlt{};
+		int m_TrashCashDataSizeObject3D{};
+		int m_TrashCashDataSizeObject3DAlt{};
+		int m_TrashCashStepsObject3D{};
 	public:
 		void Init(SDL_Window* window);
 		void Render();
