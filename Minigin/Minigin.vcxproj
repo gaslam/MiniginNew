@@ -190,6 +190,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="ImGuiTempRenderer.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="RenderComponent.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ImGuiTempRenderer.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
