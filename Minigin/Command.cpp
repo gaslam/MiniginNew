@@ -7,12 +7,12 @@ dae::Command::Command(GameObject* actor) :
 {
 }
 
-void dae::MoveCommand::Execute()
+void dae::MoveCommand::Execute(float deltaTime)
 {
-	this->Execute(m_Dir.x, m_Dir.y);
+	Execute(m_Dir, deltaTime);
 }
 
-void dae::MoveCommand::Execute(float x, float y)
+void dae::MoveCommand::Execute(glm::vec3& dir, float deltaTime)
 {
 	GameObject* pOwner = GetCommandOwner();
 	if (!pOwner)
@@ -26,8 +26,10 @@ void dae::MoveCommand::Execute(float x, float y)
 	}
 
 	glm::vec3 pos = pTransform->GetLocalPosition();
-	pos.x += x;
-	pos.y += y;
+	const float speed = pTransform->GetSpeedForMovement();
+	pos.x += (dir.x * speed) * deltaTime;
+	pos.y += (dir.y * speed) * deltaTime;
+	pos.z += (dir.z * speed) * deltaTime;
 
 	pTransform->SetLocalPosition(pos);
 }

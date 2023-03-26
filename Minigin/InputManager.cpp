@@ -8,105 +8,115 @@
 #include <iostream>
 #include <algorithm>
 #include "Command.h"
+#include "Input.h"
 
-bool dae::InputManager::ProcessInput()
+bool dae::InputManager::ProcessInput(float deltaTime)
 {
-	ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
-	XInputGetState(0, &m_CurrentState);
-
+	m_pKeyboardState = SDL_GetKeyboardState(nullptr);
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
-		if (e.type == SDL_KEYDOWN) {
-
+		else if (e.type == SDL_KEYDOWN) {
+			ProcessKeyboardInputDown(deltaTime, e.key.keysym.scancode);
 		}
-		if (e.type == SDL_MOUSEBUTTONDOWN) {
-
+		else if (e.type == SDL_KEYUP)
+		{
+			ProcessKeyboardInputUp(deltaTime, e.key.keysym.scancode);
 		}
+
+		ProcessKeyboardInputPressed(deltaTime);
 		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
 
-	ProcessControllerInput();
+	ProcessControllerInput(deltaTime);
 
 	return true;
 }
 
-void dae::InputManager::AddController(unsigned int id)
+
+bool dae::InputManager::IsPressed(const SDL_Scancode& keyboardKey)
 {
-	m_Controllers.emplace_back(std::make_unique<XboxController>(id));
+	return m_pKeyboardState[keyboardKey];
 }
 
-void dae::InputManager::BindControllerToCommand(unsigned int id, XboxController::ControllerButton& button, Command* command)
+void dae::InputManager::ProcessKeyboardInputPressed(float deltaTime)
 {
-	ControllerKey key = ControllerKey(id, button);
-	m_Commands.insert({ key, std::unique_ptr<Command>(command) });
-}
-
-void dae::InputManager::BindJoystickToCommand(unsigned int controllerId, Command* command, bool isLeft)
-{
-	int joystickIdx = isLeft ? 0 : 1;
-	JoystickKey key = JoystickKey(controllerId, joystickIdx);
-	m_JoystickCommands.insert({ key, std::unique_ptr<Command>(command) });
-}
-
-void dae::InputManager::UpdateControls()
-{
-	for (auto& controller : m_Controllers)
+	auto& input = Input::GetInstance();
+	auto& commands = input.GetCommands();
+	for (auto& command : commands)
 	{
-		controller->Update();
-	}
-}
-
-void dae::InputManager::HandleJoystick(bool isLeft, Command* command, XINPUT_STATE state)
-{
-	int deadzone = isLeft ? XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE : XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
-	glm::vec3 dir{};
-	dir.x = isLeft ? state.Gamepad.sThumbLX : state.Gamepad.sThumbRX ;
-	dir.y = isLeft ? state.Gamepad.sThumbLY : state.Gamepad.sThumbRY;
-
-	//determine how far the controller is pushed
-	float magnitude = sqrtf(dir.x * dir.x + dir.y * dir.y);
-
-	//determine the direction the controller is pushed by normalizing it
-	dir.x = dir.x / magnitude;
-	dir.y = dir.y / magnitude;
-	dir.y = -dir.y;
-
-	//check if the controller is inside a circular dead zone
-	if (magnitude < deadzone)
-	{
-		dir = {};
-	}
-	command->Execute(dir.x, dir.y);
-}
-
-void dae::InputManager::ProcessControllerInput()
-{
-	for (auto& controller : m_Controllers)
-	{
-		for (auto& command : m_Commands)
+		const KeyInput keyInput = command.first;
+		if (IsPressed(keyInput.scancode) && keyInput.state == KeyState::pressed)
 		{
-			const auto controllerKey = command.first.second;
-			const unsigned int controllerId = command.first.first;
+			command.second->Execute(deltaTime);
+		}
+	}
+}
+
+void dae::InputManager::ProcessKeyboardInputUp(float deltaTime, SDL_Scancode& e)
+{
+	auto& input = Input::GetInstance();
+	auto& commands = input.GetCommands();
+	for (auto& command : commands)
+	{
+		const KeyInput keyInput = command.first;
+		if (keyInput.state == KeyState::up && e == keyInput.scancode)
+		{
+			command.second->Execute(deltaTime);
+		}
+	}
+}
+
+void dae::InputManager::ProcessKeyboardInputDown(float deltaTime, SDL_Scancode& e)
+{
+	auto& input = Input::GetInstance();
+	auto& commands = input.GetCommands();
+	for (auto& command : commands)
+	{
+		const KeyInput keyInput = command.first;
+		if (keyInput.state == KeyState::down && e == keyInput.scancode)
+		{
+			command.second->Execute(deltaTime);
+		}
+	}
+}
+
+void dae::InputManager::ProcessControllerInput(float deltaTime)
+{
+	auto& input = Input::GetInstance();
+	auto& commands = input.GetCommands();
+	auto& joystickCommands = input.GetJoystickCommands();
+	auto& controllers = input.GetControllers();
+
+	for (auto& controller : controllers)
+	{
+		XINPUT_STATE state;
+		DWORD result = XInputGetState(controller->GetID(), &state);
+		if (result != ERROR_SUCCESS)
+		{
+			continue;
+		}
+		for (auto& command : commands)
+		{
+			const auto controllerKey = command.first.controllerButton;
+			const unsigned int controllerId = command.first.controllerId;
 			if (controller->GetID() == controllerId && controller->IsPressed(static_cast<int>(controllerKey)))
 			{
-				command.second->Execute();
+				command.second->Execute(deltaTime);
 			}
 
 		}
 
-		XINPUT_STATE state;
-		XInputGetState(controller->GetID(), &state);
-		for (auto& command : m_JoystickCommands)
+		for (auto& command : joystickCommands)
 		{
 			bool isLeft = command.first.second == 0;
 			Command* actualCommand = command.second.get();
 			const unsigned int controllerId = command.first.first;
 			if (controller->GetID() == controllerId)
 			{
-				HandleJoystick(isLeft, actualCommand, state);
+				input.HandleJoystick(isLeft, actualCommand, state, deltaTime);
 			}
 		}
 	}

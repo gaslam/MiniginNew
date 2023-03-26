@@ -37,7 +37,7 @@ namespace dae
 
 			const std::type_index typeIndex = std::type_index(typeid(T));
 			auto component = std::make_unique<T>(this, std::forward<Args>(args)...);
-			auto pointer = component.get();
+			auto pointer = dynamic_cast<T*>(component.get());
 
 			m_Components.emplace(typeIndex, std::move(component));
 

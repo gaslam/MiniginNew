@@ -46,12 +46,11 @@ void dae::Renderer::Render()
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_renderer);
 
-	SceneManager::GetInstance().Render();
 
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_window);
 	ImGui::NewFrame();
-
+	SceneManager::GetInstance().Render();
 	//Draw code here
 	//m_TempRenderer->DrawGUI();
 	if (m_ShowDemo)

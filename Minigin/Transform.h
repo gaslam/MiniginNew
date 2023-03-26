@@ -18,9 +18,13 @@ namespace dae
 
 		virtual void Render() const override {};
 		virtual void Update(float) override {};
+		float GetSpeedForMovement() const { return m_SpeedForMovement; }
+		void SetSpeedForMovement(float speed) { m_SpeedForMovement = speed; }
 	private:
 		glm::vec3 m_LocalPosition{};
 		glm::vec3 m_WorldPosition{};
+		//Did not know where to put this. Is it also not bad to have a speed component just for this?
+		float m_SpeedForMovement{20.f};
 		bool m_PositionIsDirty{ false };
 	};
 }

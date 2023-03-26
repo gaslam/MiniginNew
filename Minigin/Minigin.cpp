@@ -6,6 +6,7 @@
 #include <SDL_ttf.h>
 #include "Minigin.h"
 #include "InputManager.h"
+#include "Input.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
@@ -84,7 +85,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
-	auto& input = InputManager::GetInstance();
+	auto& inputManager = InputManager::GetInstance();
+	auto& input = Input::GetInstance();
 
 	bool doContinue = true;
 	auto lastTime = std::chrono::high_resolution_clock::now();
@@ -96,7 +98,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	{
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
-		doContinue = input.ProcessInput();
+		doContinue = inputManager.ProcessInput(deltaTime);
 		input.UpdateControls();
 /*		lag += deltaTime;
 		if (lag >= fixedTimeStep)
