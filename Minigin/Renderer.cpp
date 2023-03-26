@@ -37,7 +37,7 @@ void dae::Renderer::Init(SDL_Window* window)
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL2_Init();
-	m_TempRenderer = std::make_unique<ImGuiTempRenderer>();
+	//m_TempRenderer = std::make_unique<ImGuiTempRenderer>();
 }
 
 void dae::Renderer::Render()
@@ -53,7 +53,7 @@ void dae::Renderer::Render()
 	ImGui::NewFrame();
 
 	//Draw code here
-	m_TempRenderer->DrawGUI();
+	//m_TempRenderer->DrawGUI();
 	if (m_ShowDemo)
 	{
 		ImGui::ShowDemoWindow(&m_ShowDemo);

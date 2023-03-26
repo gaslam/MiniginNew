@@ -2,7 +2,6 @@
 #include <SDL.h>
 #include "Singleton.h"
 #include <memory>
-#include "ImGuiTempRenderer.h"
 
 
 namespace dae
@@ -16,7 +15,7 @@ namespace dae
 		SDL_Renderer* m_renderer{};
 		SDL_Window* m_window{};
 		SDL_Color m_clearColor{};
-		std::unique_ptr<ImGuiTempRenderer> m_TempRenderer;
+		//std::unique_ptr<ImGuiTempRenderer> m_TempRenderer;
 		bool m_ShowDemo{ false };
 	public:
 		void Init(SDL_Window* window);
