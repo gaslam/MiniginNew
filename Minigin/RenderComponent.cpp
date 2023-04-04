@@ -67,3 +67,9 @@ void dae::RenderComponent::SetWidthAndHeight(float w, float h)
 	m_Width = w;
 	m_Height = h;
 }
+
+void dae::RenderComponent::scale(float scale)
+{
+	m_Width *= scale;
+	m_Height *= scale;
+}

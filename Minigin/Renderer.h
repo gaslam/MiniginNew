@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include "Singleton.h"
 #include <memory>
+#include <glm/glm.hpp>
 
 
 namespace dae
@@ -29,6 +30,11 @@ namespace dae
 
 		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
 		void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }
+		glm::ivec2 GetWindowWidthAndHeight() const {
+			glm::ivec2 widthAndHeight{};
+			SDL_GetWindowSize(m_window, &widthAndHeight.x, &widthAndHeight.y);
+			return widthAndHeight;
+		}
 	};
 }
 

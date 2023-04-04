@@ -18,6 +18,9 @@ namespace dae {
 		std::shared_ptr<Texture2D> GetTexture() const { return m_Texture; }
 		void SetPosition(float x, float y);
 		void SetWidthAndHeight(float w, float h);
+		float GetWidth() const { return m_Width; }
+		float GetHeight() const { return m_Height; }
+		void scale(float scale);
 	private:
 		std::shared_ptr<Texture2D> m_Texture{};
 		float m_Width{};
