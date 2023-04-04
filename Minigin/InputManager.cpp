@@ -102,7 +102,10 @@ void dae::InputManager::ProcessControllerInput(float deltaTime)
 		{
 			const auto controllerKey = command.first.controllerButton;
 			const unsigned int controllerId = command.first.controllerId;
-			if (controller->GetID() == controllerId && controller->IsPressed(static_cast<int>(controllerKey)))
+			const bool isPressed{ controller->IsPressed(static_cast<int>(controllerKey)) && command.first.state == dae::KeyState::pressed };
+			const bool isDown{ controller->IsButtonDown(static_cast<int>(controllerKey)) && command.first.state == dae::KeyState::down };
+			const bool isUp{ controller->IsUpThisFrame(static_cast<int>(controllerKey)) && command.first.state == dae::KeyState::up};
+			if (controller->GetID() == controllerId && (isPressed || isDown || isUp))
 			{
 				command.second->Execute(deltaTime);
 			}

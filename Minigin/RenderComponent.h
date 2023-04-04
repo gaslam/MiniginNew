@@ -3,6 +3,7 @@
 #include <memory>
 #include "string"
 #include "Transform.h"
+#include <glm/glm.hpp>
 namespace dae {
 	class Texture2D;
 	class RenderComponent : public Component
@@ -18,13 +19,23 @@ namespace dae {
 		std::shared_ptr<Texture2D> GetTexture() const { return m_Texture; }
 		void SetPosition(float x, float y);
 		void SetWidthAndHeight(float w, float h);
+		void SetFrameWidthAndHeight(float w, float h);
 		float GetWidth() const { return m_Width; }
 		float GetHeight() const { return m_Height; }
-		void scale(float scale);
+		float GetWidthScaled() const { return m_Width * m_Scale; }
+		float GetHeightScaled() const { return m_Height * m_Scale; }
+		float GetFrameWidth() const { return m_FrameWidth; }
+		float GetFrameHeight() const { return m_FrameHeight; }
+		void SetScale(float scale) { m_Scale = scale; }
+		void SetTextureOffset(glm::vec2& offset) { m_TextureOffset = offset; }
 	private:
 		std::shared_ptr<Texture2D> m_Texture{};
 		float m_Width{};
 		float m_Height{};
+		float m_FrameWidth{};
+		float m_FrameHeight{};
+		float m_Scale{1.f};
+		glm::vec2 m_TextureOffset{};
 	};
 }
 

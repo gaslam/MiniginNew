@@ -25,8 +25,12 @@ void dae::RenderComponent::SetTexture(const std::string& filename)
 void dae::RenderComponent::SetTexture(const std::shared_ptr<Texture2D> texture)
 {
 	m_Texture = texture;
-	glm::ivec2 size = m_Texture->GetSize();
-	SetWidthAndHeight(static_cast<float>(size.x), static_cast<float>(size.y));
+	glm::vec2 size = m_Texture->GetSize();
+	SetWidthAndHeight(size.x,size.y);
+	if (m_FrameHeight == 0.f || m_FrameWidth == 0.f)
+	{
+		SetFrameWidthAndHeight(size.x, size.y);
+	}
 }
 
 void dae::RenderComponent::Render() const
@@ -41,8 +45,23 @@ void dae::RenderComponent::Render() const
 	{
 		return;
 	}
+
 	glm::vec3 pos = transform->GetWorldPosition();
-	dae::Renderer::GetInstance().RenderTexture(*m_Texture,pos.x,pos.y,m_Width,m_Height);
+
+	SDL_Rect srcRect{};
+	const glm::ivec2 textureSize = m_Texture->GetSize();
+	srcRect.h = static_cast<int>(m_FrameHeight);
+	srcRect.w = static_cast<int>(m_FrameWidth);
+	srcRect.x = static_cast<int>(m_TextureOffset.x);
+	srcRect.y = static_cast<int>(m_TextureOffset.y);
+
+	SDL_Rect desRect{};
+	desRect.x = static_cast<int>(pos.x);
+	desRect.y = static_cast<int>(pos.y);
+	desRect.w = static_cast<int>(srcRect.w * m_Scale);
+	desRect.h = static_cast<int>(srcRect.h * m_Scale);
+
+	dae::Renderer::GetInstance().RenderTexture(*m_Texture,srcRect,desRect);
 }
 
 void dae::RenderComponent::SetPosition(float x, float y)
@@ -68,8 +87,8 @@ void dae::RenderComponent::SetWidthAndHeight(float w, float h)
 	m_Height = h;
 }
 
-void dae::RenderComponent::scale(float scale)
+void dae::RenderComponent::SetFrameWidthAndHeight(float w, float h)
 {
-	m_Width *= scale;
-	m_Height *= scale;
+	m_FrameWidth = w;
+	m_FrameHeight = h;
 }
