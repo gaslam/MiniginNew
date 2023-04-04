@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{afafb7a2-6e2e-4f3d-af55-9b79e3045fac}</UniqueIdentifier>
     </Filter>
@@ -71,9 +67,6 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="RotationComponent.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Engine Core</Filter>
     </ClInclude>
@@ -112,6 +105,16 @@
     </ClInclude>
     <ClInclude Include="XboxController.h">
       <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="RotationComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +198,12 @@
     </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
