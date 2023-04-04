@@ -17,7 +17,7 @@ void XboxController::Update()
 
 	auto buttonChanges = m_CurrentState.Gamepad.wButtons ^ m_PreviousState.Gamepad.wButtons;
 	m_ButtonsPressedThisFrame = buttonChanges & m_CurrentState.Gamepad.wButtons;
-	m_ButtonsPressedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
+	m_ButtonsReleasedFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
 }
 
 bool XboxController::IsButtonDown(unsigned int button) const

@@ -17,9 +17,15 @@ namespace dae {
 	class MoveCommand : public Command {
 		glm::vec3 m_Dir{};
 	public:
-		MoveCommand(GameObject* owner) : Command(owner), m_Dir{} {};
+		explicit MoveCommand(GameObject* owner) : Command(owner), m_Dir{} {};
 		MoveCommand(GameObject* owner, glm::vec3& dir) : Command(owner), m_Dir{ dir } {};
 		virtual void Execute(float deltaTime) override;
 		virtual void Execute(glm::vec3& dir, float deltaTime) override;
+	};
+
+	class SetChacterToStateIdleCommand : public Command {
+	public:
+		explicit SetChacterToStateIdleCommand(GameObject* owner) : Command(owner) {};
+		virtual void Execute(float) override;
 	};
 }
