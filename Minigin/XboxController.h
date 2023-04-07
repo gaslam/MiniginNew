@@ -18,10 +18,21 @@ namespace dae {
 		unsigned int GetID() const { return m_ControllerIndex; }
 
 		enum class ControllerButton {
+			A = 0x1000,
+			B = 0x2000,
+			X = 0x4000,
+			Y = 0x8000,
+			LeftBumper = 0x0100,
+			RightBumper = 0x0200,
+			Back = 0x0020,
+			Start = 0x0010,
+			LeftStick = 0x0040,
+			RightStick = 0x0080,
 			DPadUp = 0x0001,
 			DPadDown = 0x0002,
 			DPadLeft = 0x0004,
 			DPadRight = 0x0008
+
 		};
 	};
 }
