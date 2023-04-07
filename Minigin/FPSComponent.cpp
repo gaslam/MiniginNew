@@ -23,7 +23,7 @@ void dae::FPSComponent::Update(float deltaTime)
 	{
 		if (m_NeedsUpdate)
 		{
-			m_TextRenderComp->SetText(m_FPSValue);
+			m_TextRenderComp->SetText(m_FPSValue,true);
 			m_NeedsUpdate = false;
 		}
 		m_TextRenderComp->Update(deltaTime);

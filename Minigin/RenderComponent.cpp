@@ -6,12 +6,12 @@
 #include "Texture2D.h"
 #include "GameObject.h"
 
-dae::RenderComponent::RenderComponent(GameObject* owner,const std::string& filename) : Component(owner)
+dae::RenderComponent::RenderComponent(GameObject* owner,const std::string& filename, bool display) : Component(owner), m_CanRender{display}
 {
 	SetTexture(filename);
 }
 
-dae::RenderComponent::RenderComponent(GameObject* owner, std::shared_ptr<Texture2D> texture) : Component{ owner }
+dae::RenderComponent::RenderComponent(GameObject* owner, std::shared_ptr<Texture2D> texture, bool display) : Component{ owner }, m_CanRender{display}
 {
 	m_Texture = texture;
 }
@@ -32,7 +32,7 @@ void dae::RenderComponent::SetTexture(const std::shared_ptr<Texture2D> texture)
 void dae::RenderComponent::Render() const
 {
 	auto owner = GetOwner();
-	if (owner == nullptr)
+	if (owner == nullptr && !m_CanRender)
 	{
 		return;
 	}

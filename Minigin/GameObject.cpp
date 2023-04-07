@@ -86,3 +86,27 @@ void dae::GameObject::AddChild(GameObject* child)
 {
 	m_Children.emplace_back(child);
 }
+
+void dae::GameObject::AddObserver(Observer* observer)
+{
+	m_Observers.push_back(std::unique_ptr<Observer>(observer));
+}
+
+void dae::GameObject::RemoveObserver(Observer* observer)
+{
+	auto foundObject = std::find_if(m_Observers.begin(), m_Observers.end(), [observer](std::unique_ptr<Observer>& obs) {
+		return observer == obs.get();
+		});
+	if (foundObject != m_Observers.end())
+	{
+		m_Observers.erase(foundObject);
+	}
+}
+
+void dae::GameObject::NotifyObservers(Event& event)
+{
+	for (size_t i{}; i < m_Observers.size(); ++i)
+	{
+		m_Observers[i]->Notify(this, event);
+	}
+}

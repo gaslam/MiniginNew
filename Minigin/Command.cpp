@@ -1,11 +1,7 @@
 #include "Command.h"
 #include "GameObject.h"
 #include <glm/fwd.hpp>
-
-dae::Command::Command(GameObject* actor) :
-	m_Owner{actor}
-{
-}
+#include "HealthComponent.h"
 
 void dae::MoveCommand::Execute(float deltaTime)
 {
@@ -27,9 +23,28 @@ void dae::MoveCommand::Execute(glm::vec3& dir, float deltaTime)
 
 	glm::vec3 pos = pTransform->GetLocalPosition();
 	const float speed = pTransform->GetSpeedForMovement();
-	pos.x += (dir.x * speed) * deltaTime;
-	pos.y += (dir.y * speed) * deltaTime;
-	pos.z += (dir.z * speed) * deltaTime;
+	dir *= speed * deltaTime;
+	pos += dir;
 
 	pTransform->SetLocalPosition(pos);
+}
+
+dae::GameObjectCommand::GameObjectCommand(GameObject* owner) : m_Owner{ owner }
+{
+}
+
+void dae::DamageCommand::Execute(float)
+{
+	GameObject* pOwner = GetCommandOwner();
+	if (pOwner)
+	{
+		return;
+	}
+	auto pHealth = pOwner->GetComponent<HealthComponent>();
+	if (!pHealth)
+	{
+		return;
+	}
+
+	pHealth->Attack();
 }

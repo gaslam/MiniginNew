@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <SDL_ttf.h>
 #include "TextComponent.h"
 #include "Renderer.h"
 #include "Font.h"
@@ -16,7 +15,8 @@ dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, st
 		auto owner = GetOwner();
 		if (owner)
 		{
-			m_RenderComponent = owner->GetComponent<dae::RenderComponent>();
+			m_RenderComponent = owner->AddComponent<dae::RenderComponent>(true);
+			m_RenderComponent->SetPosition(50.f, 50.f);
 		}
 	}
 
@@ -46,16 +46,30 @@ dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, st
 
 	}
 
+	void dae::TextComponent::Render() const
+	{
+		m_RenderComponent->Render();
+	}
+
 	// This implementation uses the "dirty flag" pattern
-	void dae::TextComponent::SetText(const std::string& text)
+	void dae::TextComponent::SetText(const std::string& text, bool display)
 	{
 		m_text = text;
-		m_NeedsUpdate = true;
+		SetCanRender(display);
 	}
 
 	void dae::TextComponent::SetPosition(const float x, const float y)
 	{
 		m_RenderComponent->SetPosition(x, y);
+	}
+
+	void dae::TextComponent::SetCanRender(bool display)
+	{
+		if (display)
+		{
+			m_NeedsUpdate = true;
+		}
+		m_RenderComponent->SetCanRender(display);
 	}
 
 

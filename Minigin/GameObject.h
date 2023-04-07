@@ -3,12 +3,13 @@
 #include "Transform.h"
 #include <vector>
 #include "string"
-#include <memory>
 #include <unordered_map>
 #include <typeindex>
 #include <vector>
+#include "Observer.h"
 
 class Component;
+class Event;
 namespace dae
 {
 
@@ -22,6 +23,12 @@ namespace dae
 		void SetParent(GameObject* parent, bool keepWorldPosition);
 		void RemoveChild(GameObject* child);
 		void AddChild(GameObject* child);
+
+		void AddObserver(Observer* observer);
+
+		void RemoveObserver(Observer* observer);
+
+		void NotifyObservers(Event& event);
 
 		GameObject() = default;
 		virtual ~GameObject();
@@ -80,6 +87,7 @@ namespace dae
 
 	private:
 		std::unordered_map<std::type_index,std::unique_ptr<Component>> m_Components{};
+		std::vector<std::unique_ptr<Observer>> m_Observers{};
 
 		GameObject* m_Parent{ nullptr };
 		std::vector<GameObject*> m_Children{};
