@@ -5,10 +5,10 @@
 #include "Observer.h"
 #include "Event.h"
 
-dae::ScoreComponent::ScoreComponent(GameObject* owner) : Component(owner)
+dae::ScoreComponent::ScoreComponent(GameObject* owner, SDL_Color color) : Component(owner)
 {
 	const auto pFont{ dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 32) };
-	auto colorGreen = SDL_Color(0, 255, 0);
+	auto colorGreen = color;
 	const std::string text = m_TextBegin + std::to_string(m_Score);
 	m_pTextComponent = owner->AddComponent<TextComponent>(text, pFont, colorGreen);
 	if (m_pTextComponent)

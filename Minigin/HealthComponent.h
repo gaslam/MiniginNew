@@ -3,6 +3,7 @@
 #include <string>
 #include <functional>
 #include "Delegate.h"
+#include "SDL_ttf.h"
 class Event;
 namespace dae {
 	class TextComponent;
@@ -10,7 +11,7 @@ namespace dae {
 		public Component
 	{
 	public:
-		HealthComponent(GameObject* owner, int health);
+		HealthComponent(GameObject* owner, int health, SDL_Color color = {255,255,255});
 		int GetHealth() const { return m_Health; };
 		int SetDamage(int damage) { m_Damage = damage; }
 		void Attack();

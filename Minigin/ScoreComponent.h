@@ -2,13 +2,14 @@
 #include "Component.h"
 #include "Delegate.h"
 #include <string>
+#include "SDL_ttf.h"
 class Event;
 namespace dae {
 	class TextComponent;
 	class ScoreComponent : public Component
 	{
 	public:
-		ScoreComponent(GameObject* owner);
+		ScoreComponent(GameObject* owner, SDL_Color color = SDL_Color{255,255,255});
 		void Update(float) override {};
 		void Render() const override { }
 		void AddScore(int score);

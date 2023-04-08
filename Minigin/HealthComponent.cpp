@@ -7,12 +7,11 @@
 #include "Delegate.h"
 #include "ObserverManager.h"
 
-dae::HealthComponent::HealthComponent(GameObject* owner, int health) : Component(owner), m_Health{ health }
+dae::HealthComponent::HealthComponent(GameObject* owner, int health,SDL_Color color) : Component(owner), m_Health{ health }
 {
 	const auto pFont{ dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 32) };
-	auto colorGreen = SDL_Color(0, 255, 0);
 	const std::string text = m_TextBegin + std::to_string(m_Health);
-	m_pTextComponent = owner->AddComponent<TextComponent>(text, pFont, colorGreen);
+	m_pTextComponent = owner->AddComponent<TextComponent>(text, pFont, color);
 	if (m_pTextComponent)
 	{
 		m_pTextComponent->Initialise();
