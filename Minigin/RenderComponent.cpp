@@ -45,6 +45,10 @@ void dae::RenderComponent::Render() const
 	dae::Renderer::GetInstance().RenderTexture(*m_Texture,pos.x,pos.y,m_Width,m_Height);
 }
 
+void dae::RenderComponent::SetPosition(glm::vec2& pos) {
+	SetPosition(pos.x, pos.y);
+}
+
 void dae::RenderComponent::SetPosition(float x, float y)
 {
 	const auto owner = GetOwner();

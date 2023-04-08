@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include <glm/fwd.hpp>
 #include "HealthComponent.h"
+#include "ScoreComponent.h"
 
 void dae::MoveCommand::Execute(float deltaTime)
 {
@@ -36,7 +37,7 @@ dae::GameObjectCommand::GameObjectCommand(GameObject* owner) : m_Owner{ owner }
 void dae::DamageCommand::Execute(float)
 {
 	GameObject* pOwner = GetCommandOwner();
-	if (pOwner)
+	if (!pOwner)
 	{
 		return;
 	}
@@ -47,4 +48,20 @@ void dae::DamageCommand::Execute(float)
 	}
 
 	pHealth->Attack();
+}
+
+void dae::ScoreCommand::Execute(float)
+{
+	GameObject* pOwner = GetCommandOwner();
+	if (!pOwner)
+	{
+		return;
+	}
+	auto pScoreComp = pOwner->GetComponent<ScoreComponent>();
+	if (!pScoreComp)
+	{
+		return;
+	}
+
+	pScoreComp->AddScore(m_ScoreToAdd);
 }

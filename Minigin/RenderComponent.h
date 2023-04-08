@@ -17,6 +17,7 @@ namespace dae {
 		void SetTexture(const std::shared_ptr<Texture2D> texture);
 		std::shared_ptr<Texture2D> GetTexture() const { return m_Texture; }
 		void SetPosition(float x, float y);
+		void SetPosition(glm::vec2& pos);
 		void SetWidthAndHeight(float w, float h);
 		void SetCanRender(bool render) { m_CanRender = render; }
 	private:

@@ -15,8 +15,8 @@ dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, st
 		auto owner = GetOwner();
 		if (owner)
 		{
+			owner->AddComponent<dae::Transform>();
 			m_RenderComponent = owner->AddComponent<dae::RenderComponent>(true);
-			m_RenderComponent->SetPosition(50.f, 50.f);
 		}
 	}
 
@@ -61,6 +61,11 @@ dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, st
 	void dae::TextComponent::SetPosition(const float x, const float y)
 	{
 		m_RenderComponent->SetPosition(x, y);
+	}
+
+	void dae::TextComponent::SetPosition(const glm::vec2& pos)
+	{
+		m_RenderComponent->SetPosition(pos.x, pos.y);
 	}
 
 	void dae::TextComponent::SetCanRender(bool display)

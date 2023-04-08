@@ -26,6 +26,13 @@ namespace dae {
 		DamageCommand(GameObject* owner) : GameObjectCommand(owner) {};
 		virtual void Execute(float) override;
 	};
+
+	class ScoreCommand : public GameObjectCommand {
+		int m_ScoreToAdd = 1;
+	public:
+		ScoreCommand(GameObject* owner) : GameObjectCommand(owner) {};
+		virtual void Execute(float) override;
+	};
 	class MoveCommand : public GameObjectCommand {
 		glm::vec3 m_Dir{};
 	public:

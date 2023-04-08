@@ -1,17 +1,15 @@
-#include "HealthComponent.h"
-#include "GameObject.h"
+#include "ScoreComponent.h"
 #include "TextComponent.h"
 #include "ResourceManager.h"
-#include "Event.h"
-#include <iostream>
-#include "Delegate.h"
 #include "ObserverManager.h"
+#include "Observer.h"
+#include "Event.h"
 
-dae::HealthComponent::HealthComponent(GameObject* owner, int health) : Component(owner), m_Health{ health }
+dae::ScoreComponent::ScoreComponent(GameObject* owner) : Component(owner)
 {
 	const auto pFont{ dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 32) };
 	auto colorGreen = SDL_Color(0, 255, 0);
-	const std::string text = m_TextBegin + std::to_string(m_Health);
+	const std::string text = m_TextBegin + std::to_string(m_Score);
 	m_pTextComponent = owner->AddComponent<TextComponent>(text, pFont, colorGreen);
 	if (m_pTextComponent)
 	{
@@ -22,32 +20,24 @@ dae::HealthComponent::HealthComponent(GameObject* owner, int health) : Component
 	//m_Delegate.AddListener(std::bind(&PlayerObserver::OnNotify, playerObserver, std::placeholders::_2));
 	m_Delegate.AddListener([playerObserver](Event& event, GameObject* object)
 		{
-			playerObserver->OnNotify(object, event); 
+			playerObserver->OnNotify(object, event);
 		});
 }
 
-void dae::HealthComponent::Attack()
+void dae::ScoreComponent::AddScore(int score)
 {
-	if (m_Health <= 0)
-	{
-		return;
-	}
-	m_Health -= m_Damage;
-	Event damagedEvent = Event(EventType::PLAYER_DAMAGED);
-	auto pOwner = GetOwner();
-	m_Delegate.Invoke(damagedEvent, pOwner);
-	if (m_Health <= 0)
-	{
-		Event deathEvent = Event(EventType::PLAYER_DIED);
-	}
+	m_Score += score;
+	OnScoreChanged();
 }
 
-void dae::HealthComponent::OnHealthChanged(Event& event)
+void dae::ScoreComponent::SetLocalPos(glm::vec2& pos)
+{
+	m_pTextComponent->SetPosition(pos);
+}
+
+void dae::ScoreComponent::OnScoreChanged()
 {
 	auto pOwner = GetOwner();
-	if (!pOwner)
-	{
-		return;
-	}
+	Event event = Event(EventType::SCORE_VALUE_CHANGED);
 	m_Delegate.Invoke(event, pOwner);
 }

@@ -21,17 +21,15 @@ void dae::Transform::UpdateWorldPosition()
 			return;
 		}
 		auto parent{ owner->GetParent() };
-		if (parent == nullptr)
+		if (!parent)
 		{
 			m_WorldPosition = m_LocalPosition;
+			return;
 		}
-		else
+		auto transform = parent->GetComponent<Transform>();
+		if (transform)
 		{
-			auto transform = parent->GetComponent<Transform>();
-			if (transform)
-			{
-				m_WorldPosition = transform->GetWorldPosition() + m_LocalPosition;
-			}
+			m_WorldPosition = transform->GetWorldPosition() + m_LocalPosition;
 		}
 		m_PositionIsDirty = false;
 	}

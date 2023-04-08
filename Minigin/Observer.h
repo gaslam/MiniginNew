@@ -5,22 +5,23 @@ namespace dae {
 	class Observer
 	{
 	public:
-		Observer() = default;
-		virtual ~Observer() {};
-		virtual void Notify(GameObject* object, Event& event) = 0;
+		explicit Observer() = default;
+		virtual ~Observer() = default;
+
+		Observer(const Observer& other) = delete;
+		Observer(Observer&& other) = delete;
+		Observer& operator=(const Observer& other) = delete;
+		Observer& operator=(Observer&& other) = delete;
+		virtual void OnNotify(GameObject* object, Event& event) = 0;
 	};
 
-	class PlayerDied : Observer {
+	class PlayerObserver : public Observer {
 	public:
-		void Notify(Event& event, GameObject* object);
+		PlayerObserver() = default;
+		void OnNotify(GameObject* object, Event& event) override;
+		void UpdateScore(GameObject* object);
 	private:
 		void DisplayGameOver(GameObject* object);
-	};
-
-	class PlayerDamaged : Observer {
-	public:
-		void Notify(Event& event, GameObject* object);
-	private:
 		void UpdateHealthDisplay(GameObject* object);
 	};
 }

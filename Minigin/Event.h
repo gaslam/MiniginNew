@@ -3,15 +3,17 @@
 class Event final
 {
 public:
-	Event(int id) : m_Id{ id } {};
+    Event() = default;
+    Event(int id) : m_Id{ id } {}
 
-	int GetId() const { return m_Id; }
+    int GetId() const { return m_Id; }
 private:
-	const int m_Id;
+    int m_Id{};
 };
 
 enum EventType : int {
 	PLAYER_DIED,
-	PLAYER_DAMAGED
+	PLAYER_DAMAGED,
+    SCORE_VALUE_CHANGED
 };
 

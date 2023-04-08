@@ -13,7 +13,13 @@ namespace dae
 		void UpdateWorldPosition();
 		//void SetPosition(float x, float y, float z);
 		void SetLocalPosition(const glm::vec3& pos);
-		void SetWorldPosition(const glm::vec3& pos) { m_WorldPosition = pos; }
+		void SetWorldPosition(const glm::vec3& pos) {
+
+			auto worldPos = GetWorldPosition();
+			m_LocalPosition.x += pos.x - worldPos.x;
+			m_LocalPosition.y += pos.y - worldPos.y;
+			SetPositionDirty();
+		}
 		void SetPositionDirty();
 
 		virtual void Render() const override {};

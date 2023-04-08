@@ -10,7 +10,7 @@ namespace dae
 {
 	class Font;
 	class RenderComponent;
-	class TextComponent final : public Component
+	class TextComponent : public Component
 	{
 	public:
 		void Initialise();
@@ -19,6 +19,7 @@ namespace dae
 
 		void SetText(const std::string& text, bool display);
 		void SetPosition(float x, float y);
+		void SetPosition(const glm::vec2& pos);
 		void SetCanRender(bool display);
 
 		TextComponent(GameObject* owner,const std::string& text, std::shared_ptr<Font> font, SDL_Color& color);
