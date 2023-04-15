@@ -3,10 +3,7 @@
 
 void dae::SceneManager::Update(float deltaTime)
 {
-	for(auto& scene : m_scenes)
-	{
-		scene->Update(deltaTime);
-	}
+	m_scenes[m_ActiveScene]->Update(deltaTime);
 }
 
 void dae::SceneManager::FixedUpdate(float)
@@ -15,10 +12,17 @@ void dae::SceneManager::FixedUpdate(float)
 
 void dae::SceneManager::Render()
 {
-	for (const auto& scene : m_scenes)
+	m_scenes[m_ActiveScene]->Render();
+}
+
+void dae::SceneManager::SetActiveScene(int sceneId)
+{
+	if (m_ActiveScene >= static_cast<int>(m_scenes.size()))
 	{
-		scene->Render();
+		return;
 	}
+
+	m_ActiveScene = sceneId;
 }
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)

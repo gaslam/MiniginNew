@@ -25,11 +25,9 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 		{
 			ProcessKeyboardInputUp(deltaTime, e.key.keysym.scancode);
 		}
-
-		ProcessKeyboardInputPressed(deltaTime);
+		ProcessKeyboardInputPressed(deltaTime, e.key.keysym.scancode);
 		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
-
 	ProcessControllerInput(deltaTime);
 
 	return true;
@@ -41,14 +39,14 @@ bool dae::InputManager::IsPressed(const SDL_Scancode& keyboardKey)
 	return m_pKeyboardState[keyboardKey];
 }
 
-void dae::InputManager::ProcessKeyboardInputPressed(float deltaTime)
+void dae::InputManager::ProcessKeyboardInputPressed(float deltaTime, SDL_Scancode& e)
 {
 	auto& input = Input::GetInstance();
 	auto& commands = input.GetCommands();
 	for (auto& command : commands)
 	{
 		const KeyInput keyInput = command.first;
-		if (IsPressed(keyInput.scancode) && keyInput.state == KeyState::pressed)
+		if (e == keyInput.scancode && keyInput.state == KeyState::pressed && IsPressed(keyInput.scancode))
 		{
 			command.second->Execute(deltaTime);
 		}

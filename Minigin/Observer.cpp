@@ -6,6 +6,9 @@
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
 #include "GameObject.h"
+#include "SteamArchievements.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 using namespace dae;
 
@@ -42,9 +45,9 @@ void PlayerObserver::UpdateScore(GameObject* object)
 		return;
 	}
 
-	int health = pScoreComp->GetScore();
+	int score = pScoreComp->GetScore();
 	std::string textBegin = pScoreComp->GetTextBegin();
-	std::string text = textBegin + std::to_string(health);
+	std::string text = textBegin + std::to_string(score);
 	pTextComp->SetText(text, true);
 }
 
@@ -61,4 +64,30 @@ void PlayerObserver::UpdateHealthDisplay(GameObject* object)
 	std::string textBegin = pHealthComp->GetTextBegin();
 	std::string text = textBegin + std::to_string(health);
 	pTextComp->SetText(text,true);
+}
+
+void dae::AchievementObserver::OnNotify(GameObject* object, Event& event)
+{
+	switch (event.GetId())
+	{
+	case EventType::SCORE_VALUE_CHANGED:
+		CheckScore(object);
+	}
+}
+
+void dae::AchievementObserver::CheckScore(GameObject* object)
+{
+	auto pScoreComp = object->GetComponent<ScoreComponent>();
+	if (!pScoreComp)
+	{
+		return;
+	}
+
+	int score = pScoreComp->GetScore();
+	int scoreToReachWin{ 500 };
+
+	if (score == scoreToReachWin)
+	{
+		m_Archievements->SetAchievement(static_cast<int>(EAchievements::ACH_WIN_ONE_GAME));
+	}
 }

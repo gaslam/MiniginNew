@@ -1,4 +1,7 @@
 #pragma once
+#include <memory>
+#include "SteamArchievements.h"
+
 class Event;
 namespace dae {
 	class GameObject;
@@ -23,6 +26,15 @@ namespace dae {
 	private:
 		void DisplayGameOver(GameObject* object);
 		void UpdateHealthDisplay(GameObject* object);
+	};
+
+	class AchievementObserver : public Observer {
+	public:
+		AchievementObserver() = default;
+		void OnNotify(GameObject* object, Event& event) override;
+	private:
+		void CheckScore(GameObject* object);
+		std::unique_ptr<SteamArchievements> m_Archievements{ std::make_unique<SteamArchievements>() };
 	};
 }
 

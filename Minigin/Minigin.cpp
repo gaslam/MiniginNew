@@ -99,6 +99,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	{
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
+		SteamAPI_RunCallbacks();
 		doContinue = inputManager.ProcessInput(deltaTime);
 		input.UpdateControls();
 /*		lag += deltaTime;
@@ -108,7 +109,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			lag -= fixedTimeStep;
 		}*/
 		sceneManager.Update(deltaTime);
-		SteamAPI_RunCallbacks();
 		renderer.Render();
 
 		const auto sleepTime = currentTime + std::chrono::milliseconds(msPerFrame)

@@ -12,8 +12,14 @@ namespace dae
 		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
 
+		void AddPlayer(std::shared_ptr<GameObject> object);
+		void RemovePlayer(std::shared_ptr<GameObject> object);
+		void RemoveAllPlayers();
+
 		void Update(float deltaTime);
 		void Render() const;
+
+		std::vector<GameObject*> GetPlayers();
 
 		~Scene();
 		Scene(const Scene& other) = delete;
@@ -26,6 +32,7 @@ namespace dae
 
 		std::string m_name;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
+		std::vector<std::shared_ptr<GameObject>> m_Players{};
 
 		static unsigned int m_idCounter; 
 	};

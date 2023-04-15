@@ -22,7 +22,7 @@ void XboxController::Update()
 
 bool XboxController::IsButtonDown(unsigned int button) const
 {
-	return m_ButtonsPressedThisFrame & button;
+	return m_CurrentState.Gamepad.wButtons & button;
 }
 
 bool XboxController::IsUpThisFrame(unsigned int button) const
@@ -32,5 +32,5 @@ bool XboxController::IsUpThisFrame(unsigned int button) const
 
 bool XboxController::IsPressed(unsigned int button) const
 {
-	return m_CurrentState.Gamepad.wButtons & button;
+	return m_ButtonsPressedThisFrame & button;
 }

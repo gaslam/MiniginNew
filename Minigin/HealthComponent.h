@@ -19,12 +19,15 @@ namespace dae {
 		void Render() const override { }
 		void OnHealthChanged(Event& event);
 		[[nodiscard]] std::string GetTextBegin() const { return m_TextBegin; }
+		bool IsDisabled() const { return m_IsDisabled; }
+		void Disable(bool isDisabled = true) { m_IsDisabled = isDisabled; }
 	private:
 		int m_Health{};
 		int m_Damage{ 1 };
 		const std::string m_TextBegin{ "Lives: " };
 		TextComponent* m_pTextComponent{nullptr};
 		Delegate<Event&,GameObject*> m_Delegate{};
+		bool m_IsDisabled{ false };
 	};
 }
 

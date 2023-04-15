@@ -5,9 +5,8 @@
 #include <unordered_map>
 #include <typeindex>
 #include <vector>
-
+#include "Observer.h"
 class Component;
-class Event;
 namespace dae
 {
 
@@ -82,5 +81,6 @@ namespace dae
 
 		GameObject* m_Parent{ nullptr };
 		std::vector<GameObject*> m_Children{};
+		std::vector<Observer*> m_Observers{};
 	};
 }

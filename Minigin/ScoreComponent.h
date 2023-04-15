@@ -16,12 +16,15 @@ namespace dae {
 		void SetLocalPos(glm::vec2& pos);
 		[[nodiscard]] int GetScore()const { return m_Score; }
 		[[nodiscard]] std::string GetTextBegin() const { return m_TextBegin; }
+		bool IsDisabled() const { return m_IsDisabled; }
+		void Disable(bool isDisabled = true) { m_IsDisabled = isDisabled; }
 	private:
 		void OnScoreChanged();
 		int m_Score{};
 		const std::string m_TextBegin{ "Score " };
 		TextComponent* m_pTextComponent{ nullptr };
 		Delegate<Event&, GameObject*> m_Delegate{};
+		bool m_IsDisabled{ false };
 	};
 }
 
