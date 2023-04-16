@@ -81,6 +81,5 @@ namespace dae
 
 		GameObject* m_Parent{ nullptr };
 		std::vector<GameObject*> m_Children{};
-		std::vector<Observer*> m_Observers{};
 	};
 }

@@ -1,12 +1,12 @@
 #pragma once
 #include "Component.h"
-#include "Delegate.h"
+#include "Subject.h"
 #include <string>
 #include "SDL_ttf.h"
 class Event;
 namespace dae {
 	class TextComponent;
-	class ScoreComponent : public Component
+	class ScoreComponent : public Component, public Subject
 	{
 	public:
 		ScoreComponent(GameObject* owner, SDL_Color color = SDL_Color{255,255,255});
@@ -23,7 +23,6 @@ namespace dae {
 		int m_Score{};
 		const std::string m_TextBegin{ "Score " };
 		TextComponent* m_pTextComponent{ nullptr };
-		Delegate<Event&, GameObject*> m_Delegate{};
 		bool m_IsDisabled{ false };
 	};
 }

@@ -2,13 +2,13 @@
 #include "Component.h"
 #include <string>
 #include <functional>
-#include "Delegate.h"
+#include "Subject.h"
 #include "SDL_ttf.h"
 class Event;
 namespace dae {
 	class TextComponent;
 	class HealthComponent :
-		public Component
+		public Component, public Subject
 	{
 	public:
 		HealthComponent(GameObject* owner, int health, SDL_Color color = {255,255,255});
@@ -26,7 +26,6 @@ namespace dae {
 		int m_Damage{ 1 };
 		const std::string m_TextBegin{ "Lives: " };
 		TextComponent* m_pTextComponent{nullptr};
-		Delegate<Event&,GameObject*> m_Delegate{};
 		bool m_IsDisabled{ false };
 	};
 }

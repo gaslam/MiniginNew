@@ -1,6 +1,7 @@
 #pragma once
 #include "steam_api.h"
 #include "Component.h"
+#include "Singleton.h"
 struct Achievement_t
 {
 	int m_eAchievementID;
@@ -20,7 +21,8 @@ enum class EAchievements : int
 };
 
 namespace dae {
-	class SteamArchievements
+	//Is a singleton so that the steam callback doesn't need to be performed multiple  times
+	class SteamArchievements : public Singleton<SteamArchievements>
 	{
 	private:
 		uint64 m_iAppID; // Our current AppID

@@ -33,8 +33,7 @@ namespace dae {
 		AchievementObserver() = default;
 		void OnNotify(GameObject* object, Event& event) override;
 	private:
-		void CheckScore(GameObject* object);
-		std::unique_ptr<SteamArchievements> m_Archievements{ std::make_unique<SteamArchievements>() };
+		void CheckScore(GameObject* object,SteamArchievements& achievements);
 	};
 }
 

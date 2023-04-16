@@ -40,6 +40,7 @@ void PlayerObserver::UpdateScore(GameObject* object)
 {
 	auto pScoreComp = object->GetComponent<ScoreComponent>();
 	auto pTextComp = object->GetComponent<TextComponent>();
+	const bool textVisible{ true };
 	if (!pScoreComp || !pTextComp)
 	{
 		return;
@@ -48,13 +49,14 @@ void PlayerObserver::UpdateScore(GameObject* object)
 	int score = pScoreComp->GetScore();
 	std::string textBegin = pScoreComp->GetTextBegin();
 	std::string text = textBegin + std::to_string(score);
-	pTextComp->SetText(text, true);
+	pTextComp->SetText(text, textVisible);
 }
 
 void PlayerObserver::UpdateHealthDisplay(GameObject* object)
 {
 	auto pHealthComp = object->GetComponent<HealthComponent>();
 	auto pTextComp = object->GetComponent<TextComponent>();
+	const bool textVisible{ true };
 	if (!pHealthComp|| !pTextComp)
 	{
 		return;
@@ -63,19 +65,20 @@ void PlayerObserver::UpdateHealthDisplay(GameObject* object)
 	int health = pHealthComp->GetHealth();
 	std::string textBegin = pHealthComp->GetTextBegin();
 	std::string text = textBegin + std::to_string(health);
-	pTextComp->SetText(text,true);
+	pTextComp->SetText(text,textVisible);
 }
 
 void dae::AchievementObserver::OnNotify(GameObject* object, Event& event)
 {
+	auto& achievements = SteamArchievements::GetInstance();
 	switch (event.GetId())
 	{
 	case EventType::SCORE_VALUE_CHANGED:
-		CheckScore(object);
+		CheckScore(object,achievements);
 	}
 }
 
-void dae::AchievementObserver::CheckScore(GameObject* object)
+void dae::AchievementObserver::CheckScore(GameObject* object, SteamArchievements& achievements)
 {
 	auto pScoreComp = object->GetComponent<ScoreComponent>();
 	if (!pScoreComp)
@@ -88,6 +91,6 @@ void dae::AchievementObserver::CheckScore(GameObject* object)
 
 	if (score == scoreToReachWin)
 	{
-		m_Archievements->SetAchievement(static_cast<int>(EAchievements::ACH_WIN_ONE_GAME));
+		achievements.SetAchievement(static_cast<int>(EAchievements::ACH_WIN_ONE_GAME));
 	}
 }

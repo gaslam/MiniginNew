@@ -1,7 +1,6 @@
 #include "ScoreComponent.h"
 #include "TextComponent.h"
 #include "ResourceManager.h"
-#include "ObserverManager.h"
 #include "Observer.h"
 #include "Event.h"
 
@@ -16,18 +15,6 @@ dae::ScoreComponent::ScoreComponent(GameObject* owner, SDL_Color color) : Compon
 		m_pTextComponent->Initialise();
 		m_pTextComponent->SetCanRender(true);
 	}
-	auto playerObserver = ObserverManager::GetInstance().AddObserver<PlayerObserver>();
-	auto achievmentObserver = ObserverManager::GetInstance().AddObserver<AchievementObserver>();
-	//m_Delegate.AddListener(std::bind(&PlayerObserver::OnNotify, playerObserver, std::placeholders::_2));
-	m_Delegate.AddListener([playerObserver](Event& event, GameObject* object)
-		{
-			playerObserver->OnNotify(object, event);
-		});
-
-	m_Delegate.AddListener([achievmentObserver](Event& event, GameObject* object)
-		{
-			achievmentObserver->OnNotify(object, event);
-		});
 }
 
 void dae::ScoreComponent::AddScore(int score)
@@ -45,5 +32,5 @@ void dae::ScoreComponent::OnScoreChanged()
 {
 	auto pOwner = GetOwner();
 	Event event = Event(EventType::SCORE_VALUE_CHANGED);
-	m_Delegate.Invoke(event, pOwner);
+	Invoke(pOwner,event);
 }

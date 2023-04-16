@@ -4,8 +4,7 @@
 #include "ResourceManager.h"
 #include "Event.h"
 #include <iostream>
-#include "Delegate.h"
-#include "ObserverManager.h"
+#include "Subject.h"
 
 dae::HealthComponent::HealthComponent(GameObject* owner, int health,SDL_Color color) : Component(owner), m_Health{ health }
 {
@@ -17,11 +16,6 @@ dae::HealthComponent::HealthComponent(GameObject* owner, int health,SDL_Color co
 		m_pTextComponent->Initialise();
 		m_pTextComponent->SetCanRender(true);
 	}
-	auto playerObserver = ObserverManager::GetInstance().AddObserver<PlayerObserver>();
-	m_Delegate.AddListener([playerObserver](Event& event, GameObject* object)
-		{
-			playerObserver->OnNotify(object, event); 
-		});
 }
 
 void dae::HealthComponent::Attack()
@@ -37,7 +31,7 @@ void dae::HealthComponent::Attack()
 	{
 		attackEvent = Event(EventType::PLAYER_DIED);
 	}
-	m_Delegate.Invoke(attackEvent, pOwner);
+	Invoke(pOwner,attackEvent);
 }
 
 void dae::HealthComponent::OnHealthChanged(Event& event)
@@ -47,5 +41,5 @@ void dae::HealthComponent::OnHealthChanged(Event& event)
 	{
 		return;
 	}
-	m_Delegate.Invoke(event, pOwner);
+	Invoke(pOwner, event);
 }

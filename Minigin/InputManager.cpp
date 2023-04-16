@@ -10,36 +10,67 @@
 #include "Command.h"
 #include "Input.h"
 
+class dae::InputManager::InputManagerImpl final
+{
+	const Uint8* m_pKeyboardState{};
+
+public:
+
+	InputManagerImpl() = default;
+	InputManagerImpl(InputManager const& other) = delete;
+	InputManagerImpl(InputManagerImpl&& other) = delete;
+	InputManagerImpl& operator=(InputManagerImpl const& other) = delete;
+	InputManagerImpl& operator=(InputManagerImpl&& other) = delete;
+	~InputManagerImpl() = default;
+
+	bool IsPressed(const SDL_Scancode& keyboardKey);
+	void ProcessKeyboardInputPressed(float deltaTime, SDL_Scancode& e);
+	void ProcessKeyboardInputUp(float deltaTime, SDL_Scancode& e);
+	void ProcessKeyboardInputDown(float deltaTime, SDL_Scancode& e);
+	void ProcessControllerInput(float deltaTime);
+	bool ProcessInput(float deltaTime);
+};
+
 bool dae::InputManager::ProcessInput(float deltaTime)
 {
-	m_pKeyboardState = SDL_GetKeyboardState(nullptr);
-	SDL_Event e;
-	while (SDL_PollEvent(&e)) {
-		if (e.type == SDL_QUIT) {
-			return false;
-		}
-		else if (e.type == SDL_KEYDOWN) {
-			ProcessKeyboardInputDown(deltaTime, e.key.keysym.scancode);
-		}
-		else if (e.type == SDL_KEYUP)
-		{
-			ProcessKeyboardInputUp(deltaTime, e.key.keysym.scancode);
-		}
-		ProcessKeyboardInputPressed(deltaTime, e.key.keysym.scancode);
-		ImGui_ImplSDL2_ProcessEvent(&e);
-	}
-	ProcessControllerInput(deltaTime);
-
-	return true;
+	return m_pImpl->ProcessInput(deltaTime);
 }
 
+dae::InputManager::InputManager() : m_pImpl{ new dae::InputManager::InputManagerImpl{} }
+{
+}
 
-bool dae::InputManager::IsPressed(const SDL_Scancode& keyboardKey)
+dae::InputManager::~InputManager()
+{
+	delete m_pImpl;
+}
+
+void dae::InputManager::ProcessKeyboardInputPressed(float deltaTime, SDL_Scancode& e)
+{
+	m_pImpl->ProcessKeyboardInputPressed(deltaTime, e);
+}
+
+void dae::InputManager::ProcessKeyboardInputUp(float deltaTime, SDL_Scancode& e)
+{
+	return m_pImpl->ProcessKeyboardInputUp(deltaTime, e);
+}
+
+void dae::InputManager::ProcessKeyboardInputDown(float deltaTime, SDL_Scancode& e)
+{
+	m_pImpl->ProcessKeyboardInputDown(deltaTime, e);
+}
+
+void dae::InputManager::ProcessControllerInput(float deltaTime)
+{
+	return m_pImpl->ProcessControllerInput(deltaTime);
+}
+
+bool dae::InputManager::InputManagerImpl::IsPressed(const SDL_Scancode& keyboardKey)
 {
 	return m_pKeyboardState[keyboardKey];
 }
 
-void dae::InputManager::ProcessKeyboardInputPressed(float deltaTime, SDL_Scancode& e)
+void dae::InputManager::InputManagerImpl::ProcessKeyboardInputPressed(float deltaTime, SDL_Scancode& e)
 {
 	auto& input = Input::GetInstance();
 	auto& commands = input.GetCommands();
@@ -53,7 +84,7 @@ void dae::InputManager::ProcessKeyboardInputPressed(float deltaTime, SDL_Scancod
 	}
 }
 
-void dae::InputManager::ProcessKeyboardInputUp(float deltaTime, SDL_Scancode& e)
+void dae::InputManager::InputManagerImpl::ProcessKeyboardInputUp(float deltaTime, SDL_Scancode& e)
 {
 	auto& input = Input::GetInstance();
 	auto& commands = input.GetCommands();
@@ -67,7 +98,7 @@ void dae::InputManager::ProcessKeyboardInputUp(float deltaTime, SDL_Scancode& e)
 	}
 }
 
-void dae::InputManager::ProcessKeyboardInputDown(float deltaTime, SDL_Scancode& e)
+void dae::InputManager::InputManagerImpl::ProcessKeyboardInputDown(float deltaTime, SDL_Scancode& e)
 {
 	auto& input = Input::GetInstance();
 	auto& commands = input.GetCommands();
@@ -81,7 +112,7 @@ void dae::InputManager::ProcessKeyboardInputDown(float deltaTime, SDL_Scancode& 
 	}
 }
 
-void dae::InputManager::ProcessControllerInput(float deltaTime)
+void dae::InputManager::InputManagerImpl::ProcessControllerInput(float deltaTime)
 {
 	auto& input = Input::GetInstance();
 	auto& commands = input.GetCommands();
@@ -121,4 +152,27 @@ void dae::InputManager::ProcessControllerInput(float deltaTime)
 			}
 		}
 	}
+}
+
+bool dae::InputManager::InputManagerImpl::ProcessInput(float deltaTime)
+{
+	m_pKeyboardState = SDL_GetKeyboardState(nullptr);
+	SDL_Event e;
+	while (SDL_PollEvent(&e)) {
+		if (e.type == SDL_QUIT) {
+			return false;
+		}
+		else if (e.type == SDL_KEYDOWN) {
+			ProcessKeyboardInputDown(deltaTime, e.key.keysym.scancode);
+		}
+		else if (e.type == SDL_KEYUP)
+		{
+			ProcessKeyboardInputUp(deltaTime, e.key.keysym.scancode);
+		}
+		ProcessKeyboardInputPressed(deltaTime, e.key.keysym.scancode);
+		ImGui_ImplSDL2_ProcessEvent(&e);
+	}
+	ProcessControllerInput(deltaTime);
+
+	return true;
 }
