@@ -5,6 +5,8 @@
 namespace dae {
 	struct AnimationItem {
 		bool isRepeatable;
+		bool isXflipped;
+		bool isYflipped;
 		int startRow;
 		int startCol;
 		int count;

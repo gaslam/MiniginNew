@@ -61,7 +61,7 @@ void dae::RenderComponent::Render() const
 	desRect.w = static_cast<int>(srcRect.w * m_Scale);
 	desRect.h = static_cast<int>(srcRect.h * m_Scale);
 
-	dae::Renderer::GetInstance().RenderTexture(*m_Texture,srcRect,desRect);
+	dae::Renderer::GetInstance().RenderTexture(*m_Texture,srcRect,desRect,m_xFlipped,m_yFlipped);
 }
 
 void dae::RenderComponent::SetPosition(float x, float y)

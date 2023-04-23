@@ -28,14 +28,22 @@ namespace dae {
 		float GetFrameHeight() const { return m_FrameHeight; }
 		void SetScale(float scale) { m_Scale = scale; }
 		void SetTextureOffset(glm::vec2& offset) { m_TextureOffset = offset; }
+		void SetXFlip(bool isFlipped) { m_xFlipped = isFlipped; }
+		void SetYFlip(bool isFlipped) { m_xFlipped = isFlipped; }
+		void SetXandYFlip(bool isXFlipped, bool isYFlipped) {
+			m_xFlipped = isXFlipped;
+			m_yFlipped = isYFlipped;
+		}
 	private:
-		std::shared_ptr<Texture2D> m_Texture{};
+		bool m_xFlipped{ false };
+		bool m_yFlipped{ false };
 		float m_Width{};
 		float m_Height{};
 		float m_FrameWidth{};
 		float m_FrameHeight{};
 		float m_Scale{1.f};
 		glm::vec2 m_TextureOffset{};
+		std::shared_ptr<Texture2D> m_Texture{};
 	};
 }
 

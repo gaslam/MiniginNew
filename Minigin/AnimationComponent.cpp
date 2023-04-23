@@ -66,13 +66,14 @@ void dae::AnimationComponent::Update(float elapsedSec)
 
 }
 
-void dae::AnimationComponent::ChangeAnimation(int rowIdx,int colIdx, int count, bool canRepeat)
+void dae::AnimationComponent::ChangeAnimation(int rowIdx,int colIdx, int count, bool canRepeat, bool xFlipped, bool yFlipped)
 {
 	m_StartFrame = GetGridIdx(rowIdx, m_Cols, colIdx);
 	m_EndFrame = m_StartFrame + count;
 	m_CanRepeat = canRepeat;
 	m_AccuSec = 0.f;
 	m_CurrentFrame = m_StartFrame;
+	m_pRenderComponent->SetXandYFlip(xFlipped, yFlipped);
 }
 
 int AnimationComponent::GetColIdx(int index, int nrCols)

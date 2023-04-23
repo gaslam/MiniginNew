@@ -22,7 +22,7 @@ void dae::CharacterComponent::SetAnimation(CharacterState& state)
 	AnimationItem item = pair.second;
 	if (m_pAnimationComponent)
 	{
-		m_pAnimationComponent->ChangeAnimation(item.startRow,item.startCol,item.count,item.isRepeatable);
+		m_pAnimationComponent->ChangeAnimation(item.startRow,item.startCol,item.count,item.isRepeatable,item.isXflipped,item.isYflipped);
 	}
 }
 
