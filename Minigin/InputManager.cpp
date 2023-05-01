@@ -1,13 +1,11 @@
+#include <windows.h>
 #include <SDL.h>
 #include "InputManager.h"
 #include <backends/imgui_impl_sdl.h>
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 #include <Xinput.h>
 #include "Command.h"
 #include <iostream>
-#include <algorithm>
-#include "Command.h"
 #include "Input.h"
 
 bool dae::InputManager::ProcessInput(float deltaTime)

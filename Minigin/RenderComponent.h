@@ -2,7 +2,6 @@
 #include "Component.h"
 #include <memory>
 #include "string"
-#include "Transform.h"
 #include <glm/glm.hpp>
 namespace dae {
 	class Texture2D;

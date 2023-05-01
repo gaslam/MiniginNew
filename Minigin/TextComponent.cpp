@@ -6,6 +6,7 @@
 #include "Texture2D.h"
 #include "GameObject.h"
 #include "RenderComponent.h"
+#include <windows.h>
 
 dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, std::shared_ptr<Font> font, SDL_Color& color)
 	: Component(owner), m_NeedsUpdate(true), m_text(text), m_font(std::move(font)), m_Color{ color }
@@ -14,10 +15,13 @@ dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, st
 	void dae::TextComponent::Initialise()
 	{
 		auto owner = GetOwner();
-		if (owner)
+		if (!owner)
 		{
-			m_RenderComponent = owner->GetComponent<dae::RenderComponent>();
+			return;
 		}
+
+		m_RenderComponent = owner->GetComponent<dae::RenderComponent>();
+		MG_ASSERT(m_RenderComponent != nullptr);
 	}
 
 	void dae::TextComponent::Update(float)

@@ -1,11 +1,6 @@
 #include "FPSComponent.h"
-#include <stdexcept>
-#include <SDL_ttf.h>
-#include <glm/glm.hpp>
-#include "Renderer.h"
 #include "TextComponent.h"
 #include "GameObject.h"
-#include "Texture2D.h"
 
 void dae::FPSComponent::Update(float deltaTime)
 {
@@ -37,7 +32,13 @@ dae::FPSComponent::FPSComponent(GameObject* object) : Component{object}, m_Needs
 void dae::FPSComponent::Initialise()
 {
 	auto owner = GetOwner();
+	MG_ASSERT(owner != nullptr);
+	if (!owner)
+	{
+		return;
+	}
 	m_TextRenderComp = owner->GetComponent<dae::TextComponent>();
+	MG_ASSERT(m_TextRenderComp != nullptr);
 }
 
 void dae::FPSComponent::Render() const

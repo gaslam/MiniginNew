@@ -1,8 +1,5 @@
-#include <string>
 #include "GameObject.h"
 #include "Renderer.h"
-#include "RenderComponent.h"
-#include "Texture2D.h"
 #include <algorithm>
 #include "Component.h"
 

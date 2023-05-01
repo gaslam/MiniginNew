@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL.h>
 #include "Singleton.h"
-#include <memory>
 #include <glm/glm.hpp>
 
 

@@ -1,3 +1,4 @@
+#include <windows.h>
 #include "RotationComponent.h"
 #include "GameObject.h"
 #include "Transform.h"
@@ -6,13 +7,15 @@
 
 dae::RotationComponent::RotationComponent(GameObject* owner, float radius, float speedInRad) : Component(owner), m_Radius{ radius }, m_RotSpeed{ speedInRad }
 {
-	if (owner)
+	if (!owner)
 	{
-		m_TransformComp = owner->AddComponent<Transform>();
-		if (m_TransformComp)
-		{
-			m_Center = m_TransformComp->GetLocalPosition();
-		}
+		return;
+	}
+	m_TransformComp = owner->AddComponent<Transform>();
+	MG_ASSERT(m_TransformComp != nullptr);
+	if (m_TransformComp)
+	{
+		m_Center = m_TransformComp->GetLocalPosition();
 	}
 }
 
@@ -29,8 +32,8 @@ void dae::RotationComponent::Update(float deltaTime)
 	}
 	m_CurrentRadians += m_RotSpeed * deltaTime;
 
-	const float newYPosRot{ sinf(m_CurrentRadians)*m_Radius };
-	const float newXPosRot{ cosf(m_CurrentRadians)*m_Radius };
+	const float newYPosRot{ sinf(m_CurrentRadians) * m_Radius };
+	const float newXPosRot{ cosf(m_CurrentRadians) * m_Radius };
 
 	glm::vec3 newPos{ newXPosRot + m_Center.x, newYPosRot + m_Center.y, 0 };
 

@@ -2,8 +2,7 @@
 #include <string>
 #include <memory>
 #include "Component.h"
-#include "Transform.h"
-#include "GameObject.h"
+#include <SDL.h>
 
 namespace dae
 {
@@ -20,7 +19,7 @@ namespace dae
 		void SetPosition(float x, float y);
 
 		TextComponent(GameObject* owner,const std::string& text, std::shared_ptr<Font> font, SDL_Color& color);
-		virtual ~TextComponent() = default;
+		~TextComponent() override = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
 		TextComponent& operator=(const TextComponent& other) = delete;

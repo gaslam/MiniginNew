@@ -7,6 +7,7 @@ namespace dae {
 	protected:
 	GameObject* GetCommandOwner() const { return m_Owner; }
 	public:
+		virtual ~Command() = default;
 		Command(GameObject* actor);
 		//float = deltaTime
 		virtual void Execute(float) {};
@@ -26,6 +27,6 @@ namespace dae {
 	class SetChacterToStateIdleCommand : public Command {
 	public:
 		explicit SetChacterToStateIdleCommand(GameObject* owner) : Command(owner) {};
-		virtual void Execute(float) override;
+		void Execute(float) override;
 	};
 }
