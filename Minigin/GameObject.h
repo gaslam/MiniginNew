@@ -23,7 +23,7 @@ namespace dae
 		void AddChild(GameObject* child);
 
 		GameObject() = default;
-		virtual ~GameObject();
+		virtual ~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
