@@ -3,11 +3,6 @@
 #include <glm/fwd.hpp>
 #include "CharacterComponent.h"
 
-dae::Command::Command(GameObject* actor) :
-	m_Owner{actor}
-{
-}
-
 void dae::MoveCommand::Execute(float deltaTime)
 {
 	GameObject* pOwner = GetCommandOwner();
