@@ -78,6 +78,30 @@ void dae::AnimationComponent::ChangeAnimation(int rowIdx,int colIdx, int count, 
 	m_pRenderComponent->SetXandYFlip(xFlipped, yFlipped);
 }
 
+SDL_Rect dae::AnimationComponent::GetCell()
+{
+	auto pOwner = GetOwner();
+	const bool isOwnerNotNullptr{ pOwner != nullptr };
+	MG_ASSERT(isOwnerNotNullptr);
+	if(!isOwnerNotNullptr)
+	{
+		return{};
+	}
+	auto pTransform = pOwner->GetComponent<Transform>();
+	const bool isTransformNotNullptr{ pTransform != nullptr };
+	MG_ASSERT(isTransformNotNullptr);
+	if(!isTransformNotNullptr)
+	{
+		return{};
+	}
+
+	auto pos = pTransform->GetLocalPosition();
+	auto posVec2 = glm::ivec2{ pos.x,pos.y };
+	int widthScaled = static_cast<int>(m_pRenderComponent->GetFrameWidthScaled());
+	int heightScaled = static_cast<int>(m_pRenderComponent->GetFrameHeightScaled());
+	return SDL_Rect(posVec2.x,posVec2.y,widthScaled,heightScaled);
+}
+
 int AnimationComponent::GetColIdx(int index, int nrCols)
 {
 	int result{ index % nrCols };

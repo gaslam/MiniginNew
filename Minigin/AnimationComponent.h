@@ -1,4 +1,6 @@
 #pragma once
+#include <SDL_rect.h>
+
 #include "Component.h"
 #include <string>
 namespace dae {
@@ -11,6 +13,7 @@ namespace dae {
 		void Render() const override {};
 		bool IsFinished() const { return m_IsFinished; }
 		void ChangeAnimation(int rowIdx, int colIdx, int count = 1, bool canRepeat = false, bool xFlipped = false, bool yFlipped = false);
+		SDL_Rect GetCell();
 	private:
 		bool m_CanRepeat;
 		bool m_IsFinished{ false };

@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneManager.h"
+#include "Shape.h"
 
 namespace dae
 {
@@ -26,7 +27,7 @@ namespace dae
 
 		std::string m_name;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
-
+		std::vector<std::vector<RectangleShape>> m_Platforms{};
 		static unsigned int m_idCounter; 
 	};
 

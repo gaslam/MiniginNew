@@ -25,6 +25,8 @@ namespace dae {
 		float GetHeightScaled() const { return m_Height * m_Scale; }
 		float GetFrameWidth() const { return m_FrameWidth; }
 		float GetFrameHeight() const { return m_FrameHeight; }
+		float GetFrameWidthScaled() const { return m_FrameWidth * m_Scale; }
+		float GetFrameHeightScaled() const { return m_FrameHeight * m_Scale; }
 		void SetScale(float scale) { m_Scale = scale; }
 		void SetTextureOffset(glm::vec2& offset) { m_TextureOffset = offset; }
 		void SetXFlip(bool isFlipped) { m_xFlipped = isFlipped; }
