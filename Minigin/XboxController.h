@@ -1,4 +1,3 @@
-#include <windows.h>
 #include <Xinput.h>
 namespace dae {
 	class XboxController final

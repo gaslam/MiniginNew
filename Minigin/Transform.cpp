@@ -1,5 +1,4 @@
 #include "Transform.h"
-#include <algorithm>
 #include "GameObject.h"
 
 const glm::vec3& dae::Transform::GetWorldPosition()

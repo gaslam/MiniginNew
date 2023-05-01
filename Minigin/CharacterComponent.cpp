@@ -5,6 +5,9 @@
 
 void dae::CharacterComponent::AddAnimation(AnimationItem& animation, CharacterState& state)
 {
+	MG_ASSERT(animation.count > -1);
+	MG_ASSERT(animation.startCol > -1);
+	MG_ASSERT(animation.startRow > -1);
 	m_Animations.emplace(state, animation);
 }
 

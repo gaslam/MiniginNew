@@ -1,6 +1,5 @@
 #pragma once
 #include "Singleton.h"
-#include <windows.h>
 #include <utility>
 #include <map>
 #include <memory>

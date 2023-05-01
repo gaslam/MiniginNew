@@ -7,12 +7,14 @@ using namespace dae;
 dae::AnimationComponent::AnimationComponent(GameObject* object, const std::string& textureFile, float framesSec, float scale, int rows, int cols, int startRow, int startCol, int count, bool canRepeat) :
 	Component(object), m_Rows{ rows }, m_Cols{ cols }, m_FrameSec{ framesSec }, m_StartFrame{ GetGridIdx(startRow,cols,startCol) }, m_EndFrame{ m_StartFrame + count }, m_CanRepeat{ canRepeat }
 {
-	auto owner = GetOwner();
+	GameObject* owner = GetOwner();
+	MG_ASSERT(owner != nullptr);
 	if (!owner)
 	{
 		return;
 	}
 	m_pRenderComponent = owner->AddComponent<RenderComponent>(textureFile);
+	MG_ASSERT(m_pRenderComponent != nullptr);
 	if (m_pRenderComponent)
 	{
 		m_pRenderComponent->SetScale(scale);

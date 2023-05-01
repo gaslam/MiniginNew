@@ -1,5 +1,5 @@
 #pragma once
-#include <glm/glm.hpp>
+#include "Logger.h"
 namespace dae {
 	class GameObject;
 	class Component {
@@ -14,7 +14,9 @@ namespace dae {
 		virtual void Update(float deltaTime) = 0;
 	protected:
 		GameObject* GetOwner() const { return m_pOwner; }
-		explicit Component(GameObject* owner) : m_pOwner{ owner } {};
+		explicit Component(GameObject* owner) : m_pOwner{ owner } {
+			MG_ASSERT(owner != nullptr);
+		};
 	private:
 		GameObject* m_pOwner{ nullptr };
 	};

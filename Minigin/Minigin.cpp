@@ -12,6 +12,7 @@
 #include "ResourceManager.h"
 #include <chrono>
 #include <thread>
+#include "Logger.h"
 
 
 SDL_Window* g_window{};
@@ -20,6 +21,7 @@ void PrintSDLVersion()
 {
 	SDL_version version{};
 	SDL_VERSION(&version);
+
 	printf("We compiled against SDL version %u.%u.%u ...\n",
 		version.major, version.minor, version.patch);
 
@@ -46,12 +48,10 @@ void PrintSDLVersion()
 
 dae::Minigin::Minigin(const std::string &dataPath)
 {
+	Logger::LogInfo("Creating engine");
 	PrintSDLVersion();
 	
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
-	{
-		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
-	}
+	MG_ASSERT(SDL_Init(SDL_INIT_VIDEO) == 0);
 
 	g_window = SDL_CreateWindow(
 		"Programming 4 assignment",
@@ -61,28 +61,28 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		560,
 		SDL_WINDOW_OPENGL
 	);
-	if (g_window == nullptr) 
-	{
-		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
-	}
+	MG_ASSERT(g_window != nullptr);
 
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+	Logger::LogInfo("Engine initialised!!");
 }
 
 dae::Minigin::~Minigin()
 {
+	Logger::LogInfo("Destroying engine!!");
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	SDL_Quit();
+	Logger::LogInfo("Engine destroyed!!");
 }
 
 void dae::Minigin::Run(const std::function<void()>& load)
 {
+	Logger::LogInfo("Engine loading!!");
 	load();
-
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& inputManager = InputManager::GetInstance();
@@ -94,6 +94,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	float desiredFrameRate{ 144.f };
 	//const float fixedTimeStep{ 2.f };
 	int msPerFrame{ static_cast<int>(1000/desiredFrameRate)};
+	Logger::LogInfo("Engine running!!");
 	while (doContinue)
 	{
 		const auto currentTime = std::chrono::high_resolution_clock::now();

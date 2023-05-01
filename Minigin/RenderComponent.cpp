@@ -3,7 +3,6 @@
 #include "Texture2D.h"
 #include "ResourceManager.h"
 #include <string>
-#include "Texture2D.h"
 #include "GameObject.h"
 
 dae::RenderComponent::RenderComponent(GameObject* owner,const std::string& filename) : Component(owner)

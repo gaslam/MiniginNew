@@ -2,8 +2,6 @@
 #include <string>
 #include <memory>
 #include "Component.h"
-#include "Transform.h"
-#include "GameObject.h"
 
 namespace dae
 {

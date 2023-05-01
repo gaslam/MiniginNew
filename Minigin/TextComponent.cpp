@@ -14,10 +14,13 @@ dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, st
 	void dae::TextComponent::Initialise()
 	{
 		auto owner = GetOwner();
-		if (owner)
+		if (!owner)
 		{
-			m_RenderComponent = owner->GetComponent<dae::RenderComponent>();
+			return;
 		}
+
+		m_RenderComponent = owner->GetComponent<dae::RenderComponent>();
+		MG_ASSERT(m_RenderComponent != nullptr);
 	}
 
 	void dae::TextComponent::Update(float)
