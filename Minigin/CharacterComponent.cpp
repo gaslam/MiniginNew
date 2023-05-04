@@ -2,7 +2,6 @@
 #include "CharacterComponent.h"
 #include "AnimationComponent.h"
 #include <algorithm>
-#include <windows.h>
 
 void dae::CharacterComponent::AddAnimation(AnimationItem& animation, CharacterState& state)
 {
@@ -14,7 +13,14 @@ void dae::CharacterComponent::AddAnimation(AnimationItem& animation, CharacterSt
 
 void dae::CharacterComponent::SetAnimation(CharacterState& state)
 {
-	auto it = std::find_if(m_Animations.begin(), m_Animations.end(), [state](std::pair<dae::CharacterComponent::CharacterState, dae::AnimationItem> pair) {
+	const bool isStateInConflict1{ state == moveUp && m_MovementState == LeftRight };
+	const bool isStateInConflict2{ state == moveLeft && m_MovementState == UpDown || state == moveRight && m_MovementState == UpDown };
+	if (isStateInConflict1 || isStateInConflict2)
+	{
+		return;
+	}
+
+	auto it = std::find_if(m_Animations.begin(), m_Animations.end(), [state](std::pair<CharacterState, dae::AnimationItem> pair) {
 		return pair.first == state;
 		});
 	if (it == m_Animations.end())
@@ -26,6 +32,7 @@ void dae::CharacterComponent::SetAnimation(CharacterState& state)
 	AnimationItem item = pair.second;
 	if (m_pAnimationComponent)
 	{
+		m_CharacterState = state;
 		m_pAnimationComponent->ChangeAnimation(item.startRow,item.startCol,item.count,item.isRepeatable,item.isXflipped,item.isYflipped);
 	}
 }
@@ -38,10 +45,9 @@ void dae::CharacterComponent::SetAnimation(int id)
 
 void dae::CharacterComponent::SetState(CharacterState& state)
 {
-	if (m_State == state)
+	if (m_CharacterState == state)
 	{
 		return;
 	}
-	m_State = state;
 	SetAnimation(state);
 }

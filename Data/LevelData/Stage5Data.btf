@@ -1,0 +1,129 @@
+//Platform
+//StartPos
+//Height
+//Width
+
+Platform:
+0 13
+3
+208
+
+Platform:
+0 29
+3
+208
+
+Platform:
+0 45
+3
+160
+
+Platform:
+0 61
+3
+160
+
+Platform:
+0 77
+3
+208
+
+Platform:
+0 93
+3
+160
+
+Platform:
+0 109
+3
+160
+
+Platform:
+0 125
+3
+160
+
+Platform:
+144 141
+3
+64
+
+Platform:
+0 189
+3
+16
+
+Platform:
+144 189
+3
+64
+
+//BurgerDropoff
+//StartPos
+//Height
+//Width
+
+BurgerDropoff:
+61 194
+6
+38
+
+BurgerDropoff:
+109 194
+6
+38
+
+//Ladder
+//StartPos
+//Height
+//Width
+
+Ladder:
+3 11
+22
+10
+
+Ladder:
+3 43
+150
+10
+
+Ladder:
+51 75
+22
+10
+
+Ladder:
+99 27
+22
+10
+
+Ladder:
+147 27
+22
+10
+
+Ladder:
+147 59
+22
+10
+
+Ladder:
+147 91
+38
+10
+
+Ladder:
+147 139
+54
+10
+
+Ladder:
+171 11
+134
+10
+
+Ladder:
+195 11
+182
+10

@@ -18,28 +18,29 @@ void dae::MoveCommand::Execute(float deltaTime)
 		return;
 	}
 
-	dae::CharacterComponent::CharacterState state{};
-	if (m_Dir.x > 0)
+	CharacterComponent::CharacterState characterState{pCharacter->GetState()};
+	CharacterComponent::MovementState movementState{pCharacter->GetMovementState()};
+	if (m_Dir.x > 0 && movementState == CharacterComponent::MovementState::LeftRight)
 	{
-		state = dae::CharacterComponent::moveRight;
+		characterState = dae::CharacterComponent::moveRight;
 	}
 
-	if (m_Dir.x < 0)
+	if (m_Dir.x < 0 && movementState == CharacterComponent::MovementState::LeftRight)
 	{
-		state = dae::CharacterComponent::moveLeft;
+		characterState = dae::CharacterComponent::moveLeft;
 	}
 
-	if (m_Dir.y > 0)
+	if (m_Dir.y > 0 && movementState == CharacterComponent::MovementState::UpDown)
 	{
-		state = dae::CharacterComponent::moveUp;
+		characterState = dae::CharacterComponent::moveUp;
 	}
 
-	if (m_Dir.y < 0)
+	if (m_Dir.y < 0 && movementState == CharacterComponent::MovementState::UpDown)
 	{
-		state = dae::CharacterComponent::moveDown;
+		characterState = dae::CharacterComponent::moveDown;
 	}
 
-	pCharacter->SetState(state);
+	pCharacter->SetState(characterState);
 }
 
 void dae::MoveCommand::Execute(glm::vec3& dir, float deltaTime)
@@ -57,9 +58,18 @@ void dae::MoveCommand::Execute(glm::vec3& dir, float deltaTime)
 
 	glm::vec3 pos = pTransform->GetLocalPosition();
 	const float speed = pTransform->GetSpeedForMovement();
-	pos.x += (dir.x * speed) * deltaTime;
-	pos.y += (dir.y * speed) * deltaTime;
-	pos.z += (dir.z * speed) * deltaTime;
+	CharacterComponent* pCharacter = pOwner->GetComponent<CharacterComponent>();
+	if (pCharacter)
+	{
+		auto movementState = pCharacter->GetMovementState();
+		pos.x += movementState == CharacterComponent::LeftRight ? (dir.x * speed) * deltaTime : 0.f;
+		pos.y += movementState == CharacterComponent::UpDown ? (dir.y * speed) * deltaTime : 0.f;
+	}
+	else
+	{
+		pos.x += (dir.x * speed) * deltaTime;
+		pos.y += (dir.y * speed) * deltaTime;
+	}
 
 	pTransform->SetLocalPosition(pos);
 }

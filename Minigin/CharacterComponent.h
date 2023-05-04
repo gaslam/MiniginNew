@@ -16,7 +16,7 @@ namespace dae {
 	class CharacterComponent : public Component
 	{
 	public:
-		CharacterComponent(GameObject* pOwner, AnimationComponent* pComponent) : Component(pOwner), m_pAnimationComponent{ pComponent }, m_State{} {};
+		CharacterComponent(GameObject* pOwner, AnimationComponent* pComponent) : Component(pOwner), m_pAnimationComponent{ pComponent }, m_CharacterState{} {};
 		void Update(float) override {};
 		void Render() const override {};
 		enum CharacterState : int {
@@ -28,13 +28,20 @@ namespace dae {
 			attack,
 			trowingPepper
 		};
+		enum MovementState
+		{
+			LeftRight,
+			UpDown
+		};
 		void AddAnimation(AnimationItem& animation, CharacterState& state);
 		void SetAnimation(CharacterState& state);
 		void SetAnimation(int id);
-		CharacterState GetState() const { return m_State; }
+		CharacterState GetState() const { return m_CharacterState; }
+		MovementState GetMovementState() const { return m_MovementState; }
 		void SetState(CharacterState& state);
 	private:
-		CharacterState m_State;
+		CharacterState m_CharacterState;
+		MovementState m_MovementState{};
 		AnimationComponent* m_pAnimationComponent;
 		std::map< CharacterState, AnimationItem> m_Animations{};
 	};
