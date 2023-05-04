@@ -7,8 +7,8 @@
 
 class Logger {
 public:
-	static void LogInfo(const char* message) {
-		std::cout << "[INFO] " << message << std::endl;
+	static void LogInfo(const char* file, const int line, const char* function, const char* message) {
+		std::cout << "[INFO]:\n\nMessage: " << message <<"\nFile: " << file << "\nLine: " << line << "\nFunction: " << function<<"\n\n";
 	}
 
 	static void LogWarning(const char* file, const int line, const char* function, const char* message)
@@ -31,3 +31,6 @@ Logger::LogError(__FILE__, __LINE__, __FUNCTION__, #expr);
 #define MG_ASSERT_WARNING(expr) \
     if (!(expr)) \
 Logger::LogError(__FILE__, __LINE__, __FUNCTION__, #expr);
+
+#define MG_ASSERT_INFO(message) \
+Logger::LogInfo(__FILE__, __LINE__, __FUNCTION__, #message);
