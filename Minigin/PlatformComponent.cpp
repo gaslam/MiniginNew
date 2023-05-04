@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "Shape.h"
+#include <algorithm>
 
 using namespace dae;
 PlatformComponent::PlatformComponent(GameObject* pOwner, RectangleShape* pShape) : Component(pOwner)
@@ -36,12 +37,12 @@ void PlatformComponent::Update(float)
 		auto pointVec2 = glm::ivec2{ point.x + frameWidth,point.y + frameHeight };
 		bool canMove = m_pRigidBodyComp->IsPointInRect(pointVec2);
 		auto points = m_pRigidBodyComp->GetShape()->GetPoints();
-		glm::ivec2 minY = *std::ranges::min_element(points, [](glm::ivec2& point1, glm::ivec2& point2)
+		glm::ivec2 minY = *std::min_element(points.begin(),points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
 		{
 			return point1.x < point2.x;
 		});
 
-		auto maxY = *std::ranges::max_element(points, [](glm::ivec2& point1, glm::ivec2& point2)
+		auto maxY = *std::max_element(points.begin(),points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
 		{
 			return point1.x < point2.x;
 		});
