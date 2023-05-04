@@ -1,9 +1,6 @@
 #pragma once
-#include "Logger.h"
-<<<<<<< HEAD
 #include <windows.h>
-=======
->>>>>>> 9e333116ee788fa22f3985d3b449ca2ed1330109
+#include "Logger.h"
 namespace dae {
 	class GameObject;
 	class Component {
