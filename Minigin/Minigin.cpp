@@ -48,7 +48,11 @@ void PrintSDLVersion()
 
 dae::Minigin::Minigin(const std::string &dataPath)
 {
+<<<<<<< HEAD
 	MG_ASSERT_INFO("Creating engine");
+=======
+	Logger::LogInfo("Creating engine");
+>>>>>>> 9e333116ee788fa22f3985d3b449ca2ed1330109
 	PrintSDLVersion();
 	
 	MG_ASSERT(SDL_Init(SDL_INIT_VIDEO) == 0);
@@ -66,22 +70,38 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+<<<<<<< HEAD
 	MG_ASSERT_INFO("Engine initialised!!");
+=======
+	Logger::LogInfo("Engine initialised!!");
+>>>>>>> 9e333116ee788fa22f3985d3b449ca2ed1330109
 }
 
 dae::Minigin::~Minigin()
 {
+<<<<<<< HEAD
 	MG_ASSERT_INFO("Destroying engine!!");
+=======
+	Logger::LogInfo("Destroying engine!!");
+>>>>>>> 9e333116ee788fa22f3985d3b449ca2ed1330109
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	SDL_Quit();
+<<<<<<< HEAD
 	MG_ASSERT_INFO("Engine destroyed!!");
+=======
+	Logger::LogInfo("Engine destroyed!!");
+>>>>>>> 9e333116ee788fa22f3985d3b449ca2ed1330109
 }
 
 void dae::Minigin::Run(const std::function<void()>& load)
 {
+<<<<<<< HEAD
 	MG_ASSERT_INFO("Engine loading!!");
+=======
+	Logger::LogInfo("Engine loading!!");
+>>>>>>> 9e333116ee788fa22f3985d3b449ca2ed1330109
 	load();
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
@@ -94,7 +114,11 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	float desiredFrameRate{ 144.f };
 	//const float fixedTimeStep{ 2.f };
 	int msPerFrame{ static_cast<int>(1000/desiredFrameRate)};
+<<<<<<< HEAD
 	MG_ASSERT_INFO("Engine running!!");
+=======
+	Logger::LogInfo("Engine running!!");
+>>>>>>> 9e333116ee788fa22f3985d3b449ca2ed1330109
 	while (doContinue)
 	{
 		const auto currentTime = std::chrono::high_resolution_clock::now();

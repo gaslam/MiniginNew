@@ -2,7 +2,10 @@
 #include <string>
 #include <memory>
 #include "Component.h"
+<<<<<<< HEAD
 #include <SDL.h>
+=======
+>>>>>>> 9e333116ee788fa22f3985d3b449ca2ed1330109
 
 namespace dae
 {
