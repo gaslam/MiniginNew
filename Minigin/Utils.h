@@ -3,6 +3,7 @@
 #include "RigidBodyComponent.h"
 #include "GameObject.h"
 #include "LadderComponent.h"
+#include "PlatformComponent.h"
 
 namespace Utils
 {
@@ -45,8 +46,8 @@ namespace Utils
 
 			if (line == "Platform:")
 			{
-				/*const auto platform = GenerateRigidBodyComp<>(stream, worldPos, scale);
-				scene->Add(platform);*/
+				const auto platform = GenerateRigidBodyComp<dae::PlatformComponent>(stream, worldPos, scale);
+				scene->Add(platform);
 			}
 
 			if (line == "BurgerDropoff:")

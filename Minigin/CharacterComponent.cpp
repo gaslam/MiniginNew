@@ -56,6 +56,9 @@ void dae::CharacterComponent::SetMovementLeftRight(bool canMove)
 	if(m_CanSetMoveLeftRight)
 	{
 		m_CanMoveLeftRight = canMove;
+	}
+	if(canMove)
+	{
 		m_CanSetMoveLeftRight = false;
 	}
 }

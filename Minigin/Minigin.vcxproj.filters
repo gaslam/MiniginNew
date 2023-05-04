@@ -126,6 +126,9 @@
     <ClInclude Include="LadderComponent.h">
       <Filter>Misc</Filter>
     </ClInclude>
+    <ClInclude Include="PlatformComponent.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Texture2D.cpp">
@@ -222,6 +225,9 @@
       <Filter>Misc</Filter>
     </ClCompile>
     <ClCompile Include="LadderComponent.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="PlatformComponent.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
   </ItemGroup>
