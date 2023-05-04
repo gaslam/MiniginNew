@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneManager.h"
 #include "Shape.h"
+#include "CharacterComponent.h"
 
 namespace dae
 {
@@ -21,13 +22,13 @@ namespace dae
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
+		std::vector <GameObject*> GetSceneCharacters() const;
 
 	private: 
 		explicit Scene(const std::string& name);
 
 		std::string m_name;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
-		std::vector<std::vector<RectangleShape>> m_Platforms{};
 		static unsigned int m_idCounter; 
 	};
 

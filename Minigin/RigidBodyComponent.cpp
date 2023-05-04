@@ -22,3 +22,15 @@ void dae::RigidBodyComponent::SetShape(Shape* shape)
 {
 	m_Shape = std::unique_ptr<Shape>(shape);
 }
+
+bool dae::RigidBodyComponent::IsPointInRect(glm::ivec2& point) const
+{
+	return m_Shape->IsPointIn(point);
+}
+
+bool dae::RigidBodyComponent::IsOverlapping(RigidBodyComponent* pComponent) const
+{
+	auto pShape = pComponent->GetShape();
+	MG_ASSERT(pShape == nullptr);
+	return m_Shape->CollidesWith(pShape);
+}

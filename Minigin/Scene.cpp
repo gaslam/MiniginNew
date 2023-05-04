@@ -1,9 +1,28 @@
 #include "Scene.h"
 #include "GameObject.h"
+#include "algorithm"
 
 using namespace dae;
 
 unsigned int Scene::m_idCounter = 0;
+
+std::vector<GameObject*> dae::Scene::GetSceneCharacters() const
+{
+	std::vector<std::shared_ptr<GameObject>> objects = m_objects;
+	std::vector<GameObject*> characters{};
+	auto new_end = std::copy_if(objects.begin(), objects.end(), objects.begin(), [](std::shared_ptr<GameObject> object)
+	{
+		return object->GetComponent<CharacterComponent>() != nullptr;
+	});
+
+	objects.resize(std::distance(objects.begin(), new_end));
+	for(auto object: objects)
+	{
+		auto pObject = object.get();
+		characters.emplace_back(pObject);
+	}
+	return characters;
+}
 
 Scene::Scene(const std::string& name) : m_name(name) {}
 

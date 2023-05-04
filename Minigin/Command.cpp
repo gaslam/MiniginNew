@@ -18,24 +18,29 @@ void dae::MoveCommand::Execute(float deltaTime)
 		return;
 	}
 
-	CharacterComponent::CharacterState characterState{pCharacter->GetState()};
-	CharacterComponent::MovementState movementState{pCharacter->GetMovementState()};
-	if (m_Dir.x > 0 && movementState == CharacterComponent::MovementState::LeftRight)
+	CharacterComponent::CharacterState characterState = pCharacter->GetState();
+	const bool canMoveLeftRight = pCharacter->CanMoveLeftRight();
+	const bool canMoveUpDown = pCharacter->CanMoveUpDown();
+	bool isMoving = false;
+	if (m_Dir.x > 0 && canMoveLeftRight)
 	{
 		characterState = dae::CharacterComponent::moveRight;
+		isMoving = true;
 	}
 
-	if (m_Dir.x < 0 && movementState == CharacterComponent::MovementState::LeftRight)
+	if (m_Dir.x < 0 && !isMoving && canMoveLeftRight)
 	{
 		characterState = dae::CharacterComponent::moveLeft;
+		isMoving = true;
 	}
 
-	if (m_Dir.y > 0 && movementState == CharacterComponent::MovementState::UpDown)
+	if (m_Dir.y > 0 && !isMoving && canMoveUpDown)
 	{
 		characterState = dae::CharacterComponent::moveUp;
+		isMoving = true;
 	}
 
-	if (m_Dir.y < 0 && movementState == CharacterComponent::MovementState::UpDown)
+	if (m_Dir.y < 0 && !isMoving && canMoveUpDown)
 	{
 		characterState = dae::CharacterComponent::moveDown;
 	}
@@ -61,9 +66,10 @@ void dae::MoveCommand::Execute(glm::vec3& dir, float deltaTime)
 	CharacterComponent* pCharacter = pOwner->GetComponent<CharacterComponent>();
 	if (pCharacter)
 	{
-		auto movementState = pCharacter->GetMovementState();
-		pos.x += movementState == CharacterComponent::LeftRight ? (dir.x * speed) * deltaTime : 0.f;
-		pos.y += movementState == CharacterComponent::UpDown ? (dir.y * speed) * deltaTime : 0.f;
+		const bool moveX = pCharacter->CanMoveLeftRight();
+		const bool moveY = pCharacter->CanMoveUpDown();
+		pos.x += moveX ? (dir.x * speed) * deltaTime : 0.f;
+		pos.y += moveY ? (dir.y * speed) * deltaTime : 0.f;
 	}
 	else
 	{

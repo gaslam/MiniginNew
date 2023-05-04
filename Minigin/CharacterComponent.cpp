@@ -3,6 +3,12 @@
 #include "AnimationComponent.h"
 #include <algorithm>
 
+void dae::CharacterComponent::Update(float)
+{
+	m_CanSetMoveLeftRight = true;
+	m_CanSetMoveUpDown = true;
+}
+
 void dae::CharacterComponent::AddAnimation(AnimationItem& animation, CharacterState& state)
 {
 	MG_ASSERT(animation.count > -1);
@@ -13,13 +19,6 @@ void dae::CharacterComponent::AddAnimation(AnimationItem& animation, CharacterSt
 
 void dae::CharacterComponent::SetAnimation(CharacterState& state)
 {
-	const bool isStateInConflict1{ state == moveUp && m_MovementState == LeftRight };
-	const bool isStateInConflict2{ state == moveLeft && m_MovementState == UpDown || state == moveRight && m_MovementState == UpDown };
-	if (isStateInConflict1 || isStateInConflict2)
-	{
-		return;
-	}
-
 	auto it = std::find_if(m_Animations.begin(), m_Animations.end(), [state](std::pair<CharacterState, dae::AnimationItem> pair) {
 		return pair.first == state;
 		});
@@ -50,4 +49,25 @@ void dae::CharacterComponent::SetState(CharacterState& state)
 		return;
 	}
 	SetAnimation(state);
+}
+
+void dae::CharacterComponent::SetMovementLeftRight(bool canMove)
+{
+	if(m_CanSetMoveLeftRight)
+	{
+		m_CanMoveLeftRight = canMove;
+		m_CanSetMoveLeftRight = false;
+	}
+}
+
+void dae::CharacterComponent::SetMovementUpDown(bool canMove)
+{
+	if(m_CanSetMoveUpDown)
+	{
+		m_CanMoveUpDown = canMove;
+	}
+	if(canMove)
+	{
+		m_CanSetMoveUpDown = false;
+	}
 }

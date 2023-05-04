@@ -16,6 +16,7 @@ namespace dae
 		void FixedUpdate(float deltaTime);
 		void Render();
 		void SetScene(int scene) { m_Scene = scene; }
+		Scene* GetScene() const { return m_scenes[m_Scene].get(); }
 		void GoToNextScene() { ++m_Scene; }
 	private:
 		friend class Singleton<SceneManager>;
