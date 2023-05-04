@@ -37,26 +37,26 @@ void PlatformComponent::Update(float)
 		auto pointVec2 = glm::ivec2{ point.x + frameWidth,point.y + frameHeight };
 		bool canMove = m_pRigidBodyComp->IsPointInRect(pointVec2);
 		auto points = m_pRigidBodyComp->GetShape()->GetPoints();
-		glm::ivec2 minY = *std::min_element(points.begin(),points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
+		glm::ivec2 minX = *std::min_element(points.begin(),points.end(), [](const glm::ivec2& point1, const glm::ivec2& point2)
 		{
 			return point1.x < point2.x;
 		});
 
-		auto maxY = *std::max_element(points.begin(),points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
+		auto maxX = *std::max_element(points.begin(),points.end(), [](const glm::ivec2& point1, const glm::ivec2& point2)
 		{
 			return point1.x < point2.x;
 		});
 
-		minY.x += 1;
-		maxY.x -= 1;
+		minX.x += 1;
+		maxX.x -= 1;
 
-		if (pointVec2.x >= maxY.x && canMove)
+		if (pointVec2.x >= maxX.x && canMove)
 		{
 			canMove = false;
 			point.x -= 1;
 			pTransform->SetLocalPosition(point);
 		}
-		if (pointVec2.x - frameWidth <= minY.x && canMove)
+		if (pointVec2.x - frameWidth <= minX.x && canMove)
 		{
 			canMove = false;
 			point.x += 1;
