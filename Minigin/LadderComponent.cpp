@@ -33,9 +33,9 @@ void LadderComponent::Update(float)
 		auto pRenderComp = character->GetComponent<RenderComponent>();
 		MG_ASSERT(pRenderComp != nullptr);
 
-		const float pFrameHeight = pRenderComp->GetFrameHeightScaled();
+		const float frameHeight = pRenderComp->GetFrameHeightScaled();
 		auto point = pTransform->GetLocalPosition();
-		auto pointVec2 = glm::ivec2{ point.x,point.y + pFrameHeight };
+		auto pointVec2 = glm::ivec2{ point.x,point.y + frameHeight };
 		bool canMove = m_pRigidBodyComp->IsPointInRect(pointVec2);
 		auto points = m_pRigidBodyComp->GetShape()->GetPoints();
 		glm::ivec2 minY = *std::min_element(points.begin(), points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
@@ -43,9 +43,19 @@ void LadderComponent::Update(float)
 				return point1.y < point2.y;
 			});
 
-		auto maxY = *std::max_element(points.begin(), points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
+		glm::ivec2 minX = *std::min_element(points.begin(), points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
+			{
+				return point1.x < point2.x;
+			});
+
+		glm::ivec2 maxY = *std::max_element(points.begin(), points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
 			{
 				return point1.y < point2.y;
+			});
+
+		glm::ivec2 maxX = *std::max_element(points.begin(), points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
+			{
+				return point1.x < point2.x;
 			});
 
 		minY.y += 1;
@@ -63,6 +73,18 @@ void LadderComponent::Update(float)
 			point.y += 1;
 			pTransform->SetLocalPosition(point);
 		}
+
+		const auto characterState = pCharacterComp->GetState();
+		const bool isMovingHorizontally{ characterState == CharacterComponent::moveDown || characterState == CharacterComponent::moveUp };
+		if (canMove && isMovingHorizontally)
+		{
+			float frameWidthDivBy2 = pRenderComp->GetFrameWidthScaled() / 2.f;
+			//Starts at the middle of the ladder
+			glm::vec3 characterNewPos{ minX.x + (maxX.x - minX.x) / 2.f, point.y,0 };
+			characterNewPos.x -= frameWidthDivBy2;
+			pTransform->SetLocalPosition(characterNewPos);
+		}
+
 		pCharacterComp->SetMovementUpDown(canMove);
 	}
 }

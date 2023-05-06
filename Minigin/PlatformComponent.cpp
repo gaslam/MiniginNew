@@ -47,6 +47,11 @@ void PlatformComponent::Update(float)
 			return point1.x < point2.x;
 		});
 
+		glm::ivec2 minY = *std::min_element(points.begin(), points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
+			{
+				return point1.y < point2.y;
+			});
+
 		minX.x += 1;
 		maxX.x -= 1;
 
@@ -62,6 +67,15 @@ void PlatformComponent::Update(float)
 			point.x += 1;
 			pTransform->SetLocalPosition(point);
 		}
+
+		const auto characterState = pCharacterComp->GetState();
+		const bool isMovingHorizontally{ characterState == CharacterComponent::moveRight || characterState == CharacterComponent::moveLeft };
+		if(canMove && isMovingHorizontally)
+		{
+			auto characterNewPos = glm::vec3(point.x, minY.y - frameHeight ,0);
+			pTransform->SetLocalPosition(characterNewPos);
+		}
+
 		pCharacterComp->SetMovementLeftRight(canMove);
 	}
 }
