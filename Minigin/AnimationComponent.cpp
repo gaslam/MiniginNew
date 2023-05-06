@@ -5,10 +5,10 @@
 using namespace dae;
 
 dae::AnimationComponent::AnimationComponent(GameObject* object, const std::string& textureFile, float framesSec, float scale, int rows, int cols, int startRow, int startCol, int count, bool canRepeat) :
-	Component(object), m_Rows{ rows }, m_Cols{ cols }, m_FrameSec{ framesSec }, m_StartFrame{ GetGridIdx(startRow,cols,startCol) }, m_EndFrame{ m_StartFrame + count }, m_CanRepeat{ canRepeat }
+	Component(object), m_CanRepeat{canRepeat}, m_Rows{rows}, m_Cols{cols}, m_StartFrame{ GetGridIdx(startRow,cols,startCol) }, m_EndFrame{ m_StartFrame + count },
+	m_CurrentFrame{},m_FrameSec{framesSec}
 {
 	GameObject* owner = GetOwner();
-	MG_ASSERT(owner != nullptr);
 	if (!owner)
 	{
 		return;
@@ -58,12 +58,12 @@ void dae::AnimationComponent::Update(float elapsedSec)
 	}
 	m_AccuSec -= m_FrameSec;
 
-	int rowIndex{ GetRowIdx(m_CurrentFrame, m_Cols) };
+	const int rowIndex{ GetRowIdx(m_CurrentFrame, m_Cols) };
 	const float textureFrameWidth = m_pRenderComponent->GetFrameWidth();
 	const float textureFrameHeight = m_pRenderComponent->GetFrameHeight();
 	glm::vec2 offset{};
 	offset.x = m_Rows == 1 ? m_CurrentFrame : static_cast<float>(m_CurrentFrame % m_Cols) * textureFrameWidth;
-	offset.y = rowIndex * textureFrameHeight;
+	offset.y = static_cast<float>(rowIndex) * textureFrameHeight;
 	m_pRenderComponent->SetTextureOffset(offset);
 
 }
@@ -78,16 +78,16 @@ void dae::AnimationComponent::ChangeAnimation(int rowIdx,int colIdx, int count, 
 	m_pRenderComponent->SetXandYFlip(xFlipped, yFlipped);
 }
 
-SDL_Rect dae::AnimationComponent::GetCell()
+SDL_Rect dae::AnimationComponent::GetCell() const
 {
-	auto pOwner = GetOwner();
+	const auto pOwner = GetOwner();
 	const bool isOwnerNotNullptr{ pOwner != nullptr };
 	MG_ASSERT(isOwnerNotNullptr);
 	if(!isOwnerNotNullptr)
 	{
 		return{};
 	}
-	auto pTransform = pOwner->GetComponent<Transform>();
+	const auto pTransform = pOwner->GetComponent<Transform>();
 	const bool isTransformNotNullptr{ pTransform != nullptr };
 	MG_ASSERT(isTransformNotNullptr);
 	if(!isTransformNotNullptr)
@@ -95,27 +95,27 @@ SDL_Rect dae::AnimationComponent::GetCell()
 		return{};
 	}
 
-	auto pos = pTransform->GetLocalPosition();
-	auto posVec2 = glm::ivec2{ pos.x,pos.y };
-	int widthScaled = static_cast<int>(m_pRenderComponent->GetFrameWidthScaled());
-	int heightScaled = static_cast<int>(m_pRenderComponent->GetFrameHeightScaled());
+	const auto pos = pTransform->GetLocalPosition();
+	const auto posVec2 = glm::ivec2{ pos.x,pos.y };
+	const int widthScaled = static_cast<int>(m_pRenderComponent->GetFrameWidthScaled());
+	const int heightScaled = static_cast<int>(m_pRenderComponent->GetFrameHeightScaled());
 	return SDL_Rect(posVec2.x,posVec2.y,widthScaled,heightScaled);
 }
 
-int AnimationComponent::GetColIdx(int index, int nrCols)
+int AnimationComponent::GetColIdx(int index, int nrCols) const
 {
-	int result{ index % nrCols };
+	const int result{ index % nrCols };
 	return result;
 }
 
-int AnimationComponent::GetRowIdx(int index, int nrCols)
+int AnimationComponent::GetRowIdx(int index, int nrCols) const
 {
-	int result{ index / nrCols };
+	const int result{ index / nrCols };
 	return result;
 }
 
-int AnimationComponent::GetGridIdx(int rowIndex, int nrCols, int collIndex)
+int AnimationComponent::GetGridIdx(int rowIndex, int nrCols, int collIndex) const
 {
-	int result{ rowIndex * nrCols + collIndex };
+	const int result{ rowIndex * nrCols + collIndex };
 	return result;
 }

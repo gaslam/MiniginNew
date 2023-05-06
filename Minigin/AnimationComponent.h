@@ -13,7 +13,7 @@ namespace dae {
 		void Render() const override {};
 		bool IsFinished() const { return m_IsFinished; }
 		void ChangeAnimation(int rowIdx, int colIdx, int count = 1, bool canRepeat = false, bool xFlipped = false, bool yFlipped = false);
-		SDL_Rect GetCell();
+		SDL_Rect GetCell() const;
 	private:
 		bool m_CanRepeat;
 		bool m_IsFinished{ false };
@@ -26,9 +26,9 @@ namespace dae {
 		float m_FrameSec;
 		float m_AccuSec{};
 
-		int GetColIdx(int index, int nrCols);
-		int GetRowIdx(int index, int nrCols);
-		int GetGridIdx(int rowIndex, int nrCols, int collIndex);
+		int GetColIdx(int index, int nrCols) const;
+		int GetRowIdx(int index, int nrCols) const;
+		int GetGridIdx(int rowIndex, int nrCols, int collIndex) const;
 		RenderComponent* m_pRenderComponent;
 	};
 }

@@ -61,7 +61,7 @@ void dae::MoveCommand::Execute(glm::vec3& dir, float deltaTime)
 		return;
 	}
 
-	glm::vec3 pos = pTransform->GetLocalPosition();
+	glm::vec2 pos = pTransform->GetLocalPosition();
 	const float speed = pTransform->GetSpeedForMovement();
 	CharacterComponent* pCharacter = pOwner->GetComponent<CharacterComponent>();
 	if (pCharacter)

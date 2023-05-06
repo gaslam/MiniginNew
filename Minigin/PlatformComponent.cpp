@@ -11,8 +11,8 @@ using namespace dae;
 PlatformComponent::PlatformComponent(GameObject* pOwner, RectangleShape* pShape) : Component(pOwner)
 {
 	m_pRigidBodyComp = pOwner->AddComponent<RigidBodyComponent>(pOwner->GetComponent<Transform>());
-	MG_ASSERT(m_pRigidBodyComp != nullptr)
-		m_pRigidBodyComp->SetShape(pShape);
+
+	m_pRigidBodyComp->SetShape(pShape);
 
 }
 
@@ -32,20 +32,20 @@ void PlatformComponent::Update(float)
 		MG_ASSERT(pRenderComp != nullptr);
 
 		const int frameWidth = static_cast<int>(pRenderComp->GetFrameWidthScaled());
-		const int frameHeight =static_cast<int>( pRenderComp->GetFrameHeightScaled());
+		const int frameHeight = static_cast<int>(pRenderComp->GetFrameHeightScaled());
 		auto point = pTransform->GetLocalPosition();
 		auto pointVec2 = glm::ivec2{ point.x + frameWidth,point.y + frameHeight };
 		bool canMove = m_pRigidBodyComp->IsPointInRect(pointVec2);
 		auto points = m_pRigidBodyComp->GetShape()->GetPoints();
-		glm::ivec2 minX = *std::min_element(points.begin(),points.end(), [](const glm::ivec2& point1, const glm::ivec2& point2)
-		{
-			return point1.x < point2.x;
-		});
+		glm::ivec2 minX = *std::min_element(points.begin(), points.end(), [](const glm::ivec2& point1, const glm::ivec2& point2)
+			{
+				return point1.x < point2.x;
+			});
 
-		auto maxX = *std::max_element(points.begin(),points.end(), [](const glm::ivec2& point1, const glm::ivec2& point2)
-		{
-			return point1.x < point2.x;
-		});
+		auto maxX = *std::max_element(points.begin(), points.end(), [](const glm::ivec2& point1, const glm::ivec2& point2)
+			{
+				return point1.x < point2.x;
+			});
 
 		glm::ivec2 minY = *std::min_element(points.begin(), points.end(), [](glm::ivec2& point1, glm::ivec2& point2)
 			{
@@ -70,9 +70,9 @@ void PlatformComponent::Update(float)
 
 		const auto characterState = pCharacterComp->GetState();
 		const bool isMovingHorizontally{ characterState == CharacterComponent::moveRight || characterState == CharacterComponent::moveLeft };
-		if(canMove && isMovingHorizontally)
+		if (canMove && isMovingHorizontally)
 		{
-			auto characterNewPos = glm::vec3(point.x, minY.y - frameHeight ,0);
+			auto characterNewPos = glm::vec3(point.x, minY.y - frameHeight, 0);
 			pTransform->SetLocalPosition(characterNewPos);
 		}
 

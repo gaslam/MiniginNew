@@ -15,15 +15,15 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		virtual void Update(float deltaTime);
-		virtual void Render() const;
+		void Update(float deltaTime);
+		void Render() const;
 
 		void SetParent(GameObject* parent, bool keepWorldPosition);
 		void RemoveChild(GameObject* child);
 		void AddChild(GameObject* child);
 
 		GameObject() = default;
-		virtual ~GameObject() = default;
+		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
@@ -37,11 +37,11 @@ namespace dae
 			const std::type_index typeIndex = std::type_index(typeid(T));
 			auto component = std::make_unique<T>(this, std::forward<Args>(args)...);
 			auto pointer = dynamic_cast<T*>(component.get());
-
+			MG_ASSERT(pointer != nullptr)
 			m_Components.emplace(typeIndex, std::move(component));
 
 			return pointer;
-		};
+		}
 
 
 		template<typename T>
@@ -59,7 +59,7 @@ namespace dae
 		void RemoveComponent()
 		{
 			const std::type_index typeIndex = std::type_index(typeid(T));
-			auto component = m_Components.at(typeIndex);
+			auto component = dynamic_cast<T*>(m_Components.at(typeIndex).get());
 
 			if (component)
 			{
