@@ -251,9 +251,6 @@
     <ClCompile Include="MrHotdogComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="SpawnerComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="MrPickleComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
