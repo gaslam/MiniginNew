@@ -123,11 +123,26 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="EnemyComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="LadderComponent.h">
-      <Filter>Misc</Filter>
+      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="PlatformComponent.h">
-      <Filter>Misc</Filter>
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MrHotdogComp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MrPickleComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MrEggComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -224,11 +239,26 @@
     <ClCompile Include="Shape.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
     <ClCompile Include="LadderComponent.cpp">
-      <Filter>Misc</Filter>
+      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="PlatformComponent.cpp">
-      <Filter>Misc</Filter>
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MrHotdogComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnerComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MrPickleComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MrEggComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

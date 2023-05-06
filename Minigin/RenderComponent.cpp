@@ -45,7 +45,7 @@ void dae::RenderComponent::Render() const
 		return;
 	}
 
-	glm::vec3 pos = transform->GetWorldPosition();
+	glm::vec2 pos = transform->GetWorldPosition();
 
 	SDL_Rect srcRect{};
 	const glm::ivec2 textureSize = m_Texture->GetSize();

@@ -1,5 +1,5 @@
 #pragma once
-#include <glm/vec3.hpp>
+#include <glm/glm.hpp>
 
 #include "Component.h"
 namespace dae {
@@ -20,7 +20,7 @@ namespace dae {
 		float m_Radius{};
 		float m_RotSpeed{};
 		float m_CurrentRadians{};
-		glm::vec3 m_Center{};
+		glm::ivec2 m_Center{};
 
 		Transform* m_TransformComp{ nullptr };
 	};

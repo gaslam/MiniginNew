@@ -202,6 +202,7 @@
     <ClInclude Include="CharacterComponent.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="EnemyComponent.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
@@ -211,6 +212,9 @@
     <ClInclude Include="LadderComponent.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Minigin.h" />
+    <ClInclude Include="MrEggComponent.h" />
+    <ClInclude Include="MrHotdogComp.h" />
+    <ClInclude Include="MrPickleComponent.h" />
     <ClInclude Include="PlatformComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
@@ -221,6 +225,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SpawnerComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Transform.h" />
@@ -239,6 +244,7 @@
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="CharacterComponent.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="EnemyComponent.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -248,6 +254,9 @@
     <ClCompile Include="LadderComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
+    <ClCompile Include="MrEggComponent.cpp" />
+    <ClCompile Include="MrHotdogComp.cpp" />
+    <ClCompile Include="MrPickleComponent.cpp" />
     <ClCompile Include="PlatformComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -257,6 +266,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="SpawnerComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
