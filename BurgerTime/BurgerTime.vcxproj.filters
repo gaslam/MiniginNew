@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="SetCharacterStateToIdleCommand.h" />
+    <ClInclude Include="ImGuiTempRenderer.h" />
+    <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="Components\TextComponent.h" />
+    <ClInclude Include="Components\AnimationComponent.h" />
+    <ClInclude Include="Components\CharacterComponent.h" />
+    <ClInclude Include="Components\EnemyComponent.h" />
+    <ClInclude Include="Components\FPSComponent.h" />
+    <ClInclude Include="Components\ImGuiSpeedSliderComp.h" />
+    <ClInclude Include="Components\LadderComponent.h" />
+    <ClInclude Include="Components\MrEggComponent.h" />
+    <ClInclude Include="Components\MrHotdogComp.h" />
+    <ClInclude Include="Components\MrPickleComponent.h" />
+    <ClInclude Include="Components\PlatformComponent.h" />
+    <ClInclude Include="Components\RenderComponent.h" />
+    <ClInclude Include="Components\RigidBodyComponent.h" />
+    <ClInclude Include="Components\RotationComponent.h" />
+    <ClInclude Include="Components\SpawnerComponent.h" />
+    <ClInclude Include="CharacterManager.h" />
+    <ClInclude Include="Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CharacterManager.cpp" />
+    <ClCompile Include="ImGuiTempRenderer.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MoveCommand.cpp" />
+    <ClCompile Include="SetCharacterStateToIdleCommand.cpp" />
+    <ClCompile Include="Components\AnimationComponent.cpp" />
+    <ClCompile Include="Components\CharacterComponent.cpp" />
+    <ClCompile Include="Components\EnemyComponent.cpp" />
+    <ClCompile Include="Components\FPSComponent.cpp" />
+    <ClCompile Include="Components\ImGuiSpeedSliderComp.cpp" />
+    <ClCompile Include="Components\LadderComponent.cpp" />
+    <ClCompile Include="Components\MrEggComponent.cpp" />
+    <ClCompile Include="Components\MrHotdogComp.cpp" />
+    <ClCompile Include="Components\MrPickleComponent.cpp" />
+    <ClCompile Include="Components\PlatformComponent.cpp" />
+    <ClCompile Include="Components\RenderComponent.cpp" />
+    <ClCompile Include="Components\RigidBodyComponent.cpp" />
+    <ClCompile Include="Components\RotationComponent.cpp" />
+    <ClCompile Include="Components\TextComponent.cpp" />
+  </ItemGroup>
+</Project>

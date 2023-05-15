@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Components">
-      <UniqueIdentifier>{afafb7a2-6e2e-4f3d-af55-9b79e3045fac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Libraries">
       <UniqueIdentifier>{3ed3a349-c14b-458f-b7b5-6c78f5fee8d3}</UniqueIdentifier>
     </Filter>
@@ -20,20 +17,11 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{74ae30d8-2133-414f-b713-245d669a0892}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Component.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGuiSpeedSliderComp.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\imconfig.h">
       <Filter>Libraries</Filter>
     </ClInclude>
@@ -73,9 +61,6 @@
     <ClInclude Include="Minigin.h">
       <Filter>Engine Core</Filter>
     </ClInclude>
-    <ClInclude Include="TextComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -106,43 +91,17 @@
     <ClInclude Include="XboxController.h">
       <Filter>Misc</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="RotationComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="RigidBodyComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Shape.h">
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h" />
-    <ClInclude Include="EnemyComponent.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="AudioBase.h">
+      <Filter>Audio</Filter>
     </ClInclude>
-    <ClInclude Include="LadderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PlatformComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SpawnerComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="MrHotdogComp.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="MrPickleComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="MrEggComponent.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="CyclicBuffer.h" />
+    <ClInclude Include="Audio.h">
+      <Filter>Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -166,18 +125,6 @@
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="FPSComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGuiSpeedSliderComp.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Engine Core</Filter>
     </ClCompile>
     <ClCompile Include="Minigin.cpp">
       <Filter>Engine Core</Filter>
@@ -215,47 +162,22 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="RotationComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TextComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="RigidBodyComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Shape.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="Locator.cpp">
+      <Filter>Misc</Filter>
     </ClCompile>
-    <ClCompile Include="LadderComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Audio</Filter>
     </ClCompile>
-    <ClCompile Include="PlatformComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="MrHotdogComp.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="MrPickleComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="MrEggComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Locator.h">
+      <Filter>Misc</Filter>
+    </None>
   </ItemGroup>
 </Project>

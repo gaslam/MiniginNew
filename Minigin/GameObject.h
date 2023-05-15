@@ -17,6 +17,7 @@ namespace dae
 	public:
 		void Update(float deltaTime);
 		void Render() const;
+		void RenderImGUI() const;
 
 		void SetParent(GameObject* parent, bool keepWorldPosition);
 		void RemoveChild(GameObject* child);
@@ -37,7 +38,7 @@ namespace dae
 			const std::type_index typeIndex = std::type_index(typeid(T));
 			auto component = std::make_unique<T>(this, std::forward<Args>(args)...);
 			auto pointer = dynamic_cast<T*>(component.get());
-			MG_ASSERT(pointer != nullptr)
+			MG_ASSERT(pointer != nullptr,"Cannot add component cause it's empty!!")
 			m_Components.emplace(typeIndex, std::move(component));
 
 			return pointer;

@@ -1,7 +1,6 @@
 #pragma once
 #include "SceneManager.h"
 #include "Shape.h"
-#include "CharacterComponent.h"
 
 namespace dae
 {
@@ -16,13 +15,13 @@ namespace dae
 
 		void Update(float deltaTime);
 		void Render() const;
+		void RenderImGUI() const;
 
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
-		std::vector <GameObject*> GetSceneCharacters() const;
 
 	private: 
 		explicit Scene(const std::string& name);

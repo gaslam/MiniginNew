@@ -13,10 +13,11 @@ namespace dae {
 		Component& operator=(Component&& other) noexcept = delete;
 		virtual void Render() const {};
 		virtual void Update(float) {};
+		virtual void RenderImGUI() const {};
 	protected:
 		GameObject* GetOwner() const { return m_pOwner; }
 		explicit Component(GameObject* owner) : m_pOwner{ owner } {
-			MG_ASSERT(owner != nullptr);
+			MG_ASSERT(owner != nullptr,"Cannot get owner!!");
 		};
 	private:
 		GameObject* m_pOwner{ nullptr };

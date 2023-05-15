@@ -8,29 +8,30 @@
 class Logger {
 public:
 	static void LogInfo(const char* file, const int line, const char* function, const char* message) {
-		std::cout << "[INFO]:\n\nMessage: " << message <<"\nFile: " << file << "\nLine: " << line << "\nFunction: " << function<<"\n\n";
+		std::cout << "[INFO]:\n\nMessage: " << message <<"\nFile: " << file << "\nLine: " << line << "\nFunction: " << function << "\n\n";
 	}
 
-	static void LogWarning(const char* file, const int line, const char* function, const char* message)
+	static void LogWarning(const char* file, const int line, const char* function, const char* assertion, const char* message)
 	{
-		std::cout << "File: " << file << "\nLine: " << line << "\nFunction: " << function << "\nAssertion: " << message;
+		std::cout << "[WARNING]:\n\nMessage: " << message << "\nFile: " << file << "\nLine: " << line << "\nAssertion: " << assertion << "\nFunction: " << function << "\n\n";
 	}
 
-	static void LogError(const char* file, const int line, const char* function, const char* message) {
+	static void LogError(const char* file, const int line, const char* function, const char* assertion, const char* message) {
 		std::stringstream ss;
-		ss << "File: " << file << "\nLine: " << line << "\nFunction: " << function << "\nAssertion: " << message;
+		ss << "Message: " << message << "\nFile: " << file << "\nLine: " << line << "\nAssertion: " << assertion << "\nFunction: " << function << "\n\n";
 		auto messageStr = ss.str();
-		MessageBox(0, messageStr.c_str(), "[ERROR]", MB_OK | MB_ICONERROR);
+		//Only supports windows for now
+		MessageBoxA(0, messageStr.c_str(), "[ERROR]", MB_OK | MB_ICONERROR);
 	}
 };
 
-#define MG_ASSERT(expr) \
+#define MG_ASSERT(expr,message) \
     if (!(expr)) \
-Logger::LogError(__FILE__, __LINE__, __FUNCTION__, #expr);
+Logger::LogError(__FILE__, __LINE__, __FUNCTION__, #expr, message);
 
-#define MG_ASSERT_WARNING(expr) \
+#define MG_ASSERT_WARNING(expr,message) \
     if (!(expr)) \
-Logger::LogError(__FILE__, __LINE__, __FUNCTION__, #expr);
+Logger::LogWarning(__FILE__, __LINE__, __FUNCTION__, #expr, message);
 
-#define MG_ASSERT_INFO(message) \
-Logger::LogInfo(__FILE__, __LINE__, __FUNCTION__, #message);
+#define MG_ASSERT_INFO(expr) \
+Logger::LogInfo(__FILE__, __LINE__, __FUNCTION__, #expr);

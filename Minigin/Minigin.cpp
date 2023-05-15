@@ -12,6 +12,9 @@
 #include "ResourceManager.h"
 #include <chrono>
 #include <thread>
+
+#include "Audio.h"
+#include "Locator.h"
 #include "Logger.h"
 
 
@@ -50,7 +53,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 {
 	PrintSDLVersion();
 	
-	MG_ASSERT(SDL_Init(SDL_INIT_VIDEO) == 0);
+	MG_ASSERT(SDL_Init(SDL_INIT_VIDEO) == 0, "Cannot initialise SDL_Video!!");
 
 	g_window = SDL_CreateWindow(
 		"Programming 4 assignment",
@@ -60,11 +63,13 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		630,
 		SDL_WINDOW_OPENGL
 	);
-	MG_ASSERT(g_window != nullptr);
+	MG_ASSERT(g_window != nullptr,"Cannot create SDL_Window");
 
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	Locator::Provide(std::make_unique<Audio>());
 }
 
 dae::Minigin::~Minigin()

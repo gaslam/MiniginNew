@@ -28,6 +28,14 @@ void dae::GameObject::Render() const
 	}
 }
 
+void dae::GameObject::RenderImGUI() const
+{
+	for (const auto& component : m_Components | std::views::values)
+	{
+		component->RenderImGUI();
+	}
+}
+
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition = false)
 {
 	const auto transform = GetComponent<Transform>();
