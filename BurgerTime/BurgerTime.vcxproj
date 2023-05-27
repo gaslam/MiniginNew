@@ -169,7 +169,6 @@
     <ClInclude Include="Components\TextComponent.h" />
     <ClInclude Include="ImGuiTempRenderer.h" />
     <ClInclude Include="MoveCommand.h" />
-    <ClInclude Include="SetCharacterStateToIdleCommand.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -191,7 +190,6 @@
     <ClCompile Include="ImGuiTempRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
-    <ClCompile Include="SetCharacterStateToIdleCommand.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
