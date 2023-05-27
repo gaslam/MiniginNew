@@ -13,7 +13,7 @@ namespace dae {
 		//float = deltaTime
 		virtual void Execute(float) {};
 		//float = deltaTime
-		virtual void Execute(glm::vec3&, float) {};
+		virtual void Execute(glm::vec2&, float) {};
 	};
 
 

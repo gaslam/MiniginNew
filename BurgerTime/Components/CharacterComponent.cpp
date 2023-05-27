@@ -20,11 +20,27 @@ void dae::CharacterComponent::Update(float)
 {
 	m_CanSetMoveLeftRight = true;
 	m_CanSetMoveUpDown = true;
+
+	if(!m_IsMoving && m_CharacterState != idle )
+	{
+		CharacterState idleState{ idle };
+		SetState(idleState);
+	}
+
+	m_IsMoving = false;
 }
 
 void dae::CharacterComponent::RenderImGUI() const
 {
 	ImGui::Text("Player:");
+	ImGui::NewLine();
+	ImGui::Text("Movement:");
+	ImGui::NewLine();
+	ImGui::Text("WASD (QWERTY)");
+	ImGui::Text("Controller DPAD");
+	ImGui::NewLine();
+	ImGui::Text("Movement sound not in game");
+	ImGui::NewLine();
 	auto pTransform = GetOwner()->GetComponent<Transform>();
 	const auto position = pTransform->GetLocalPosition();
 	ImGui::NewLine();
@@ -137,6 +153,63 @@ void dae::CharacterComponent::SetAnimation(int id)
 {
 	CharacterState state{ id };
 	SetAnimation(state);
+}
+
+void dae::CharacterComponent::HandleMovement(glm::vec2& dir,float deltaTime)
+{
+	GameObject* pOwner{ GetOwner() };
+
+	MG_ASSERT(pOwner != nullptr, "Owner cannot be null!!");
+
+	Transform* pTransform = pOwner->GetComponent<Transform>();
+	if (!pTransform)
+	{
+		return;
+	}
+
+	glm::vec2 pos = pTransform->GetLocalPosition();
+	const float speed = pTransform->GetSpeedForMovement();
+
+	pos.x += m_CanMoveLeftRight ? (dir.x * speed) * deltaTime : 0.f;
+	pos.y += m_CanMoveUpDown ? (dir.y * speed) * deltaTime : 0.f;
+	pTransform->SetLocalPosition(pos);
+
+	CharacterComponent* pCharacter = pOwner->GetComponent<CharacterComponent>();
+	if (!pCharacter)
+	{
+		return;
+	}
+
+	CharacterState characterState = pCharacter->GetState();
+	const bool canMoveLeftRight = pCharacter->CanMoveLeftRight();
+	const bool canMoveUpDown = pCharacter->CanMoveUpDown();
+	bool isMoving = false;
+	if (dir.x > 0 && canMoveLeftRight)
+	{
+		characterState = moveRight;
+		isMoving = true;
+	}
+
+	if (dir.x < 0 && !isMoving && canMoveLeftRight)
+	{
+		characterState = moveLeft;
+		isMoving = true;
+	}
+
+	if (dir.y > 0 && !isMoving && canMoveUpDown)
+	{
+		characterState = moveUp;
+		isMoving = true;
+	}
+
+	if (dir.y < 0 && !isMoving && canMoveUpDown)
+	{
+		characterState = moveDown;
+	}
+
+	pCharacter->SetState(characterState);
+
+	m_IsMoving = true;
 }
 
 void dae::CharacterComponent::SetState(CharacterState& state)

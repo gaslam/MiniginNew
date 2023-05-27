@@ -1,6 +1,7 @@
 #pragma once
 #include <Component.h>
 #include <map>
+#include <glm/glm.hpp>
 class AudioBase;
 namespace dae {
 	struct AnimationItem {
@@ -32,6 +33,7 @@ namespace dae {
 		void AddAnimation(AnimationItem& animation, CharacterState& state);
 		void SetAnimation(CharacterState& state);
 		void SetAnimation(int id);
+		void HandleMovement(glm::vec2& dir, float elapsedTime);
 		CharacterState GetState() const { return m_CharacterState; }
 		bool CanMoveUpDown() const { return m_CanMoveUpDown; }
 		bool CanMoveLeftRight() const { return m_CanMoveLeftRight; }
@@ -45,6 +47,8 @@ namespace dae {
 		bool m_CanSetMoveLeftRight{ true };
 		bool m_CanSetMoveUpDown{ true };
 		bool m_CanMoveLeftRight{ true };
+		bool m_IsMoving{ false };
+		
 		std::map< CharacterState, AnimationItem> m_Animations{};
 
 		AudioBase* m_pAudio;
