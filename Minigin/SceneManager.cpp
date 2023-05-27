@@ -14,7 +14,7 @@ void dae::SceneManager::FixedUpdate(float)
 void dae::SceneManager::Render()
 {
 	m_scenes[m_Scene]->Render();
-	ImGui::SetNextWindowSize(ImVec2(150, 250));
+	ImGui::SetNextWindowSize(ImVec2(240, 250));
 	ImGui::Begin("Burger time debug: ", nullptr, ImGuiWindowFlags_None);
 	m_scenes[m_Scene]->RenderImGUI();
 	ImGui::End();
