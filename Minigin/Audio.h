@@ -12,8 +12,8 @@ public:
 
 	Audio(const Audio& other) = delete;
 	Audio(const Audio&& other) noexcept = delete;
-	Audio&& operator=(const Audio& other) = delete;
-	Audio&& operator=(Audio&& other) noexcept = delete;
+	Audio& operator=(const Audio& other) = delete;
+	Audio& operator=(Audio&& other) noexcept = delete;
 
 	void Init() override;
 	void Play(unsigned int soundID, int loops) override;

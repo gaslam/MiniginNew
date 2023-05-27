@@ -58,8 +58,6 @@ private:
 	CyclicBuffer<AudioEvent, bufferSize> m_AudioEventBuffer{};
 	std::vector<AudioInfo> m_Sounds{};
 
-	std::condition_variable m_Condition{};
-
 	std::jthread m_AudioThread;
 	std::mutex m_Mutex;
 	float m_Volume{1.f};
@@ -322,7 +320,6 @@ void Audio::AudioImpl::Play(unsigned int soundID, int loops)
 	sound.loops = loops;
 	AudioEvent event = GenerateEvent(AudioEventType::PLAY, sound.channel, sound.volume, sound.pData, sound.loops);
 	m_AudioEventBuffer.write(event);
-	m_Condition.notify_one();
 }
 
 void Audio::AudioImpl::Pause(unsigned int soundID)
@@ -362,7 +359,6 @@ void Audio::AudioImpl::StopAll()
 {
 	AudioEvent event = GenerateEvent(AudioEventType::STOPALL, 0, 0, nullptr, 0);
 	m_AudioEventBuffer.write(event);
-	m_Condition.notify_one();
 }
 
 int Audio::AudioImpl::Load(const std::string& filePath)
@@ -384,6 +380,5 @@ int Audio::AudioImpl::Load(const std::string& filePath)
 
 	m_Sounds.emplace_back(audioInfo);
 
-	m_Condition.notify_one();
 	return audioInfo.channel;
 }
