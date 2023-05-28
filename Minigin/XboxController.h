@@ -1,20 +1,21 @@
-#include <Xinput.h>
+#pragma once
 namespace dae {
 	class XboxController final
 	{
-		XINPUT_STATE m_CurrentState{};
-		XINPUT_STATE m_PreviousState{};
-		int m_ButtonsPressedThisFrame{};
-		int m_ButtonsReleasedFrame{};
-
-		unsigned int m_ControllerIndex{};
 	public:
-		XboxController(unsigned int controllerIndex);
+		explicit XboxController(unsigned int controllerIndex);
+		~XboxController();
+
+		XboxController(const XboxController& other) = delete;
+		XboxController(XboxController&& other) noexcept = delete;
+
+		XboxController operator=(const XboxController& other) = delete;
+		XboxController operator=(XboxController&& other) noexcept = delete;
 		void Update();
 		bool IsButtonDown(unsigned int button) const;
 		bool IsUpThisFrame(unsigned int button) const;
 		bool IsPressed(unsigned int button) const;
-		unsigned int GetID() const { return m_ControllerIndex; }
+		unsigned int GetID() const;
 
 		enum class ControllerButton {
 			DPadUp = 0x0001,
@@ -22,6 +23,9 @@ namespace dae {
 			DPadLeft = 0x0004,
 			DPadRight = 0x0008
 		};
+
+		class XboxControllerImpl;
+		XboxControllerImpl* m_pImpl;
 	};
 }
 
