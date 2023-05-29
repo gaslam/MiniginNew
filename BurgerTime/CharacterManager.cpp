@@ -7,8 +7,8 @@
 
 #include "GameObject.h"
 #include "InputManager.h"
+#include "KeyStructs.h"
 #include "Locator.h"
-#include "MoveCommand.h"
 #include "Shape.h"
 #include "Components/AnimationComponent.h"
 #include "Components/RigidBodyComponent.h"
@@ -43,46 +43,48 @@ std::shared_ptr<dae::GameObject> dae::CharacterManager::InitPlayer()
 	int controller1Index{ 0 };
 	auto& inputInstance = dae::InputManager::GetInstance();
 
-	dae::MoveCommand* moveCommandUp = new dae::MoveCommand{ chef.get(), up };
-	dae::MoveCommand* moveCommandDown = new dae::MoveCommand{ chef.get(), down };
-	dae::MoveCommand* moveCommandLeft = new dae::MoveCommand{ chef.get(), left };
-	dae::MoveCommand* moveCommandRight = new dae::MoveCommand{ chef.get(), right };
+	//dae::MoveCommand* moveCommandUp = new dae::MoveCommand{ chef.get(), up };
+	//dae::MoveCommand* moveCommandDown = new dae::MoveCommand{ chef.get(), down };
+	//dae::MoveCommand* moveCommandRight = new dae::MoveCommand{ chef.get(), right };
 	auto controllerButton = dae::XboxController::ControllerButton::DPadDown;
-	auto keyState = InputManager::KeyState::pressed;
+	auto keyState = KeyState::pressed;
 	auto keyboardKey = SDL_SCANCODE_S;
+	std::string inputAction{"down"};
 	dae::AnimationItem item{};
 
 	item.startRow = 0;
 	item.startCol = 1;
-	auto characterState = dae::CharacterComponent::CharacterState::idle;
+	auto characterState = dae::CharacterComponent::State::idle;
 	characterComp->AddAnimation(item, characterState);
 
 	item.startCol = 6;
 	item.startRow = 0;
 	item.count = 3;
 	item.isRepeatable = true;
-	characterState = dae::CharacterComponent::CharacterState::moveDown;
+	characterState = dae::CharacterComponent::State::moveDown;
 	characterComp->AddAnimation(item, characterState);
 
-	inputInstance.BindButtonsToCommand(controller1Index, controllerButton, keyboardKey, keyState, moveCommandDown);
+	inputInstance.BindButtonsToInput(inputAction, controller1Index, controllerButton, keyboardKey, keyState);
 	controllerButton = dae::XboxController::ControllerButton::DPadUp;
 	item.startCol = 0;
 	item.startRow = 0;
 	item.count = 3;
 	item.isRepeatable = true;
-	characterState = dae::CharacterComponent::CharacterState::moveUp;
+	characterState = dae::CharacterComponent::State::moveUp;
 	characterComp->AddAnimation(item, characterState);
 	keyboardKey = SDL_SCANCODE_W;
-	inputInstance.BindButtonsToCommand(controller1Index, controllerButton, keyboardKey, keyState, moveCommandUp);
+	inputAction = "up";
+	inputInstance.BindButtonsToInput(inputAction, controller1Index, controllerButton, keyboardKey, keyState);
 	controllerButton = dae::XboxController::ControllerButton::DPadLeft;
 	item.startCol = 3;
 	item.startRow = 0;
 	item.count = 3;
 	item.isRepeatable = true;
-	characterState = dae::CharacterComponent::CharacterState::moveLeft;
+	characterState = dae::CharacterComponent::State::moveLeft;
 	characterComp->AddAnimation(item, characterState);
 	keyboardKey = SDL_SCANCODE_A;
-	inputInstance.BindButtonsToCommand(controller1Index, controllerButton, keyboardKey, keyState, moveCommandLeft);
+	inputAction = "left";
+	inputInstance.BindButtonsToInput(inputAction, controller1Index, controllerButton, keyboardKey, keyState);
 	controllerButton = dae::XboxController::ControllerButton::DPadRight;
 	keyboardKey = SDL_SCANCODE_D;
 	item.startCol = 3;
@@ -90,9 +92,10 @@ std::shared_ptr<dae::GameObject> dae::CharacterManager::InitPlayer()
 	item.count = 3;
 	item.isRepeatable = true;
 	item.isXflipped = true;
-	characterState = dae::CharacterComponent::CharacterState::moveRight;
+	characterState = dae::CharacterComponent::State::moveRight;
 	characterComp->AddAnimation(item, characterState);
-	inputInstance.BindButtonsToCommand(controller1Index, controllerButton, keyboardKey, keyState, moveCommandRight);
+	inputAction = "right";
+	inputInstance.BindButtonsToInput(inputAction, controller1Index, controllerButton, keyboardKey, keyState);
 
 	m_Player =chef.get();
 
