@@ -1,12 +1,10 @@
 #include <windows.h>
 #include <stdexcept>
-#define WIN32_LEAN_AND_MEAN 
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "Minigin.h"
 #include "InputManager.h"
-#include "Input.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
@@ -86,7 +84,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& inputManager = InputManager::GetInstance();
-	auto& input = Input::GetInstance();
 
 	bool doContinue = true;
 	auto lastTime = std::chrono::high_resolution_clock::now();
@@ -99,7 +96,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		doContinue = inputManager.ProcessInput(deltaTime);
-		input.UpdateControls();
+		inputManager.UpdateControls();
 /*		lag += deltaTime;
 		if (lag >= fixedTimeStep)
 		{

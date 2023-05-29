@@ -23,6 +23,7 @@ namespace dae {
 			DPadLeft = 0x0004,
 			DPadRight = 0x0008
 		};
+	private:
 
 		class XboxControllerImpl;
 		XboxControllerImpl* m_pImpl;

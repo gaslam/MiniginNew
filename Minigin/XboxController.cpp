@@ -1,6 +1,7 @@
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 #include "XboxController.h"
+
+#include <windows.h>
 #include <Xinput.h>
 
 using namespace dae;
@@ -47,7 +48,7 @@ XboxController::XboxController(unsigned int controllerIndex) : m_pImpl{ new Xbox
 {
 }
 
-dae::XboxController::~XboxController()
+XboxController::~XboxController()
 {
 	delete m_pImpl;
 }
