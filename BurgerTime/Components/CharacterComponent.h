@@ -2,8 +2,10 @@
 #include <Component.h>
 #include <map>
 #include <glm/glm.hpp>
+#include "../States/PlayerState.h"
 class AudioBase;
 namespace dae {
+
 	struct AnimationItem {
 		bool isRepeatable;
 		bool isXflipped;
@@ -18,10 +20,7 @@ namespace dae {
 	{
 	public:
 		CharacterComponent(GameObject* pOwner, AnimationComponent* pComponent, AudioBase* pAudio);
-		void Update(float) override;
-		void Render() const override {};
-		void RenderImGUI() const override;
-		enum CharacterState : int {
+		enum State : int {
 			idle,
 			moveLeft,
 			moveRight,
@@ -30,18 +29,23 @@ namespace dae {
 			attack,
 			trowingPepper
 		};
-		void AddAnimation(AnimationItem& animation, CharacterState& state);
-		void SetAnimation(CharacterState& state);
+		void Update(float) override;
+		void Render() const override {};
+		void RenderImGUI() override;
+		void AddAnimation(AnimationItem& animation, State& state);
+		void SetAnimation(State& state);
 		void SetAnimation(int id);
 		void HandleMovement(glm::vec2& dir, float elapsedTime);
-		CharacterState GetState() const { return m_CharacterState; }
+		State GetState() const { return m_State; }
 		bool CanMoveUpDown() const { return m_CanMoveUpDown; }
 		bool CanMoveLeftRight() const { return m_CanMoveLeftRight; }
-		void SetState(CharacterState& state);
+		void SetState(State& state);
 		void SetMovementUpDown(bool canMove);
 		void SetMovementLeftRight(bool canMove);
 	private:
-		CharacterState m_CharacterState;
+		void HandleInput();
+		std::unique_ptr<CharacterState> m_CharacterState;
+		State m_State;
 		AnimationComponent* m_pAnimationComponent;
 		bool m_CanMoveUpDown{ false };
 		bool m_CanSetMoveLeftRight{ true };
@@ -49,7 +53,7 @@ namespace dae {
 		bool m_CanMoveLeftRight{ true };
 		bool m_IsMoving{ false };
 		
-		std::map< CharacterState, AnimationItem> m_Animations{};
+		std::map< State, AnimationItem> m_Animations{};
 
 		AudioBase* m_pAudio;
 		// map = soundname, channel, times to play
