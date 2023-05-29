@@ -13,7 +13,7 @@ namespace dae {
 		Component& operator=(Component&& other) noexcept = delete;
 		virtual void Render() const {};
 		virtual void Update(float) {};
-		virtual void RenderImGUI() const {};
+		virtual void RenderImGUI() {};
 	protected:
 		GameObject* GetOwner() const { return m_pOwner; }
 		explicit Component(GameObject* owner) : m_pOwner{ owner } {
