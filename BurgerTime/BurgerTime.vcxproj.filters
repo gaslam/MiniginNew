@@ -20,6 +20,10 @@
     <ClInclude Include="Components\SpawnerComponent.h" />
     <ClInclude Include="CharacterManager.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="States\IdleState.h" />
+    <ClInclude Include="States\PlayerState.h" />
+    <ClInclude Include="States\MovingState.h" />
+    <ClInclude Include="Components\GridComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CharacterManager.cpp" />
@@ -40,5 +44,8 @@
     <ClCompile Include="Components\RigidBodyComponent.cpp" />
     <ClCompile Include="Components\RotationComponent.cpp" />
     <ClCompile Include="Components\TextComponent.cpp" />
+    <ClCompile Include="States\IdleState.cpp" />
+    <ClCompile Include="States\MovingState.cpp" />
+    <ClCompile Include="Components\GridComponent.cpp" />
   </ItemGroup>
 </Project>

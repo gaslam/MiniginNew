@@ -9,7 +9,7 @@ namespace Utils
 {
 	template <typename T>
 	std::enable_if_t<std::is_base_of_v<dae::Component, T>, std::shared_ptr<dae::GameObject>>
-	 GenerateRigidBodyComp(std::ifstream& stream, glm::vec3& worldPos, float scale)
+	 GenerateRigidBodyComp(std::ifstream& stream, glm::vec2& worldPos, float scale)
 	{
 		float x{}, y{};
 		float width{}, height{};
@@ -23,7 +23,7 @@ namespace Utils
 		stream >> height;
 		stream >> width;
 
-		glm::vec3 pos{ x,y,0.f };
+		glm::vec2 pos{ x,y };
 
 		width *= scale;
 		height *= scale;
@@ -36,7 +36,7 @@ namespace Utils
 		return platform;
 	}
 
-	inline void ReadLevelData(std::string& file, dae::Scene* scene, glm::vec3& worldPos, float scale)
+	inline void ReadLevelData(std::string& file, dae::Scene* scene, glm::vec2& worldPos, float scale)
 	{
 		std::ifstream stream{ file, std::ios_base::in };
 		while (stream)
