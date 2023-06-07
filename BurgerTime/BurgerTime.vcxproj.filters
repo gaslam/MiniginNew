@@ -24,6 +24,7 @@
     <ClInclude Include="States\PlayerState.h" />
     <ClInclude Include="States\MovingState.h" />
     <ClInclude Include="Components\GridComponent.h" />
+    <ClInclude Include="BurgerComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CharacterManager.cpp" />
@@ -47,5 +48,6 @@
     <ClCompile Include="States\IdleState.cpp" />
     <ClCompile Include="States\MovingState.cpp" />
     <ClCompile Include="Components\GridComponent.cpp" />
+    <ClCompile Include="BurgerComponent.cpp" />
   </ItemGroup>
 </Project>
