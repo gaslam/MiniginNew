@@ -151,7 +151,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BurgerComponent.h" />
+    <ClInclude Include="States\BurgerFallingState.h" />
+    <ClInclude Include="States\BurgerTurningState.h" />
+    <ClInclude Include="Components\BurgerComponent.h" />
+    <ClInclude Include="States\BurgerStandingState.h" />
+    <ClInclude Include="States\BurgerState.h" />
     <ClInclude Include="CharacterManager.h" />
     <ClInclude Include="Components\AnimationComponent.h" />
     <ClInclude Include="Components\CharacterComponent.h" />
@@ -177,7 +181,10 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BurgerComponent.cpp" />
+    <ClCompile Include="States\BurgerFallingState.cpp" />
+    <ClCompile Include="States\BurgerTurningState.cpp" />
+    <ClCompile Include="Components\BurgerComponent.cpp" />
+    <ClCompile Include="States\BurgerStandingState.cpp" />
     <ClCompile Include="CharacterManager.cpp" />
     <ClCompile Include="Components\AnimationComponent.cpp" />
     <ClCompile Include="Components\CharacterComponent.cpp" />

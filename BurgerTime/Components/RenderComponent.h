@@ -35,6 +35,7 @@ namespace dae {
 			m_xFlipped = isXFlipped;
 			m_yFlipped = isYFlipped;
 		}
+		void SetAngle(double angle) { m_Angle = angle; }
 	private:
 		bool m_xFlipped{ false };
 		bool m_yFlipped{ false };
@@ -43,6 +44,7 @@ namespace dae {
 		float m_FrameWidth{};
 		float m_FrameHeight{};
 		float m_Scale{1.f};
+		double m_Angle{};
 		glm::vec2 m_TextureOffset{};
 		std::shared_ptr<Texture2D> m_Texture{};
 	};

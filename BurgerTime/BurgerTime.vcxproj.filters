@@ -24,7 +24,11 @@
     <ClInclude Include="States\PlayerState.h" />
     <ClInclude Include="States\MovingState.h" />
     <ClInclude Include="Components\GridComponent.h" />
-    <ClInclude Include="BurgerComponent.h" />
+    <ClInclude Include="Components\BurgerComponent.h" />
+    <ClInclude Include="States\BurgerState.h" />
+    <ClInclude Include="States\BurgerStandingState.h" />
+    <ClInclude Include="States\BurgerTurningState.h" />
+    <ClInclude Include="States\BurgerFallingState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CharacterManager.cpp" />
@@ -48,6 +52,9 @@
     <ClCompile Include="States\IdleState.cpp" />
     <ClCompile Include="States\MovingState.cpp" />
     <ClCompile Include="Components\GridComponent.cpp" />
-    <ClCompile Include="BurgerComponent.cpp" />
+    <ClCompile Include="Components\BurgerComponent.cpp" />
+    <ClCompile Include="States\BurgerStandingState.cpp" />
+    <ClCompile Include="States\BurgerTurningState.cpp" />
+    <ClCompile Include="States\BurgerFallingState.cpp" />
   </ItemGroup>
 </Project>
