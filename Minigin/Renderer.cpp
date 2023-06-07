@@ -96,7 +96,7 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst,0,&center,flip);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, SDL_Rect& srcRect, SDL_Rect& destRect,bool flippedX,bool flippedY) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, SDL_Rect& srcRect, SDL_Rect& destRect, double angle,bool flippedX,bool flippedY) const
 {
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	if (flippedX)
@@ -107,7 +107,7 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, SDL_Rect& srcRect, S
 	{
 		flip = SDL_FLIP_VERTICAL;
 	}
-	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &destRect, 0,nullptr, flip);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &destRect, angle ,nullptr, flip);
 }
 
 inline SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }
