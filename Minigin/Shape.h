@@ -22,7 +22,7 @@ namespace dae
     {
     public:
         explicit RectangleShape(const SDL_Rect& rect) : m_Rect{ rect } {}
-        RectangleShape(glm::ivec2& startPos, int width, int height)
+        RectangleShape(const glm::ivec2& startPos, int width, int height)
         {
             m_Rect = SDL_Rect{ startPos.x,startPos.y, width, height };
         }
@@ -52,7 +52,7 @@ namespace dae
         {
             auto renderer = dae::Renderer::GetInstance().GetSDLRenderer();
             SDL_SetRenderDrawColor(renderer, Uint8{ 255 }, Uint8{ 0 }, Uint8{ 0 }, Uint8{ 255 });
-            SDL_RenderDrawRect(renderer, &m_Rect);
+            //SDL_RenderDrawRect(renderer, &m_Rect);
         }
 
         std::vector<glm::ivec2> GetPoints() const override
