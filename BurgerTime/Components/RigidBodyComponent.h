@@ -1,11 +1,10 @@
 #pragma once
 #include <glm/vec2.hpp>
-
+#include "Shape.h"
 #include <Component.h>
 namespace dae
 {
     class Transform;
-    class Shape;
     class RigidBodyComponent :
         public Component
     {
