@@ -107,6 +107,13 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="Utils\Utils.h" />
+    <ClInclude Include="Observer.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="Subject.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Texture2D.cpp">

@@ -215,6 +215,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CyclicBuffer.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />
@@ -222,12 +223,14 @@
     <ClInclude Include="KeyStructs.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Minigin.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Subject.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Utils\Utils.h" />
