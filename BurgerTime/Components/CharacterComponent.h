@@ -3,7 +3,6 @@
 #include <map>
 #include <glm/glm.hpp>
 #include "../States/PlayerState.h"
-class AudioBase;
 namespace dae {
 
 	struct AnimationItem {
@@ -19,7 +18,7 @@ namespace dae {
 	class CharacterComponent : public Component
 	{
 	public:
-		CharacterComponent(GameObject* pOwner, AnimationComponent* pComponent, AudioBase* pAudio);
+		CharacterComponent(GameObject* pOwner, AnimationComponent* pComponent);
 		enum State : int {
 			idle,
 			moveLeft,
@@ -54,10 +53,6 @@ namespace dae {
 		bool m_IsMoving{ false };
 		
 		std::map< State, AnimationItem> m_Animations{};
-
-		AudioBase* m_pAudio;
-		// map = soundname, channel, times to play
-		std::map<const char*, std::pair<int,int>> m_pSoundChannels{};
 	};
 }
 

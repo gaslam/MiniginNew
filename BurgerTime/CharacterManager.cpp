@@ -29,8 +29,7 @@ std::shared_ptr<GameObject> CharacterManager::InitPlayer()
 	int startCol = 1;
 	int count = 1;
 	AnimationComponent* animComp = chef->AddComponent<AnimationComponent>("Characters/ChefPeter.png", frameSec, scale, rows, cols, startRow, startCol, count, true);
-	auto sound = Locator::GetAudio();
-	const auto characterComp = chef->AddComponent<CharacterComponent>(animComp,sound);
+	const auto characterComp = chef->AddComponent<CharacterComponent>(animComp);
 
 	const auto rigidBodyComp = chef->AddComponent<RigidBodyComponent>(transform);
 	const auto rect = animComp->GetCell();
