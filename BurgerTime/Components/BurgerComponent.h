@@ -23,9 +23,12 @@ namespace dae
 			falling
 		};
 		void SetState(State state);
+		State GetState() const { return m_State; }
 		void SetDegreesTurned(double degrees);
 		double GetDegreesTurned() const { return m_DegreesTurned; }
-		void StopFalling(const float groundYPos);
+		void StopFalling(const float hitYPos);
+		void SetFallThroughGround(bool isAllowed) const;
+		glm::vec2 GetPosition() const;
 	private:
 		double m_DegreesTurned{};
 

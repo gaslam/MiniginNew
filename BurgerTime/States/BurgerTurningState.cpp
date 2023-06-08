@@ -11,12 +11,14 @@
 #include "../Components/BurgerComponent.h"
 
 
-dae::BurgerState* dae::BurgerTurningState::HandleInput()
+using namespace dae;
+
+BurgerState* BurgerTurningState::HandleInput()
 {
-	dae::GameObject* pPlayerObj{dae::CharacterManager::GetInstance().GetPlayer() };
-	const auto pRigidBody{ pPlayerObj->GetComponent<dae::RigidBodyComponent>() };
+	GameObject* pPlayerObj{CharacterManager::GetInstance().GetPlayer() };
+	const auto pRigidBody{ pPlayerObj->GetComponent<RigidBodyComponent>() };
 	MG_ASSERT(pRigidBody != nullptr, "Cannot use RigidBody to collide with burger!!!")
-	dae::CharacterComponent* pPlayer{ pPlayerObj->GetComponent<dae::CharacterComponent>() };
+	CharacterComponent* pPlayer{ pPlayerObj->GetComponent<CharacterComponent>() };
 	MG_ASSERT(pPlayer != nullptr, "Player has no character component!!")
 
 	if (pPlayer->GetState() == CharacterComponent::idle)
@@ -32,13 +34,13 @@ dae::BurgerState* dae::BurgerTurningState::HandleInput()
 	return nullptr;
 }
 
-void dae::BurgerTurningState::Update(BurgerComponent* pComponent, float deltaTime)
+void BurgerTurningState::Update(BurgerComponent* pComponent, float deltaTime)
 {
 	m_DegreesTurned += static_cast<double>(deltaTime) * m_AngSpeed;
 	pComponent->SetDegreesTurned(m_DegreesTurned);
 }
 
-void dae::BurgerTurningState::OnEnter(BurgerComponent* pComponent)
+void BurgerTurningState::OnEnter(BurgerComponent* pComponent)
 {
 	m_DegreesTurned = pComponent->GetDegreesTurned();
 	constexpr BurgerComponent::State state {BurgerComponent::State::turning};

@@ -38,9 +38,14 @@ void BurgerComponent::Update(float deltaTime)
 {
 	HandleInput();
 	m_pBurgerState->Update(this, deltaTime);
-	GameObject* pOwner{ GetOwner() };
-	Event event{ EventType::FALLING };
-	Invoke(pOwner, event);
+
+	if (m_State == State::falling)
+	{
+		GameObject* pOwner{ GetOwner() };
+		Event event{ EventType::FALLING };
+		Invoke(pOwner, event);
+	}
+
 }
 
 void BurgerComponent::SetState(State state)
@@ -71,15 +76,15 @@ void BurgerComponent::SetDegreesTurned(double degrees)
 	m_pRenderComp->SetAngle(m_DegreesTurned);
 }
 
-void BurgerComponent::StopFalling(float hitYPos)
+void BurgerComponent::StopFalling(const float hitYPos)
 {
-	const auto newState{new BurgerStandingState{}};
-	m_DegreesTurned = 0;
-	SetState(newState);
-	m_State = State::standingStill;
 	GameObject* pOwner{ GetOwner() };
-	if(auto pRigidBody{pOwner->GetComponent<RigidBodyComponent>()})
+	if (const auto pRigidBody{ pOwner->GetComponent<RigidBodyComponent>() })
 	{
+		if(pRigidBody->IsAllowedThroughGround())
+		{
+			return;
+		}
 		constexpr bool isStatic{ true };
 		pRigidBody->SetIsStatic(isStatic);
 	}
@@ -90,6 +95,30 @@ void BurgerComponent::StopFalling(float hitYPos)
 	pTransform->SetLocalPosition(localPos);
 	Event event{ EventType::HIT };
 	Invoke(pOwner, event);
+}
+
+void BurgerComponent::SetFallThroughGround(bool isAllowed) const
+{
+	const auto pOwner{ GetOwner() };
+	const auto pRigidBody{ pOwner->GetComponent<RigidBodyComponent>() };
+	MG_ASSERT_WARNING(pRigidBody != nullptr, "Cannot get BurgerComponent RigidBody!!");
+	if (pRigidBody)
+	{
+		pRigidBody->SetAllowThroughGround(isAllowed);
+	}
+}
+
+glm::vec2 BurgerComponent::GetPosition() const
+{
+	const auto pOwner{ GetOwner() };
+	glm::vec2 pos{};
+	const auto pTransform{ pOwner->GetComponent<Transform>() };
+	MG_ASSERT_WARNING(pTransform != nullptr, "Cannot get BurgerComponent transform!!");
+	if(pTransform)
+	{
+		pos = pTransform->GetWorldPosition();
+	}
+	return pos;
 }
 
 void BurgerComponent::HandleInput()

@@ -44,5 +44,5 @@ bool dae::RigidBodyComponent::IsOverlapping(RigidBodyComponent* pComponent) cons
 {
 	auto pShape = pComponent->GetShape();
 	MG_ASSERT(pShape == nullptr,"Cannot get shape!!");
-	return m_Shape->CollidesWith(pShape);
+	return m_Shape->CollidesWith(pShape) && !m_AllowTroughGround && !pComponent->IsAllowedThroughGround();
 }

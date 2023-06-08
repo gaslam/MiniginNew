@@ -25,8 +25,16 @@ namespace dae
             {
                 m_TotalTimePassed = 0;
             }
+            else
+            {
+                m_AllowTroughGround = true;
+            }
         }
+
+        void SetAllowThroughGround(bool isAllowed) { m_AllowTroughGround = isAllowed; }
+        bool IsAllowedThroughGround() const { return m_AllowTroughGround; }
 private:
+    bool m_AllowTroughGround{false};
     bool m_IsStatic{true};
     float m_Gravity{ -9.81f };
     float m_TotalTimePassed{};
