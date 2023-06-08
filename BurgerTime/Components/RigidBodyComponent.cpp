@@ -1,4 +1,6 @@
 #include "RigidBodyComponent.h"
+
+#include "GameObject.h"
 #include "Shape.h"
 #include "Logger.h"
 #include "Transform.h"
@@ -7,7 +9,7 @@ void dae::RigidBodyComponent::Render() const
 	m_Shape->Render();
 }
 
-void dae::RigidBodyComponent::Update(float)
+void dae::RigidBodyComponent::Update(float elapsedSec)
 {
 	MG_ASSERT(m_pTransform != nullptr, "Cannot get transform!!");
 	if(m_pTransform)
@@ -15,6 +17,16 @@ void dae::RigidBodyComponent::Update(float)
 		const auto pos = m_pTransform->GetWorldPosition();
 		auto posVec2 = glm::ivec2{ pos.x ,pos.y };
 		m_Shape->SetPosition(posVec2);
+	}
+
+	if(!m_IsStatic)
+	{
+		m_TotalTimePassed += elapsedSec;
+		const float elapsedSecSquare{ glm::pow(m_TotalTimePassed,2.f) };
+		auto pTransform = GetOwner()->GetComponent<Transform>();
+		auto localPos = pTransform->GetWorldPosition();
+		localPos.y -= (m_Gravity * elapsedSecSquare)/2.f;
+		pTransform->SetLocalPosition(localPos);
 	}
 }
 

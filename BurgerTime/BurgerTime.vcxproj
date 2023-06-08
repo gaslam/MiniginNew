@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Observers\PlatformObserver.h" />
     <ClInclude Include="States\BurgerFallingState.h" />
     <ClInclude Include="States\BurgerTurningState.h" />
     <ClInclude Include="Components\BurgerComponent.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Observers\PlatformObserver.cpp" />
     <ClCompile Include="States\BurgerFallingState.cpp" />
     <ClCompile Include="States\BurgerTurningState.cpp" />
     <ClCompile Include="Components\BurgerComponent.cpp" />

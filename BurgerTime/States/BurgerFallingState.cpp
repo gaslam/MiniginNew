@@ -10,6 +10,7 @@ void dae::BurgerFallingState::OnEnter(BurgerComponent* pComponent)
 {
 	constexpr BurgerComponent::State state {BurgerComponent::State::falling};
 	pComponent->SetState(state);
+	pComponent->SetDegreesTurned(0);
 }
 
 void dae::BurgerFallingState::Update(BurgerComponent* /*pComponent*/, float /*deltaTime*/)

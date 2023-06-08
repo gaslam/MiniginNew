@@ -29,6 +29,7 @@
     <ClInclude Include="States\BurgerStandingState.h" />
     <ClInclude Include="States\BurgerTurningState.h" />
     <ClInclude Include="States\BurgerFallingState.h" />
+    <ClInclude Include="Observers\PlatformObserver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CharacterManager.cpp" />
@@ -56,5 +57,6 @@
     <ClCompile Include="States\BurgerStandingState.cpp" />
     <ClCompile Include="States\BurgerTurningState.cpp" />
     <ClCompile Include="States\BurgerFallingState.cpp" />
+    <ClCompile Include="Observers\PlatformObserver.cpp" />
   </ItemGroup>
 </Project>

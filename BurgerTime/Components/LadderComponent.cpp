@@ -4,8 +4,6 @@
 #include "GameObject.h"
 #include "RenderComponent.h"
 #include "RigidBodyComponent.h"
-#include "Scene.h"
-#include "SceneManager.h"
 #include "Shape.h"
 #include <algorithm>
 
@@ -26,8 +24,6 @@ LadderComponent::LadderComponent(GameObject* pOwner, RectangleShape* pShape) : C
 
 void LadderComponent::Update(float)
 {
-	auto pScene = SceneManager::GetInstance().GetScene();
-	MG_ASSERT(pScene != nullptr,"Cannot update scene!!");
 	const auto characters = CharacterManager::GetInstance().GetCharacters();
 	for(const auto character: characters )
 	{

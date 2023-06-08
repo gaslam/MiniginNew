@@ -13,11 +13,13 @@
 #include "Components/AnimationComponent.h"
 #include "Components/RigidBodyComponent.h"
 
-std::shared_ptr<dae::GameObject> dae::CharacterManager::InitPlayer()
+using namespace dae;
+
+std::shared_ptr<GameObject> CharacterManager::InitPlayer()
 {
-	auto chef = std::make_shared<dae::GameObject>();
-	auto transform = chef->AddComponent<dae::Transform>();
-	transform->SetLocalPosition({ 100.f,100.f });
+	auto chef = std::make_shared<GameObject>();
+	auto transform = chef->AddComponent<Transform>();
+	transform->SetLocalPosition({ 150.f,200.f });
 	transform->SetSpeedForMovement(50.f);
 	float frameSec = 0.05f;
 	float scale = 1.5f;
@@ -26,73 +28,66 @@ std::shared_ptr<dae::GameObject> dae::CharacterManager::InitPlayer()
 	int startRow = 0;
 	int startCol = 1;
 	int count = 1;
-	dae::AnimationComponent* animComp = chef->AddComponent<dae::AnimationComponent>("Characters/ChefPeter.png", frameSec, scale, rows, cols, startRow, startCol, count, true);
+	AnimationComponent* animComp = chef->AddComponent<AnimationComponent>("Characters/ChefPeter.png", frameSec, scale, rows, cols, startRow, startCol, count, true);
 	auto sound = Locator::GetAudio();
-	auto characterComp = chef->AddComponent<dae::CharacterComponent>(animComp,sound);
+	const auto characterComp = chef->AddComponent<CharacterComponent>(animComp,sound);
 
-	auto rigidBodyComp = chef->AddComponent<dae::RigidBodyComponent>(transform);
-	auto rect = animComp->GetCell();
-	dae::RectangleShape* shape = new dae::RectangleShape{ rect };
+	const auto rigidBodyComp = chef->AddComponent<RigidBodyComponent>(transform);
+	const auto rect = animComp->GetCell();
+	auto* shape = new RectangleShape{ rect };
 	rigidBodyComp->SetShape(shape);
 
 
-	glm::vec2 up = { 0.f,-1.f };
-	glm::vec2 down = { 0.f,1.f };
-	glm::vec2 right = { 1.f,0.f };
-	glm::vec2 left = { -1.f,0.f };
-	int controller1Index{ 0 };
-	auto& inputInstance = dae::InputManager::GetInstance();
+	constexpr int controller1Index{ 0 };
+	auto& inputInstance = InputManager::GetInstance();
 
-	//dae::MoveCommand* moveCommandUp = new dae::MoveCommand{ chef.get(), up };
-	//dae::MoveCommand* moveCommandDown = new dae::MoveCommand{ chef.get(), down };
-	//dae::MoveCommand* moveCommandRight = new dae::MoveCommand{ chef.get(), right };
-	auto controllerButton = dae::XboxController::ControllerButton::DPadDown;
+	auto controllerButton = XboxController::ControllerButton::DPadDown;
 	auto keyState = KeyState::pressed;
 	auto keyboardKey = SDL_SCANCODE_S;
 	std::string inputAction{"down"};
-	dae::AnimationItem item{};
+	AnimationItem item{};
 
 	item.startRow = 0;
 	item.startCol = 1;
-	auto characterState = dae::CharacterComponent::State::idle;
+	auto characterState = CharacterComponent::State::idle;
 	characterComp->AddAnimation(item, characterState);
 
 	item.startCol = 6;
 	item.startRow = 0;
 	item.count = 3;
 	item.isRepeatable = true;
-	characterState = dae::CharacterComponent::State::moveDown;
+	characterState = CharacterComponent::State::moveDown;
 	characterComp->AddAnimation(item, characterState);
 
 	inputInstance.BindButtonsToInput(inputAction, controller1Index, controllerButton, keyboardKey, keyState);
-	controllerButton = dae::XboxController::ControllerButton::DPadUp;
+	controllerButton = XboxController::ControllerButton::DPadUp;
 	item.startCol = 0;
 	item.startRow = 0;
 	item.count = 3;
 	item.isRepeatable = true;
-	characterState = dae::CharacterComponent::State::moveUp;
+	characterState = CharacterComponent::State::moveUp;
 	characterComp->AddAnimation(item, characterState);
 	keyboardKey = SDL_SCANCODE_W;
 	inputAction = "up";
 	inputInstance.BindButtonsToInput(inputAction, controller1Index, controllerButton, keyboardKey, keyState);
-	controllerButton = dae::XboxController::ControllerButton::DPadLeft;
+	controllerButton = XboxController::ControllerButton::DPadLeft;
 	item.startCol = 3;
 	item.startRow = 0;
 	item.count = 3;
 	item.isRepeatable = true;
-	characterState = dae::CharacterComponent::State::moveLeft;
+	characterState = CharacterComponent::State::moveLeft;
 	characterComp->AddAnimation(item, characterState);
 	keyboardKey = SDL_SCANCODE_A;
 	inputAction = "left";
 	inputInstance.BindButtonsToInput(inputAction, controller1Index, controllerButton, keyboardKey, keyState);
-	controllerButton = dae::XboxController::ControllerButton::DPadRight;
+	controllerButton = XboxController::ControllerButton::DPadRight;
 	keyboardKey = SDL_SCANCODE_D;
 	item.startCol = 3;
 	item.startRow = 0;
 	item.count = 3;
 	item.isRepeatable = true;
 	item.isXflipped = true;
-	characterState = dae::CharacterComponent::State::moveRight;
+	characterState = CharacterComponent::State::moveRight;
 	characterComp->AddAnimation(item, characterState);
 	inputAction = "right";
 	inputInstance.BindButtonsToInput(inputAction, controller1Index, controllerButton, keyboardKey, keyState);
@@ -102,7 +97,7 @@ std::shared_ptr<dae::GameObject> dae::CharacterManager::InitPlayer()
 	return chef;
 }
 
-std::vector<dae::GameObject*> dae::CharacterManager::GetCharacters()
+std::vector<GameObject*> CharacterManager::GetCharacters()
 {
 	auto characters = m_Enemies;
 	MG_ASSERT_WARNING(m_Player != nullptr,"Cannot find or control player!!");

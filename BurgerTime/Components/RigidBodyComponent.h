@@ -17,9 +17,22 @@ namespace dae
         Shape* GetShape() const { return m_Shape.get(); }
         bool IsPointInRect(glm::ivec2& point) const;
         bool IsOverlapping(RigidBodyComponent* pComponent) const;
+        bool IsStatic() const { return m_IsStatic; }
+        void SetIsStatic(bool isStatic)
+        {
+	        m_IsStatic = isStatic;
+            if(!m_IsStatic)
+            {
+                m_TotalTimePassed = 0;
+            }
+        }
 private:
+    bool m_IsStatic{true};
+    float m_Gravity{ -9.81f };
+    float m_TotalTimePassed{};
     std::unique_ptr<Shape> m_Shape{};
     Transform* m_pTransform;
+    glm::vec2 m_Velocity{};
     };
 }
 

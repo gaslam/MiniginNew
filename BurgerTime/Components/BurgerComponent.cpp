@@ -1,4 +1,6 @@
 #include "BurgerComponent.h"
+
+#include "Event.h"
 #include "GameObject.h"
 #include "Shape.h"
 #include "../Components/CharacterComponent.h"
@@ -9,7 +11,7 @@
 
 using namespace dae;
 
-BurgerComponent::BurgerComponent(GameObject* pObject, const std::string& file) : Component{ pObject }, m_pBurgerState{std::make_unique<BurgerStandingState>()}
+BurgerComponent::BurgerComponent(GameObject* pObject, const std::string& file, const glm::vec2& pos, float scale) : Component{ pObject }, m_pBurgerState{ std::make_unique<BurgerStandingState>() }
 {
 	auto pOwner{ GetOwner() };
 	m_pRenderComp = pOwner->GetComponent<RenderComponent>();
@@ -17,15 +19,15 @@ BurgerComponent::BurgerComponent(GameObject* pObject, const std::string& file) :
 	{
 		m_pRenderComp = pOwner->AddComponent<RenderComponent>(file);
 	}
-	m_pRenderComp->SetScale(2.5f);
+	m_pRenderComp->SetScale(scale);
 	Transform* pTransform{ pOwner->GetComponent<Transform>() };
 	if (!pTransform)
 	{
 		pTransform = pOwner->AddComponent<Transform>();
 	}
+	pTransform->SetWorldPosition(pos);
 	const int width{ static_cast<int>(m_pRenderComp->GetFrameWidthScaled()) };
 	const int height{ static_cast<int>(m_pRenderComp->GetFrameHeightScaled()) };
-	const glm::ivec2 pos{pTransform->GetLocalPosition()};
 	m_pShape = new RectangleShape{ pos, width,height };
 	const auto pRigidBody{ pOwner->AddComponent<RigidBodyComponent>(pTransform) };
 	pRigidBody->SetShape(m_pShape);
@@ -35,22 +37,73 @@ BurgerComponent::BurgerComponent(GameObject* pObject, const std::string& file) :
 void BurgerComponent::Update(float deltaTime)
 {
 	HandleInput();
-	m_pBurgerState->Update(this,deltaTime);
+	m_pBurgerState->Update(this, deltaTime);
+	GameObject* pOwner{ GetOwner() };
+	Event event{ EventType::FALLING };
+	Invoke(pOwner, event);
 }
 
-void dae::BurgerComponent::SetDegreesTurned(double degrees)
+void BurgerComponent::SetState(State state)
+{
+	m_State = state;
+	if (m_State == State::falling)
+	{
+		HandleFall();
+	}
+}
+
+void BurgerComponent::HandleFall() const
+{
+	const auto pOwner{ GetOwner() };
+	const auto pRigidBody{ pOwner->GetComponent<RigidBodyComponent>() };
+
+	MG_ASSERT_WARNING(pRigidBody, "Cannot let object fall!! Rigidbody missing")
+		if (pRigidBody)
+		{
+			constexpr bool isStatic{ false };
+			pRigidBody->SetIsStatic(isStatic);
+		}
+}
+
+void BurgerComponent::SetDegreesTurned(double degrees)
 {
 	m_DegreesTurned = degrees;
 	m_pRenderComp->SetAngle(m_DegreesTurned);
 }
 
-void dae::BurgerComponent::HandleInput()
+void BurgerComponent::StopFalling(float hitYPos)
 {
-	const auto newState = m_pBurgerState->HandleInput();
-	if(newState)
+	const auto newState{new BurgerStandingState{}};
+	m_DegreesTurned = 0;
+	SetState(newState);
+	m_State = State::standingStill;
+	GameObject* pOwner{ GetOwner() };
+	if(auto pRigidBody{pOwner->GetComponent<RigidBodyComponent>()})
 	{
-		m_pBurgerState->OnExit(this);
-		m_pBurgerState = std::unique_ptr<BurgerState>(newState);
-		m_pBurgerState->OnEnter(this);
+		constexpr bool isStatic{ true };
+		pRigidBody->SetIsStatic(isStatic);
 	}
+
+	auto pTransform{ pOwner->GetComponent<Transform>() };
+	auto localPos{ pTransform->GetWorldPosition() };
+	localPos.y = hitYPos;
+	pTransform->SetLocalPosition(localPos);
+	Event event{ EventType::HIT };
+	Invoke(pOwner, event);
+}
+
+void BurgerComponent::HandleInput()
+{
+	if (const auto newState = m_pBurgerState->HandleInput())
+	{
+		SetState(newState);
+	}
+}
+
+void BurgerComponent::SetState(BurgerState* state)
+{
+
+	m_pBurgerState->OnExit(this);
+	m_pBurgerState = std::unique_ptr<BurgerState>(state);
+	m_pBurgerState->OnEnter(this);
 }
