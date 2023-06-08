@@ -5,9 +5,10 @@ struct Mix_Chunk;
 struct AudioInfo
 {
 	float volume{};
-	int channel{};
-	Mix_Chunk* pData{};
+	std::string filePath{};
 	int loops{ -1 };
+	int channel{ -1 };
+	Mix_Chunk* pData{};
 };
 
 class AudioBase

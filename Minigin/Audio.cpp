@@ -125,19 +125,11 @@ int Audio::Load(const std::string& filePath)
 void Audio::AudioImpl::OnSoundEnd(int channel)
 {
 	std::lock_guard lock(m_Mutex);
-	const auto soundsFound = std::remove_if(m_Sounds.begin(), m_Sounds.end(), [channel](AudioInfo& info)
-		{
-			const bool hasChannel = info.channel == channel;
-		if(hasChannel)
-		{
-			Mix_FreeChunk(info.pData);
-		}
-			return hasChannel;
-		});
-	if (soundsFound != m_Sounds.end())
+	const auto it{ std::ranges::find_if(m_Sounds,[channel](const AudioInfo& info)
 	{
-		m_Sounds.erase(soundsFound);
-	}
+		return info.channel == channel;
+	}) };
+	it->channel = -1;
 }
 
 bool Audio::AudioImpl::IsPlaying(int channel)
@@ -147,7 +139,7 @@ bool Audio::AudioImpl::IsPlaying(int channel)
 
 void Audio::AudioImpl::SetVolume(float volume)
 {
-	AudioEvent event = GenerateEvent(AudioEventType::SETVOLUME, -1, 0, nullptr, 0);
+	const AudioEvent event{ GenerateEvent(AudioEventType::SETVOLUME, -1, 0, nullptr, 0) };
 	for(auto& sound: m_Sounds)
 	{
 		sound.volume = volume;
@@ -159,13 +151,13 @@ void Audio::AudioImpl::SetVolume(float volume)
 
 void Audio::AudioImpl::PollEvents()
 {
-	const std::stop_token& token = m_AudioThread.get_stop_token();
+	const std::stop_token& token { m_AudioThread.get_stop_token()};
 	while (!token.stop_requested())
 	{
-		AudioEvent e;
+		AudioEvent e{};
 
 		{
-			std::lock_guard<std::mutex> lock(m_Mutex);
+			const std::lock_guard lock(m_Mutex);
 			if (m_AudioEventBuffer.Size() <= 0)
 			{
 				continue;
@@ -277,7 +269,7 @@ Audio::AudioImpl::~AudioImpl()
 {
 	m_AudioThread.request_stop();
 
-	for (auto sound : m_Sounds)
+	for (const auto sound : m_Sounds)
 	{
 		Mix_FreeChunk(sound.pData);
 	}
@@ -285,7 +277,7 @@ Audio::AudioImpl::~AudioImpl()
 
 void Audio::AudioImpl::Init()
 {
-	int result = SDL_Init(SDL_INIT_AUDIO);
+	int result{ SDL_Init(SDL_INIT_AUDIO) };
 	if (result < 0)
 	{
 		std::stringstream ss;
@@ -293,10 +285,10 @@ void Audio::AudioImpl::Init()
 		MG_ASSERT(result >= 0, ss.str().c_str())
 	}
 
-	constexpr  int freq = 44100;
-	constexpr Uint16 format = AUDIO_S16SYS;
-	constexpr int channels = 2;
-	constexpr int samples = 4096;
+	constexpr  int freq{ 44100 };
+	constexpr Uint16 format { AUDIO_S16SYS};
+	constexpr int channels { 2};
+	constexpr int samples { 4096};
 
 	result = Mix_OpenAudio(freq, format, channels, samples);
 
@@ -307,64 +299,86 @@ void Audio::AudioImpl::Init()
 		MG_ASSERT(result != 0, ss.str().c_str())
 	}
 
-	m_AudioThread = std::jthread([&]() {PollEvents(); });
-	m_AudioThread.detach();
+	m_AudioThread = std::jthread([this]() {PollEvents(); });
 
-	//Mix_ChannelFinished(&EndSound);
+	Mix_ChannelFinished(&EndSound);
 }
 
 void Audio::AudioImpl::Play(unsigned int soundID, int loops)
 {
-	m_Sounds[soundID].loops;
-	auto sound = m_Sounds[soundID];
+	const std::lock_guard lock{m_Mutex};
+	m_Sounds[soundID].loops = loops;
+	auto sound{ m_Sounds[soundID] };
 	sound.loops = loops;
-	AudioEvent event = GenerateEvent(AudioEventType::PLAY, sound.channel, sound.volume, sound.pData, sound.loops);
+	const AudioEvent event{ GenerateEvent(AudioEventType::PLAY, sound.channel, sound.volume, sound.pData, sound.loops) };
 	m_AudioEventBuffer.write(event);
 }
 
 void Audio::AudioImpl::Pause(unsigned int soundID)
 {
-	auto sound = m_Sounds[soundID];
-	AudioEvent event = GenerateEvent(AudioEventType::PAUSE, sound.channel, sound.volume, sound.pData, sound.loops);
+	const std::lock_guard lock{m_Mutex};
+	const auto sound{ m_Sounds[soundID] };
+	const AudioEvent event{ GenerateEvent(AudioEventType::PAUSE, sound.channel, sound.volume, sound.pData, sound.loops) };
 	m_AudioEventBuffer.write(event);
 }
 
 void Audio::AudioImpl::PauseAll()
 {
-	AudioEvent event = GenerateEvent(AudioEventType::PAUSEALL, 0, 0, nullptr, 0);
+	const AudioEvent event { GenerateEvent(AudioEventType::PAUSEALL, 0, 0, nullptr, 0)};
+	const std::lock_guard lock{m_Mutex};
 	m_AudioEventBuffer.write(event);
 }
 
 void Audio::AudioImpl::UnPause(unsigned int soundID)
 {
-	auto sound = m_Sounds[soundID];
-	AudioEvent event = GenerateEvent(AudioEventType::UNPAUSE, sound.channel, sound.volume, sound.pData, sound.loops);
+	const std::lock_guard lock{m_Mutex};
+	const auto sound { m_Sounds[soundID]};
+	const AudioEvent event { GenerateEvent(AudioEventType::UNPAUSE, sound.channel, sound.volume, sound.pData, sound.loops)};
 	m_AudioEventBuffer.write(event);
 }
 
 void Audio::AudioImpl::UnPauseAll()
 {
-	AudioEvent event = GenerateEvent(AudioEventType::UNPAUSEALL, 0, 0, nullptr, 0);
+	const std::lock_guard lock{m_Mutex};
+	const AudioEvent event { GenerateEvent(AudioEventType::UNPAUSEALL, 0, 0, nullptr, 0)};
 	m_AudioEventBuffer.write(event);
 }
 
 void Audio::AudioImpl::Stop(unsigned int soundID)
 {
-	auto sound = m_Sounds[soundID];
-	AudioEvent event = GenerateEvent(AudioEventType::STOP, soundID, sound.volume, sound.pData, sound.loops);
+	const std::lock_guard lock{m_Mutex};
+	const auto sound { m_Sounds[soundID]};
+	const AudioEvent event { GenerateEvent(AudioEventType::STOP, soundID, sound.volume, sound.pData, sound.loops)};
 	m_AudioEventBuffer.write(event);
 }
 
 void Audio::AudioImpl::StopAll()
 {
-	AudioEvent event = GenerateEvent(AudioEventType::STOPALL, 0, 0, nullptr, 0);
+	const AudioEvent event { GenerateEvent(AudioEventType::STOPALL, 0, 0, nullptr, 0)};
+	const std::lock_guard lock{m_Mutex};
 	m_AudioEventBuffer.write(event);
 }
 
 int Audio::AudioImpl::Load(const std::string& filePath)
 {
-	const std::string fullDir = "../Data/" + filePath;
-	Mix_Chunk* audioData = Mix_LoadWAV(fullDir.c_str());
+	const std::string fullDir { "../Data/" + filePath};
+
+	const auto sound{ std::find_if(m_Sounds.begin(),m_Sounds.end(),[filePath](const AudioInfo& info)
+	{
+		return info.filePath == filePath;
+	}) };
+
+	Mix_Chunk* audioData{ };
+
+	if(sound != m_Sounds.end())
+	{
+		audioData = sound->pData;
+	}
+	else
+	{
+		audioData = Mix_LoadWAV(fullDir.c_str());
+	}
+
 	const bool isDataLoaded{ audioData != nullptr };
 	MG_ASSERT(audioData != nullptr, "Cannot load file!!")
 		if (!isDataLoaded)
@@ -377,6 +391,7 @@ int Audio::AudioImpl::Load(const std::string& filePath)
 	audioInfo.pData = audioData;
 	audioInfo.volume = 0.5f;
 	audioInfo.channel = static_cast<int>(m_Sounds.size());
+	audioInfo.filePath = filePath;
 
 	m_Sounds.emplace_back(audioInfo);
 
