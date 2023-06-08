@@ -6,7 +6,6 @@
 #include <backends/imgui_impl_sdl.h>
 #include <backends/imgui_impl_opengl2.h>
 #include <chrono>
-#include <iostream>
 
 using namespace std;
 using namespace chrono;
@@ -90,12 +89,25 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.y = static_cast<int>(y);
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+	SDL_Point center{};
+	center.x = dst.x + dst.w / 2;
+	center.y = dst.y + dst.h / 2;
+	SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst,0,&center,flip);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, SDL_Rect& srcRect, SDL_Rect& destRect) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, SDL_Rect& srcRect, SDL_Rect& destRect, double angle,bool flippedX,bool flippedY) const
 {
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &destRect);
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	if (flippedX)
+	{
+		flip = SDL_FLIP_HORIZONTAL;
+	}
+	if (flippedY)
+	{
+		flip = SDL_FLIP_VERTICAL;
+	}
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &destRect, angle ,nullptr, flip);
 }
 
 inline SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }

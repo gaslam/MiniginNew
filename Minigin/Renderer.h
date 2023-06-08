@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL.h>
 #include "Singleton.h"
-#include <memory>
 #include <glm/glm.hpp>
 
 
@@ -26,7 +25,7 @@ namespace dae
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
 
-		void RenderTexture(const Texture2D& texture, SDL_Rect& srcRect, SDL_Rect& destRect) const;
+		void RenderTexture(const Texture2D& texture, SDL_Rect& srcRect, SDL_Rect& destRect, double angle, bool flippedX = false, bool flippedY = false) const;
 
 		SDL_Renderer* GetSDLRenderer() const;
 

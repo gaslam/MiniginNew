@@ -1,17 +1,19 @@
-#include <stdexcept>
-#define WIN32_LEAN_AND_MEAN 
 #include <windows.h>
+#include <stdexcept>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "Minigin.h"
 #include "InputManager.h"
-#include "Input.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <chrono>
 #include <thread>
+
+#include "Audio.h"
+#include "Locator.h"
+#include "Logger.h"
 
 
 SDL_Window* g_window{};
@@ -20,6 +22,7 @@ void PrintSDLVersion()
 {
 	SDL_version version{};
 	SDL_VERSION(&version);
+
 	printf("We compiled against SDL version %u.%u.%u ...\n",
 		version.major, version.minor, version.patch);
 
@@ -48,27 +51,23 @@ dae::Minigin::Minigin(const std::string &dataPath)
 {
 	PrintSDLVersion();
 	
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
-	{
-		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
-	}
+	MG_ASSERT(SDL_Init(SDL_INIT_VIDEO) == 0, "Cannot initialise SDL_Video!!");
 
 	g_window = SDL_CreateWindow(
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		560,
+		720,
+		630,
 		SDL_WINDOW_OPENGL
 	);
-	if (g_window == nullptr) 
-	{
-		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
-	}
+	MG_ASSERT(g_window != nullptr,"Cannot create SDL_Window");
 
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	Locator::Provide(std::make_unique<Audio>());
 }
 
 dae::Minigin::~Minigin()
@@ -82,11 +81,9 @@ dae::Minigin::~Minigin()
 void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
-
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& inputManager = InputManager::GetInstance();
-	auto& input = Input::GetInstance();
 
 	bool doContinue = true;
 	auto lastTime = std::chrono::high_resolution_clock::now();
@@ -99,7 +96,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		doContinue = inputManager.ProcessInput(deltaTime);
-		input.UpdateControls();
+		inputManager.UpdateControls();
 /*		lag += deltaTime;
 		if (lag >= fixedTimeStep)
 		{

@@ -3,29 +3,30 @@
 namespace dae {
 	class GameObject;
 	class Command {
-		GameObject* m_Owner;
-	protected:
-	GameObject* GetCommandOwner() const { return m_Owner; }
 	public:
-		Command(GameObject* actor);
+		virtual ~Command() = default;
+		Command(const Command& other) = delete;
+		Command(Command&& other) noexcept = delete;
+		Command& operator=(const Command& other) = delete;
+		Command& operator=(Command&& other) noexcept = delete;
+		explicit Command() = default;
 		//float = deltaTime
 		virtual void Execute(float) {};
 		//float = deltaTime
-		virtual void Execute(glm::vec3&,float) {};
+		virtual void Execute(glm::vec2&, float) {};
 	};
 
-	class MoveCommand : public Command {
-		glm::vec3 m_Dir{};
-	public:
-		explicit MoveCommand(GameObject* owner) : Command(owner), m_Dir{} {};
-		MoveCommand(GameObject* owner, glm::vec3& dir) : Command(owner), m_Dir{ dir } {};
-		virtual void Execute(float deltaTime) override;
-		virtual void Execute(glm::vec3& dir, float deltaTime) override;
-	};
 
-	class SetChacterToStateIdleCommand : public Command {
+	class GameObjectCommand : public Command {
+		GameObject* m_Owner;
+	protected:
+		GameObject* GetCommandOwner() const { return m_Owner; }
 	public:
-		explicit SetChacterToStateIdleCommand(GameObject* owner) : Command(owner) {};
-		virtual void Execute(float) override;
+		explicit GameObjectCommand(GameObject* owner) : m_Owner(owner){};
+		virtual ~GameObjectCommand() override = default;
+		GameObjectCommand(const GameObjectCommand& other) = delete;
+		GameObjectCommand(GameObjectCommand&& other) noexcept = delete;
+		GameObjectCommand& operator=(const GameObjectCommand& other) = delete;
+		GameObjectCommand& operator=(GameObjectCommand&& other) noexcept = delete;
 	};
 }

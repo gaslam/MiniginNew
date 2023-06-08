@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneManager.h"
+#include "Shape.h"
 
 namespace dae
 {
@@ -14,6 +15,7 @@ namespace dae
 
 		void Update(float deltaTime);
 		void Render() const;
+		void RenderImGUI() const;
 
 		~Scene();
 		Scene(const Scene& other) = delete;
@@ -26,7 +28,6 @@ namespace dae
 
 		std::string m_name;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
-
 		static unsigned int m_idCounter; 
 	};
 

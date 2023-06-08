@@ -1,50 +1,142 @@
+#include <windows.h>
 #include <SDL.h>
 #include "InputManager.h"
+
+#include <algorithm>
 #include <backends/imgui_impl_sdl.h>
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 #include <Xinput.h>
 #include "Command.h"
 #include <iostream>
-#include <algorithm>
-#include "Command.h"
-#include "Input.h"
+
 
 bool dae::InputManager::ProcessInput(float deltaTime)
 {
-	m_pKeyboardState = SDL_GetKeyboardState(nullptr);
+	m_pKeyboard->UpdateOldKeys();
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
-		else if (e.type == SDL_KEYDOWN) {
-			ProcessKeyboardInputDown(deltaTime, e.key.keysym.scancode);
-		}
-		else if (e.type == SDL_KEYUP)
+		if(e.type == SDL_KEYDOWN)
 		{
-			ProcessKeyboardInputUp(deltaTime, e.key.keysym.scancode);
+			const bool enabled{ true };
+			m_pKeyboard->SetKey(e.key.keysym.scancode, enabled);
+		}
+		if (e.type == SDL_KEYUP)
+		{
+			const bool enabled{ false };
+			m_pKeyboard->SetKey(e.key.keysym.scancode, enabled);
 		}
 
-		ProcessKeyboardInputPressed(deltaTime);
 		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
-
+	ProcessKeyboardInput(deltaTime);
 	ProcessControllerInput(deltaTime);
 
 	return true;
 }
 
-
-bool dae::InputManager::IsPressed(const SDL_Scancode& keyboardKey)
+void dae::InputManager::ProcessKeyboardInput(float deltaTime) const
 {
-	return m_pKeyboardState[keyboardKey];
+	ProcessKeyboardInputDown(deltaTime);
+	ProcessKeyboardInputUp(deltaTime);
+	ProcessKeyboardInputPressed(deltaTime);
 }
 
-void dae::InputManager::ProcessKeyboardInputPressed(float deltaTime)
+void dae::InputManager::AddController(unsigned int id)
 {
-	auto& input = Input::GetInstance();
-	auto& commands = input.GetCommands();
+	m_Controllers.emplace_back(std::make_unique<XboxController>(id));
+}
+
+void dae::InputManager::BindButtonsToCommand(unsigned int id, XboxController::ControllerButton& button, SDL_Scancode& keyboardButton, KeyState& state, Command* command)
+{
+	KeyInput input{};
+	input.id = static_cast<int>(m_Commands.size());
+	input.controllerId = id;
+	input.controllerButton = button;
+	input.scancode = keyboardButton;
+	input.state = state;
+	m_Commands.insert({ input, std::unique_ptr<Command>(command) });
+}
+
+void dae::InputManager::BindButtonsToInput(std::string& key, unsigned int id, XboxController::ControllerButton& button, SDL_Scancode& keyboardButton, KeyState& state)
+{
+	KeyInput input{};
+	input.id = static_cast<int>(m_Inputs.size());
+	input.controllerId = id;
+	input.controllerButton = button;
+	input.scancode = keyboardButton;
+	input.state = state;
+	m_Inputs.insert({ key, input });
+}
+
+void dae::InputManager::BindJoystickToCommand(unsigned int controllerId, Command* command, bool isLeft)
+{
+	int joystickIdx = isLeft ? 0 : 1;
+	JoystickKey key = JoystickKey(controllerId, joystickIdx);
+	m_JoystickCommands.insert({ key, std::unique_ptr<Command>(command) });
+}
+
+void dae::InputManager::UpdateControls() const
+{
+	for (auto& controller : m_Controllers)
+	{
+		controller->Update();
+	}
+}
+
+
+void dae::InputManager::HandleJoystick(bool isLeft, Command* command, XINPUT_STATE state, float deltaTime)
+{
+	//determine deadzone based on whether the left or right joystick is used
+	const int deadzone = isLeft ? XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE : XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
+	glm::vec2 dir{};
+	dir.x = isLeft ? state.Gamepad.sThumbLX : state.Gamepad.sThumbRX;
+	dir.y = isLeft ? state.Gamepad.sThumbLY : state.Gamepad.sThumbRY;
+
+	//determine how far the controller is pushed. Tried to use it without, but for unit vectors, I could not find a way without square roots
+	const float magnitude = sqrtf(dir.x * dir.x + dir.y * dir.y);
+
+	//determine the direction the controller is pushed by normalizing it
+	dir.x = dir.x / magnitude;
+	dir.y = dir.y / magnitude;
+	dir.y = -dir.y;
+
+	//check if the controller is inside a circular dead zone
+	if (magnitude < deadzone)
+	{
+		dir = {};
+	}
+	command->Execute(dir, deltaTime);
+}
+
+
+dae::InputManager::InputManager() : m_pKeyboard(std::make_unique<Keyboard>())
+{
+	const int maxPlayers{2};
+	for(unsigned int i{}; i < maxPlayers; ++i)
+	{
+		XINPUT_STATE state;
+		ZeroMemory(&state, sizeof(XINPUT_STATE));
+
+		// Simply get the state of the controller from XInput.
+		DWORD dwResult = XInputGetState(i, &state);
+		if(dwResult == ERROR_SUCCESS)
+		{
+			auto controller = std::make_unique<XboxController>(i);
+			m_Controllers.emplace_back(std::move(controller));
+		}
+	}
+}
+
+bool dae::InputManager::IsPressed(const SDL_Scancode& keyboardKey) const
+{
+	return m_pKeyboard->IsPressed(keyboardKey);
+}
+
+void dae::InputManager::ProcessKeyboardInputPressed(float deltaTime) const
+{
+	auto& commands = GetCommands();
 	for (auto& command : commands)
 	{
 		const KeyInput keyInput = command.first;
@@ -55,28 +147,120 @@ void dae::InputManager::ProcessKeyboardInputPressed(float deltaTime)
 	}
 }
 
-void dae::InputManager::ProcessKeyboardInputUp(float deltaTime, SDL_Scancode& e)
+bool dae::InputManager::GetInputKeyUp(const std::string& value) const
 {
-	auto& input = Input::GetInstance();
-	auto& commands = input.GetCommands();
+	auto it = std::find_if(m_Inputs.begin(), m_Inputs.end(), [value](const std::pair<std::string,KeyInput>& pair)
+		{
+			if(pair.first == value)
+			{
+				return true;
+			}
+			return false;
+		});
+
+	if(it == m_Inputs.end())
+	{
+		return false;
+	}
+	auto input = *it;
+	if(m_pKeyboard->IsUpThisFrame(input.second.scancode))
+	{
+		return true;
+	}
+
+	for(auto& controller: m_Controllers)
+	{
+		if(controller->IsUpThisFrame(static_cast<int>(input.second.controllerButton)))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+
+bool dae::InputManager::GetInputKeyPressed(const std::string& value) const
+{
+	auto it = std::find_if(m_Inputs.begin(), m_Inputs.end(), [value](const std::pair<std::string, KeyInput>& pair)
+		{
+			if (pair.first == value)
+			{
+				return true;
+			}
+			return false;
+		});
+
+	if (it == m_Inputs.end())
+	{
+		return false;
+	}
+	auto input = *it;
+	if (m_pKeyboard->IsPressed(input.second.scancode))
+	{
+		return true;
+	}
+
+	for (auto& controller : m_Controllers)
+	{
+		if (controller->IsPressed(static_cast<int>(input.second.controllerButton)))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool dae::InputManager::GetInputKeyDown(const std::string& value) const
+{
+	auto it = std::find_if(m_Inputs.begin(), m_Inputs.end(), [value](const std::pair<std::string, KeyInput>& pair)
+		{
+			if (pair.first == value)
+			{
+				return true;
+			}
+			return false;
+		});
+
+	if (it == m_Inputs.end())
+	{
+		return false;
+	}
+	auto input = *it;
+	if (m_pKeyboard->IsButtonDown(input.second.scancode))
+	{
+		return true;
+	}
+
+	for (auto& controller : m_Controllers)
+	{
+		if (controller->IsButtonDown(static_cast<int>(input.second.controllerButton)))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void dae::InputManager::ProcessKeyboardInputUp(float deltaTime) const
+{
+	auto& commands = GetCommands();
 	for (auto& command : commands)
 	{
 		const KeyInput keyInput = command.first;
-		if (keyInput.state == KeyState::up && e == keyInput.scancode)
+		if (keyInput.state == KeyState::up && m_pKeyboard->IsUpThisFrame(keyInput.scancode))
 		{
 			command.second->Execute(deltaTime);
 		}
 	}
 }
 
-void dae::InputManager::ProcessKeyboardInputDown(float deltaTime, SDL_Scancode& e)
+void dae::InputManager::ProcessKeyboardInputDown(float deltaTime) const
 {
-	auto& input = Input::GetInstance();
-	auto& commands = input.GetCommands();
+	auto& commands = GetCommands();
 	for (auto& command : commands)
 	{
 		const KeyInput keyInput = command.first;
-		if (keyInput.state == KeyState::down && e == keyInput.scancode)
+		if (keyInput.state == KeyState::down && m_pKeyboard->IsUpThisFrame(keyInput.scancode))
 		{
 			command.second->Execute(deltaTime);
 		}
@@ -85,10 +269,9 @@ void dae::InputManager::ProcessKeyboardInputDown(float deltaTime, SDL_Scancode& 
 
 void dae::InputManager::ProcessControllerInput(float deltaTime)
 {
-	auto& input = Input::GetInstance();
-	auto& commands = input.GetCommands();
-	auto& joystickCommands = input.GetJoystickCommands();
-	auto& controllers = input.GetControllers();
+	auto& commands = GetCommands();
+	auto& joystickCommands = GetJoystickCommands();
+	auto& controllers = GetControllers();
 
 	for (auto& controller : controllers)
 	{
@@ -102,9 +285,9 @@ void dae::InputManager::ProcessControllerInput(float deltaTime)
 		{
 			const auto controllerKey = command.first.controllerButton;
 			const unsigned int controllerId = command.first.controllerId;
-			const bool isPressed{ controller->IsPressed(static_cast<int>(controllerKey)) && command.first.state == dae::KeyState::pressed };
-			const bool isDown{ controller->IsButtonDown(static_cast<int>(controllerKey)) && command.first.state == dae::KeyState::down };
-			const bool isUp{ controller->IsUpThisFrame(static_cast<int>(controllerKey)) && command.first.state == dae::KeyState::up};
+			const bool isPressed{ controller->IsPressed(static_cast<int>(controllerKey)) && command.first.state == KeyState::pressed };
+			const bool isDown{ controller->IsButtonDown(static_cast<int>(controllerKey)) && command.first.state == KeyState::down };
+			const bool isUp{ controller->IsUpThisFrame(static_cast<int>(controllerKey)) && command.first.state == KeyState::up};
 			if (controller->GetID() == controllerId && (isPressed || isDown || isUp))
 			{
 				command.second->Execute(deltaTime);
@@ -119,7 +302,7 @@ void dae::InputManager::ProcessControllerInput(float deltaTime)
 			const unsigned int controllerId = command.first.first;
 			if (controller->GetID() == controllerId)
 			{
-				input.HandleJoystick(isLeft, actualCommand, state, deltaTime);
+				HandleJoystick(isLeft, actualCommand, state, deltaTime);
 			}
 		}
 	}

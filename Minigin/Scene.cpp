@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "GameObject.h"
+#include "algorithm"
 
 using namespace dae;
 
@@ -37,6 +38,14 @@ void Scene::Render() const
 	for (const auto& object : m_objects)
 	{
 		object->Render();
+	}
+}
+
+void dae::Scene::RenderImGUI() const
+{
+	for (const auto& object : m_objects)
+	{
+		object->RenderImGUI();
 	}
 }
 

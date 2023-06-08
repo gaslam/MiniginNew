@@ -1,22 +1,19 @@
-#include <string>
 #include "GameObject.h"
 #include "Renderer.h"
-#include "RenderComponent.h"
-#include "Texture2D.h"
 #include <algorithm>
+#include <ranges>
+
 #include "Component.h"
 
 
-dae::GameObject::~GameObject() = default;
-
 void dae::GameObject::Update(float deltaTime)
 {
-	for (auto& component : m_Components)
+	for (auto& component : m_Components | std::views::values)
 	{
-		component.second->Update(deltaTime);
+		component->Update(deltaTime);
 	}
 
-	for (auto& child : m_Children)
+	for (const auto& child : m_Children)
 	{
 		child->Update(deltaTime);
 	}
@@ -25,15 +22,23 @@ void dae::GameObject::Update(float deltaTime)
 void dae::GameObject::Render() const
 {
 
-	for (auto& component : m_Components)
+	for (const auto& component : m_Components | std::views::values)
 	{
-		component.second->Render();
+		component->Render();
+	}
+}
+
+void dae::GameObject::RenderImGUI() const
+{
+	for (const auto& component : m_Components | std::views::values)
+	{
+		component->RenderImGUI();
 	}
 }
 
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition = false)
 {
-	auto transform = GetComponent<Transform>();
+	const auto transform = GetComponent<Transform>();
 	if (transform == nullptr)
 	{
 		return;
@@ -44,7 +49,7 @@ void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition = fal
 	}
 	else
 	{
-		auto transformParent = parent == nullptr ? nullptr : parent->GetComponent<Transform>();
+		const auto transformParent = parent == nullptr ? nullptr : parent->GetComponent<Transform>();
 		if (keepWorldPosition && transformParent != nullptr)
 		{
 			transform->SetLocalPosition(transform->GetLocalPosition() - transformParent->GetWorldPosition());
@@ -54,7 +59,7 @@ void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition = fal
 			transform->SetPositionDirty();
 			for (auto& child : m_Children)
 			{
-				if (auto childTransform = child->GetComponent<Transform>())
+				if (const auto childTransform = child->GetComponent<Transform>())
 				{
 					childTransform->SetPositionDirty();
 				}
@@ -75,7 +80,7 @@ void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition = fal
 
 void dae::GameObject::RemoveChild(GameObject* child)
 {
-	auto foundObject = std::find(m_Children.begin(), m_Children.end(), child);
+	const auto foundObject = std::find(m_Children.begin(), m_Children.end(), child);
 	if (foundObject != m_Children.end())
 	{
 		m_Children.erase(foundObject);

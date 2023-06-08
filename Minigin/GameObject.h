@@ -2,7 +2,6 @@
 #include <memory>
 #include "Transform.h"
 #include <vector>
-#include "string"
 #include <memory>
 #include <unordered_map>
 #include <typeindex>
@@ -16,15 +15,16 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		virtual void Update(float deltaTime);
-		virtual void Render() const;
+		void Update(float deltaTime);
+		void Render() const;
+		void RenderImGUI() const;
 
 		void SetParent(GameObject* parent, bool keepWorldPosition);
 		void RemoveChild(GameObject* child);
 		void AddChild(GameObject* child);
 
 		GameObject() = default;
-		virtual ~GameObject();
+		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
@@ -38,11 +38,11 @@ namespace dae
 			const std::type_index typeIndex = std::type_index(typeid(T));
 			auto component = std::make_unique<T>(this, std::forward<Args>(args)...);
 			auto pointer = dynamic_cast<T*>(component.get());
-
+			MG_ASSERT(pointer != nullptr,"Cannot add component cause it's empty!!")
 			m_Components.emplace(typeIndex, std::move(component));
 
 			return pointer;
-		};
+		}
 
 
 		template<typename T>
@@ -60,7 +60,7 @@ namespace dae
 		void RemoveComponent()
 		{
 			const std::type_index typeIndex = std::type_index(typeid(T));
-			auto component = m_Components.at(typeIndex);
+			auto component = dynamic_cast<T*>(m_Components.at(typeIndex).get());
 
 			if (component)
 			{

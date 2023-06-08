@@ -1,8 +1,7 @@
 #include "Transform.h"
-#include <algorithm>
 #include "GameObject.h"
 
-const glm::vec3& dae::Transform::GetWorldPosition()
+const glm::vec2& dae::Transform::GetWorldPosition()
 {
 	if (m_PositionIsDirty)
 	{
@@ -37,7 +36,7 @@ void dae::Transform::UpdateWorldPosition()
 	}
 }
 
-void dae::Transform::SetLocalPosition(const glm::vec3& pos)
+void dae::Transform::SetLocalPosition(const glm::vec2& pos)
 {
 	m_LocalPosition = pos;
 	SetPositionDirty();

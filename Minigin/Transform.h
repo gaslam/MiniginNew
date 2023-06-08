@@ -8,12 +8,12 @@ namespace dae
 	{
 	public:
 		Transform(GameObject* owner) : Component(owner) {};
-		const glm::vec3 GetLocalPosition() const { return m_LocalPosition; }
-		const glm::vec3& GetWorldPosition();
+		const glm::vec2 GetLocalPosition() const { return m_LocalPosition; }
+		const glm::vec2& GetWorldPosition();
 		void UpdateWorldPosition();
 		//void SetPosition(float x, float y, float z);
-		void SetLocalPosition(const glm::vec3& pos);
-		void SetWorldPosition(const glm::vec3& pos) { m_WorldPosition = pos; }
+		void SetLocalPosition(const glm::vec2& pos);
+		void SetWorldPosition(const glm::vec2& pos) { m_WorldPosition = pos; }
 		void SetPositionDirty();
 
 		virtual void Render() const override {};
@@ -21,8 +21,8 @@ namespace dae
 		float GetSpeedForMovement() const { return m_SpeedForMovement; }
 		void SetSpeedForMovement(float speed) { m_SpeedForMovement = speed; }
 	private:
-		glm::vec3 m_LocalPosition{};
-		glm::vec3 m_WorldPosition{};
+		glm::vec2 m_LocalPosition{};
+		glm::vec2 m_WorldPosition{};
 		//Did not know where to put this. Is it also not bad to have a speed component just for this?
 		float m_SpeedForMovement{20.f};
 		bool m_PositionIsDirty{ false };
