@@ -1,10 +1,14 @@
 #pragma once
 #include <Component.h>
+#include <glm/vec2.hpp>
+
+#include "Subject.h"
+#include "GridComponent.h"
 
 namespace dae
 {
 	class EnemyComponent :
-		public Component
+		public Component, public Subject
 	{
 	public:
 		explicit EnemyComponent(GameObject* object);
@@ -15,8 +19,14 @@ namespace dae
 		EnemyComponent& operator=(const EnemyComponent& other) = delete;
 		EnemyComponent& operator=(EnemyComponent&& other) noexcept = delete;
 		void Render() const override{}
-		void Update(float) override{}
+		void Update(float) override;
 		virtual EnemyComponent* Clone(GameObject* object);
+		void CalculatePath(GameObject* target);
+		void SetGrid(GridComponent* gridComponent);
+	private:
+		glm::vec2 m_MoveDir{};
+		GridComponent* m_pGridComponent{};
+		std::vector<Node*> m_Path{};
 	};
 }
 

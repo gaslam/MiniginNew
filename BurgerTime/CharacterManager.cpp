@@ -5,13 +5,21 @@
 #include "Components/CharacterComponent.h"
 #include <Transform.h>
 
+#include "AudioComponent.h"
+#include "AudioComponent.h"
+#include "AudioComponent.h"
+#include "AudioComponent.h"
+#include "AudioComponent.h"
+#include "AudioComponent.h"
 #include "GameObject.h"
 #include "InputManager.h"
 #include "KeyStructs.h"
 #include "Locator.h"
+#include "Scene.h"
 #include "Shape.h"
 #include "Components/AnimationComponent.h"
 #include "Components/RigidBodyComponent.h"
+#include "Components/SpawnerComponent.h"
 
 using namespace dae;
 
@@ -94,6 +102,21 @@ std::shared_ptr<GameObject> CharacterManager::InitPlayer()
 	m_Player =chef.get();
 
 	return chef;
+}
+
+void dae::CharacterManager::InitEnemies(Scene* scene,GameObject* player,glm::vec2& gridStartPos,int backgroundWidth, int backgroundHeight, float /*scale*/) const
+{
+	const auto pGameObject{ std::make_shared<GameObject>() };
+	const int rowsAndColumns{ 25 };
+	const auto pGrid{ pGameObject->AddComponent<GridComponent>(gridStartPos,backgroundWidth,backgroundHeight,rowsAndColumns,rowsAndColumns) };
+	const glm::vec2 spawnPos{13, 13};
+	const auto pSpawner{ pGameObject->AddComponent<SpawnerComponent<EnemyComponent>>(spawnPos) };
+	const auto pEnemy{ std::make_shared<GameObject>() };
+	const auto pEnemyComp{ pSpawner->Spawn(pEnemy.get()) };
+	scene->Add(pGameObject);
+	scene->Add(pEnemy);
+	pEnemyComp->SetGrid(pGrid);
+	pEnemyComp->CalculatePath(player);
 }
 
 std::vector<GameObject*> CharacterManager::GetCharacters()

@@ -4,13 +4,14 @@
 #include "GameObject.h"
 #include "Components/LadderComponent.h"
 #include "Components/PlatformComponent.h"
+#include "Observers/BurgerObserver.h"
 #include "Observers/PlatformObserver.h"
 
 namespace Utils
 {
 	template <typename T>
 	std::enable_if_t<std::is_base_of_v<dae::Component, T>, std::shared_ptr<dae::GameObject>>
-	 GenerateRigidBodyComp(std::ifstream& stream, glm::vec2& worldPos, float scale)
+	 GenerateObjectWithComponent(std::ifstream& stream, glm::vec2& worldPos, float scale)
 	{
 		float x{}, y{};
 		float width{}, height{};
@@ -31,7 +32,7 @@ namespace Utils
 		pos *= scale;
 		pos += worldPos;
 		pTransform->SetWorldPosition(pos);
-		auto rectStartPos = glm::ivec2{ 0,0 };
+		constexpr glm::ivec2 rectStartPos{ 0,0 };
 		auto pShape = new dae::RectangleShape{ rectStartPos,static_cast<int>(width),static_cast<int>(height) };
 		platform->AddComponent<T>(pShape);
 		return platform;
@@ -39,7 +40,7 @@ namespace Utils
 
 	template <typename T>
 	std::enable_if_t<std::is_base_of_v<dae::Component, T>, std::shared_ptr<dae::GameObject>>
-		GenerateRigidBodyCompWithTexture(std::ifstream& stream, glm::vec2& worldPos, float scale)
+		GenerateObjectWithComponentAndTexture(std::ifstream& stream, glm::vec2& worldPos, float scale)
 	{
 		float x{}, y{};
 		auto platform = std::make_shared<dae::GameObject>();
@@ -63,6 +64,7 @@ namespace Utils
 	{
 		std::ifstream stream{ file, std::ios_base::in };
 		std::vector<std::shared_ptr<dae::Observer>> platformObservers{};
+		std::vector<std::shared_ptr<dae::BurgerObserver>> burgerObservers{};
 		std::vector<dae::BurgerComponent*> burgerComponents{};
 		while (stream)
 		{
@@ -71,7 +73,7 @@ namespace Utils
 
 			if (line == "Platform:")
 			{
-				const auto platform = GenerateRigidBodyComp<dae::PlatformComponent>(stream, worldPos, scale);
+				const auto platform = GenerateObjectWithComponent<dae::PlatformComponent>(stream, worldPos, scale);
 				auto pComponent{ platform->GetComponent<dae::RigidBodyComponent>() };
 				platformObservers.emplace_back(std::make_shared<dae::PlatformObserver>(pComponent));
 				scene->Add(platform);
@@ -79,18 +81,20 @@ namespace Utils
 
 			if (line == "BurgerDropoff:")
 			{
-				//const auto dropoff = GenerateRigidBodyComp(stream, worldPos, scale);
+				//const auto dropoff = GenerateObjectWithComponent(stream, worldPos, scale);
 				//scene->Add(dropoff);
 			}
 
 			if (line == "Ladder:")
 			{
-				const auto dropoff = GenerateRigidBodyComp<dae::LadderComponent>(stream, worldPos, scale);
+				const auto dropoff = GenerateObjectWithComponent<dae::LadderComponent>(stream, worldPos, scale);
 				scene->Add(dropoff);
 			}
 			if (line == "Burger:")
 			{
-				const auto burger = GenerateRigidBodyCompWithTexture<dae::BurgerComponent>(stream, worldPos, scale);
+				const auto burger = GenerateObjectWithComponentAndTexture<dae::BurgerComponent>(stream, worldPos, scale);
+				auto pComponent{ burger->GetComponent<dae::BurgerComponent>() };
+				burgerObservers.emplace_back(std::make_shared<dae::BurgerObserver>(pComponent));
 				burgerComponents.emplace_back(burger->GetComponent<dae::BurgerComponent>());
 				scene->Add(burger);
 			}
@@ -101,6 +105,26 @@ namespace Utils
 			for(const auto observer: platformObservers)
 			{
 				burger->AddObserver(observer);
+			}
+		}
+
+		for(size_t i{}; i < burgerObservers.size(); i += 4)
+		{
+			size_t possibleNextObservers{ i + 4 };
+			if(possibleNextObservers> burgerObservers.size())
+			{
+				possibleNextObservers = burgerObservers.size();
+			}
+			std::vector<std::shared_ptr<dae::BurgerObserver>> range{ &burgerObservers[0] + i, &burgerObservers[0]+ possibleNextObservers };
+			for(const auto burger: burgerComponents)
+			{
+				for(const auto observer: range)
+				{
+					if(observer->GetComponent() != burger)
+					{
+						burger->AddObserver(observer);
+					}
+				}
 			}
 		}
 	}

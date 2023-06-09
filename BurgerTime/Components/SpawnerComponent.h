@@ -24,6 +24,7 @@ namespace dae
 		EnemyComponent* Spawn(GameObject* object) const
 		{
 			const auto enemyComponent = m_pEnemyComponent->Clone(object);
+			m_pTransform->Clone(object);
 			return enemyComponent;
 		}
 	private:

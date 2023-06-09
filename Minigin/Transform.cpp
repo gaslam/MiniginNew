@@ -1,7 +1,8 @@
 #include "Transform.h"
 #include "GameObject.h"
 
-const glm::vec2& dae::Transform::GetWorldPosition()
+using namespace dae;
+const glm::vec2& Transform::GetWorldPosition()
 {
 	if (m_PositionIsDirty)
 	{
@@ -10,7 +11,7 @@ const glm::vec2& dae::Transform::GetWorldPosition()
 	return m_WorldPosition;
 }
 
-void dae::Transform::UpdateWorldPosition()
+void Transform::UpdateWorldPosition()
 {
 	if (m_PositionIsDirty)
 	{
@@ -36,20 +37,24 @@ void dae::Transform::UpdateWorldPosition()
 	}
 }
 
-void dae::Transform::SetLocalPosition(const glm::vec2& pos)
+void Transform::SetLocalPosition(const glm::vec2& pos)
 {
 	m_LocalPosition = pos;
 	SetPositionDirty();
 }
 
-void dae::Transform::SetPositionDirty()
+void Transform::SetPositionDirty()
 {
 	m_PositionIsDirty = true;
 }
 
-//void dae::Transform::SetPosition(const float x, const float y, const float z)
-//{
-//	m_position.x = x;
-//	m_position.y = y;
-//	m_position.z = z;
-//}
+Transform* Transform::Clone(GameObject* pObject)
+{
+	if(pObject->IsComponentAdded<Transform>())
+	{
+		pObject->RemoveComponent<Transform>();
+	}
+	const auto transform{ pObject->AddComponent<Transform>() };
+	transform->SetWorldPosition(m_WorldPosition);
+	return transform;
+}

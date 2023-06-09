@@ -158,6 +158,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AudioComponent.h" />
+    <ClInclude Include="Observers\BurgerObserver.h" />
     <ClInclude Include="Observers\PlatformObserver.h" />
     <ClInclude Include="States\BurgerFallingState.h" />
     <ClInclude Include="States\BurgerTurningState.h" />
@@ -190,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioComponent.cpp" />
+    <ClCompile Include="Observers\BurgerObserver.cpp" />
     <ClCompile Include="Observers\PlatformObserver.cpp" />
     <ClCompile Include="States\BurgerFallingState.cpp" />
     <ClCompile Include="States\BurgerTurningState.cpp" />

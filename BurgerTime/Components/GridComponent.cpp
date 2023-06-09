@@ -6,9 +6,12 @@
 
 void dae::GridComponent::RenderImGUI()
 {
-	ImGui::Text("Grid:");
-	ImGui::NewLine();
-	ImGui::Checkbox("Draw grid", &m_DrawGrid);
+	if(ImGui::CollapsingHeader("Grid"))
+	{
+		ImGui::Text("Grid:");
+		ImGui::NewLine();
+		ImGui::Checkbox("Draw grid", &m_DrawGrid);
+	}
 }
 void dae::GridComponent::RenderGrid() const
 {

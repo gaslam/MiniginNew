@@ -20,6 +20,7 @@ namespace dae
 		virtual void Update(float) override {};
 		float GetSpeedForMovement() const { return m_SpeedForMovement; }
 		void SetSpeedForMovement(float speed) { m_SpeedForMovement = speed; }
+		Transform* Clone(GameObject* pObject);
 	private:
 		glm::vec2 m_LocalPosition{};
 		glm::vec2 m_WorldPosition{};
