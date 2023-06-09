@@ -95,6 +95,7 @@ void BurgerComponent::StopFalling(const float hitYPos)
 	pTransform->SetLocalPosition(localPos);
 	Event event{ EventType::HIT };
 	Invoke(pOwner, event);
+	SetState(State::standingStill);
 }
 
 void BurgerComponent::SetFallThroughGround(bool isAllowed) const

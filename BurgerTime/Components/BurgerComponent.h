@@ -23,11 +23,12 @@ namespace dae
 			falling
 		};
 		void SetState(State state);
-		State GetState() const { return m_State; }
+		void SetState(BurgerState* state);
 		void SetDegreesTurned(double degrees);
-		double GetDegreesTurned() const { return m_DegreesTurned; }
 		void StopFalling(const float hitYPos);
 		void SetFallThroughGround(bool isAllowed) const;
+		State GetState() const { return m_State; }
+		double GetDegreesTurned() const { return m_DegreesTurned; }
 		glm::vec2 GetPosition() const;
 	private:
 		double m_DegreesTurned{};
@@ -38,7 +39,6 @@ namespace dae
 		RectangleShape* m_pShape{};
 		std::unique_ptr<BurgerState> m_pBurgerState{};
 		void HandleInput();
-		void SetState(BurgerState* state);
 		void HandleFall() const;
 };
 }
