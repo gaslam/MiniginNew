@@ -22,6 +22,7 @@ dae::BurgerState* dae::BurgerStandingState::HandleInput()
 	{
 		return new BurgerTurningState{};
 	}
+
 	return nullptr;
 }
 

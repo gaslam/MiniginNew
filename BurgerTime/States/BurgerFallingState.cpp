@@ -33,5 +33,5 @@ void dae::BurgerFallingState::Update(BurgerComponent* pComponent, float /*deltaT
 	{
 		pComponent->SetFallThroughGround(false);
 	}
-	m_IsStateFalling = pComponent->GetState() != BurgerComponent::State::falling;
+	m_IsStateFalling = pComponent->GetState() == BurgerComponent::State::falling;
 }
