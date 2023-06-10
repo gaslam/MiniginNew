@@ -2,16 +2,18 @@
 #include "Scene.h"
 #include <imgui.h>
 
-void dae::SceneManager::Update(float deltaTime)
+using namespace dae;
+
+void SceneManager::Update(float deltaTime)
 {
 	m_scenes[m_Scene]->Update(deltaTime);
 }
 
-void dae::SceneManager::FixedUpdate(float)
+void SceneManager::FixedUpdate(float)
 {
 }
 
-void dae::SceneManager::Render()
+void SceneManager::Render()
 {
 	m_scenes[m_Scene]->Render();
 	ImGui::SetNextWindowSize(ImVec2(240, 250));
@@ -20,7 +22,30 @@ void dae::SceneManager::Render()
 	ImGui::End();
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+void SceneManager::SetScene(int scene)
+{
+	m_scenes[m_Scene]->End();
+	m_Scene = scene;
+	m_scenes[m_Scene]->Start();
+}
+
+void SceneManager::GoToPreviousScene()
+{
+	if (m_Scene - 1 < 0) return;
+	m_scenes[m_Scene]->End();
+	--m_Scene;
+	m_scenes[m_Scene]->Start();
+}
+
+void SceneManager::GoToNextScene()
+{
+	if (m_Scene + 1 >= static_cast<int>(m_scenes.size())) return;
+	m_scenes[m_Scene]->End();
+	++m_Scene;
+	m_scenes[m_Scene]->Start();
+}
+
+Scene& SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
 	m_scenes.push_back(scene);

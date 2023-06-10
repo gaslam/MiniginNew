@@ -4,9 +4,23 @@
 
 using namespace dae;
 
-unsigned int Scene::m_idCounter = 0;
-
 Scene::Scene(const std::string& name) : m_name(name) {}
+
+void Scene::Start() const
+{
+	for(auto& object: m_objects)
+	{
+		object->Start();
+	}
+}
+
+void Scene::End() const
+{
+	for (auto& object : m_objects)
+	{
+		object->End();
+	}
+}
 
 Scene::~Scene() = default;
 
@@ -41,7 +55,7 @@ void Scene::Render() const
 	}
 }
 
-void dae::Scene::RenderImGUI() const
+void Scene::RenderImGUI() const
 {
 	for (const auto& object : m_objects)
 	{

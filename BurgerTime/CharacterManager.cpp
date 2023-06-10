@@ -5,12 +5,6 @@
 #include "Components/CharacterComponent.h"
 #include <Transform.h>
 
-#include "AudioComponent.h"
-#include "AudioComponent.h"
-#include "AudioComponent.h"
-#include "AudioComponent.h"
-#include "AudioComponent.h"
-#include "AudioComponent.h"
 #include "GameObject.h"
 #include "InputManager.h"
 #include "KeyStructs.h"
@@ -104,7 +98,7 @@ std::shared_ptr<GameObject> CharacterManager::InitPlayer()
 	return chef;
 }
 
-void dae::CharacterManager::InitEnemies(Scene* scene,GameObject* player,glm::vec2& gridStartPos,int backgroundWidth, int backgroundHeight, float /*scale*/) const
+void CharacterManager::InitEnemies(Scene* scene,GameObject* player,glm::vec2& gridStartPos,int backgroundWidth, int backgroundHeight, float /*scale*/) const
 {
 	const auto pGameObject{ std::make_shared<GameObject>() };
 	const int rowsAndColumns{ 25 };

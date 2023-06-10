@@ -13,22 +13,23 @@ namespace dae
 		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
 
+		void Start() const;
+		void End() const;
+
 		void Update(float deltaTime);
 		void Render() const;
 		void RenderImGUI() const;
 
 		~Scene();
+		explicit Scene(const std::string& name);
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
 	private: 
-		explicit Scene(const std::string& name);
-
 		std::string m_name;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
-		static unsigned int m_idCounter; 
 	};
 
 }

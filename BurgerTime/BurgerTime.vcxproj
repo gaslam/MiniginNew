@@ -157,9 +157,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AudioComponent.h" />
+    <ClInclude Include="Components\AudioComponent.h" />
     <ClInclude Include="Observers\BurgerObserver.h" />
     <ClInclude Include="Observers\PlatformObserver.h" />
+    <ClInclude Include="SceneComponent.h" />
+    <ClInclude Include="Commands\SceneSwitchCommand.h" />
     <ClInclude Include="States\BurgerFallingState.h" />
     <ClInclude Include="States\BurgerTurningState.h" />
     <ClInclude Include="Components\BurgerComponent.h" />
@@ -183,16 +185,16 @@
     <ClInclude Include="Components\TextComponent.h" />
     <ClInclude Include="Components\GridComponent.h" />
     <ClInclude Include="ImGuiTempRenderer.h" />
-    <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="States\MovingState.h" />
     <ClInclude Include="States\PlayerState.h" />
     <ClInclude Include="States\IdleState.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AudioComponent.cpp" />
+    <ClCompile Include="Components\AudioComponent.cpp" />
     <ClCompile Include="Observers\BurgerObserver.cpp" />
     <ClCompile Include="Observers\PlatformObserver.cpp" />
+    <ClCompile Include="SceneComponent.cpp" />
     <ClCompile Include="States\BurgerFallingState.cpp" />
     <ClCompile Include="States\BurgerTurningState.cpp" />
     <ClCompile Include="Components\BurgerComponent.cpp" />
@@ -215,7 +217,6 @@
     <ClCompile Include="Components\GridComponent.cpp" />
     <ClCompile Include="ImGuiTempRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="States\MovingState.cpp" />
     <ClCompile Include="States\IdleState.cpp" />
   </ItemGroup>

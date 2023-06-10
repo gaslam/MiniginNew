@@ -16,6 +16,8 @@ namespace dae
 	{
 	public:
 		void Update(float deltaTime);
+		void Start();
+		void End();
 		void Render() const;
 		void RenderImGUI() const;
 

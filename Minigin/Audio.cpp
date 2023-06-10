@@ -193,7 +193,13 @@ void Audio::AudioImpl::PollEvents()
 			}
 			case AudioEventType::STOPALL:
 			{
-				Mix_HaltChannel(-1);
+					if(std::any_of(m_Sounds.begin(),m_Sounds.end(),[this](const AudioInfo& info)
+					{
+							return IsPlaying(info.channel);
+					}))
+					{
+						Mix_HaltChannel(-1);
+					}
 				break;
 			}
 			case AudioEventType::PAUSE:
@@ -269,9 +275,15 @@ Audio::AudioImpl::~AudioImpl()
 {
 	m_AudioThread.request_stop();
 
-	for (const auto sound : m_Sounds)
+	while (!m_Sounds.empty())
 	{
+		const auto sound{ m_Sounds[0] };
+		const auto it{ std::remove_if(m_Sounds.begin(),m_Sounds.end(),[sound](const AudioInfo& info)
+		{
+				return info.pData == sound.pData;
+		}) };
 		Mix_FreeChunk(sound.pData);
+		m_Sounds.erase(it,m_Sounds.end());
 	}
 }
 
@@ -302,23 +314,24 @@ void Audio::AudioImpl::Init()
 	m_AudioThread = std::jthread([this]() {PollEvents(); });
 
 	Mix_ChannelFinished(&EndSound);
+	m_AudioThread.detach();
 }
 
 void Audio::AudioImpl::Play(unsigned int soundID, int loops)
 {
-	const std::lock_guard lock{m_Mutex};
 	m_Sounds[soundID].loops = loops;
 	auto sound{ m_Sounds[soundID] };
 	sound.loops = loops;
 	const AudioEvent event{ GenerateEvent(AudioEventType::PLAY, sound.channel, sound.volume, sound.pData, sound.loops) };
+	const std::lock_guard lock{m_Mutex};
 	m_AudioEventBuffer.write(event);
 }
 
 void Audio::AudioImpl::Pause(unsigned int soundID)
 {
-	const std::lock_guard lock{m_Mutex};
 	const auto sound{ m_Sounds[soundID] };
 	const AudioEvent event{ GenerateEvent(AudioEventType::PAUSE, sound.channel, sound.volume, sound.pData, sound.loops) };
+	const std::lock_guard lock{m_Mutex};
 	m_AudioEventBuffer.write(event);
 }
 
@@ -331,24 +344,24 @@ void Audio::AudioImpl::PauseAll()
 
 void Audio::AudioImpl::UnPause(unsigned int soundID)
 {
-	const std::lock_guard lock{m_Mutex};
 	const auto sound { m_Sounds[soundID]};
 	const AudioEvent event { GenerateEvent(AudioEventType::UNPAUSE, sound.channel, sound.volume, sound.pData, sound.loops)};
+	const std::lock_guard lock{m_Mutex};
 	m_AudioEventBuffer.write(event);
 }
 
 void Audio::AudioImpl::UnPauseAll()
 {
-	const std::lock_guard lock{m_Mutex};
 	const AudioEvent event { GenerateEvent(AudioEventType::UNPAUSEALL, 0, 0, nullptr, 0)};
+	const std::lock_guard lock{m_Mutex};
 	m_AudioEventBuffer.write(event);
 }
 
 void Audio::AudioImpl::Stop(unsigned int soundID)
 {
-	const std::lock_guard lock{m_Mutex};
 	const auto sound { m_Sounds[soundID]};
 	const AudioEvent event { GenerateEvent(AudioEventType::STOP, soundID, sound.volume, sound.pData, sound.loops)};
+	const std::lock_guard lock{m_Mutex};
 	m_AudioEventBuffer.write(event);
 }
 

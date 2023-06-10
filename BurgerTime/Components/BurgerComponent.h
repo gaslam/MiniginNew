@@ -14,6 +14,7 @@ namespace dae
 {
 	public:
 		BurgerComponent(GameObject* pObject, const std::string& file, const glm::vec2& pos, float scale);
+		void Start() override;
 		void Update(float) override;
 		RectangleShape* GetShape() const { return m_pShape; }
 		enum class State
@@ -33,6 +34,7 @@ namespace dae
 	private:
 		double m_DegreesTurned{};
 
+		glm::vec2 m_OriginalPosition{};
 		State m_State{};
 
 		RenderComponent* m_pRenderComp{};

@@ -12,6 +12,7 @@
 using namespace dae;
 
 BurgerComponent::BurgerComponent(GameObject* pObject, const std::string& file, const glm::vec2& pos, float scale) : Component{ pObject }, m_pBurgerState{ std::make_unique<BurgerStandingState>() }
+,m_OriginalPosition{pos}
 {
 	auto pOwner{ GetOwner() };
 	m_pRenderComp = pOwner->GetComponent<RenderComponent>();
@@ -31,7 +32,20 @@ BurgerComponent::BurgerComponent(GameObject* pObject, const std::string& file, c
 	m_pShape = new RectangleShape{ pos, width,height };
 	const auto pRigidBody{ pOwner->AddComponent<RigidBodyComponent>(pTransform) };
 	pRigidBody->SetShape(m_pShape);
-	m_pBurgerState->OnEnter(this);
+}
+
+void BurgerComponent::Start()
+{
+	auto pOwner{ GetOwner() };
+	Transform* pTransform{ pOwner->GetComponent<Transform>() };
+	if (!pTransform)
+	{
+		pTransform = pOwner->AddComponent<Transform>();
+	}
+	pTransform->SetWorldPosition(m_OriginalPosition);
+	SetState(new BurgerStandingState{});
+	m_DegreesTurned = 0;
+	m_pRenderComp->SetAngle(m_DegreesTurned);
 }
 
 void BurgerComponent::Update(float deltaTime)

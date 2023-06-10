@@ -19,6 +19,22 @@ void dae::GameObject::Update(float deltaTime)
 	}
 }
 
+void dae::GameObject::Start()
+{
+	for (const auto& component : m_Components | std::views::values)
+	{
+		component->Start();
+	}
+}
+
+void dae::GameObject::End()
+{
+	for (const auto& component : m_Components | std::views::values)
+	{
+		component->End();
+	}
+}
+
 void dae::GameObject::Render() const
 {
 

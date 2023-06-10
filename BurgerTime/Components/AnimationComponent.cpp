@@ -5,7 +5,7 @@
 
 using namespace dae;
 
-dae::AnimationComponent::AnimationComponent(GameObject* object, const std::string& textureFile, float framesSec, float scale, int rows, int cols, int startRow, int startCol, int count, bool canRepeat) :
+AnimationComponent::AnimationComponent(GameObject* object, const std::string& textureFile, float framesSec, float scale, int rows, int cols, int startRow, int startCol, int count, bool canRepeat) :
 	Component(object), m_CanRepeat{canRepeat}, m_Rows{rows}, m_Cols{cols}, m_StartFrame{ GetGridIdx(startRow,cols,startCol) }, m_EndFrame{ m_StartFrame + count },
 	m_CurrentFrame{},m_FrameSec{framesSec}
 {
@@ -25,7 +25,7 @@ dae::AnimationComponent::AnimationComponent(GameObject* object, const std::strin
 	}
 }
 
-void dae::AnimationComponent::Update(float elapsedSec)
+void AnimationComponent::Update(float elapsedSec)
 {
 	m_AccuSec += elapsedSec;
 	if (m_AccuSec < m_FrameSec)
@@ -69,7 +69,7 @@ void dae::AnimationComponent::Update(float elapsedSec)
 
 }
 
-void dae::AnimationComponent::ChangeAnimation(int rowIdx,int colIdx, int count, bool canRepeat, bool xFlipped, bool yFlipped)
+void AnimationComponent::ChangeAnimation(int rowIdx,int colIdx, int count, bool canRepeat, bool xFlipped, bool yFlipped)
 {
 	m_StartFrame = GetGridIdx(rowIdx, m_Cols, colIdx);
 	m_EndFrame = m_StartFrame + count;
@@ -79,7 +79,7 @@ void dae::AnimationComponent::ChangeAnimation(int rowIdx,int colIdx, int count, 
 	m_pRenderComponent->SetXandYFlip(xFlipped, yFlipped);
 }
 
-SDL_Rect dae::AnimationComponent::GetCell() const
+SDL_Rect AnimationComponent::GetCell() const
 {
 	const auto pOwner = GetOwner();
 	const bool isOwnerNotNullptr{ pOwner != nullptr };

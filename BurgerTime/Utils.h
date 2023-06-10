@@ -1,11 +1,19 @@
 #pragma once
 #include <fstream>
 #include "Components/RigidBodyComponent.h"
-#include "GameObject.h"
+#include "Components/RenderComponent.h"
 #include "Components/LadderComponent.h"
 #include "Components/PlatformComponent.h"
+#include "Components/BurgerComponent.h"
 #include "Observers/BurgerObserver.h"
 #include "Observers/PlatformObserver.h"
+#include <Scene.h>
+#include <GameObject.h>
+
+#include "CharacterManager.h"
+#include "InputManager.h"
+#include "SceneComponent.h"
+#include "Commands/SceneSwitchCommand.h"
 
 namespace Utils
 {
@@ -127,5 +135,52 @@ namespace Utils
 				}
 			}
 		}
+	}
+
+	inline void AddScene(int stageId, std::shared_ptr<dae::GameObject> player)
+	{
+		std::string stageIdStr{ std::to_string(stageId) };
+		auto& scene = dae::SceneManager::GetInstance().CreateScene("Stage " + stageIdStr);
+
+		auto go = std::make_shared<dae::GameObject>();
+		auto render = go->AddComponent<dae::RenderComponent>("Backgrounds/Stage_" + stageIdStr + ".png");
+		const float worldScale{ 3.f };
+		render->SetScale(worldScale);
+		auto transform = go->AddComponent<dae::Transform>();
+		glm::ivec2 windowSize = dae::Renderer::GetInstance().GetWindowWidthAndHeight();
+		const float backgroundWidth = render->GetWidthScaled();
+		const float backgroundHeight = render->GetHeightScaled();
+		scene.Add(go);
+
+		auto sceneObj{ std::make_shared<dae::GameObject>() };
+		sceneObj->AddComponent<dae::SceneComponent>();
+		scene.Add(sceneObj);
+
+		glm::vec2 worldPos = { windowSize.x / 2.f - backgroundWidth / 2.f,windowSize.y - backgroundHeight };
+		transform->SetWorldPosition(worldPos);
+		std::string file{ "../Data/LevelData/Stage" + stageIdStr + "Data.btf" };
+		ReadLevelData(file, &scene, worldPos, worldScale);
+		scene.Add(player);
+
+	}
+
+	inline void AddScenes()
+	{
+		auto player{ dae::CharacterManager::GetInstance().InitPlayer() };
+		AddScene(1,player);
+		AddScene(2,player);
+		AddScene(3,player);
+
+		dae::SceneManager::GetInstance().SetScene(0);
+		bool moveToNext{false};
+		constexpr int controllerIndex{ 0 };
+		auto controllerButton{ dae::XboxController::ControllerButton::LeftShoulder };
+		SDL_Scancode keyboardButton{ SDL_SCANCODE_F3 };
+		auto keyState{ KeyState::down };
+		dae::InputManager::GetInstance().BindButtonsToCommand(controllerIndex, controllerButton, keyboardButton, keyState, new dae::SceneSwitchCommand{ moveToNext });
+		moveToNext = true;
+		controllerButton = dae::XboxController::ControllerButton::RightShoulder;
+		keyboardButton = SDL_SCANCODE_F4;
+		dae::InputManager::GetInstance().BindButtonsToCommand(controllerIndex, controllerButton, keyboardButton, keyState, new dae::SceneSwitchCommand{ moveToNext });
 	}
 }

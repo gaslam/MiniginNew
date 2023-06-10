@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="ImGuiTempRenderer.h" />
-    <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="Components\TextComponent.h" />
     <ClInclude Include="Components\AnimationComponent.h" />
     <ClInclude Include="Components\CharacterComponent.h" />
@@ -30,14 +29,15 @@
     <ClInclude Include="States\BurgerTurningState.h" />
     <ClInclude Include="States\BurgerFallingState.h" />
     <ClInclude Include="Observers\PlatformObserver.h" />
-    <ClInclude Include="AudioComponent.h" />
     <ClInclude Include="Observers\BurgerObserver.h" />
+    <ClInclude Include="SceneComponent.h" />
+    <ClInclude Include="Components\AudioComponent.h" />
+    <ClInclude Include="Commands\SceneSwitchCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CharacterManager.cpp" />
     <ClCompile Include="ImGuiTempRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="Components\AnimationComponent.cpp" />
     <ClCompile Include="Components\CharacterComponent.cpp" />
     <ClCompile Include="Components\EnemyComponent.cpp" />
@@ -60,7 +60,8 @@
     <ClCompile Include="States\BurgerTurningState.cpp" />
     <ClCompile Include="States\BurgerFallingState.cpp" />
     <ClCompile Include="Observers\PlatformObserver.cpp" />
-    <ClCompile Include="AudioComponent.cpp" />
     <ClCompile Include="Observers\BurgerObserver.cpp" />
+    <ClCompile Include="SceneComponent.cpp" />
+    <ClCompile Include="Components\AudioComponent.cpp" />
   </ItemGroup>
 </Project>

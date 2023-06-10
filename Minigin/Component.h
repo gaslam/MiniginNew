@@ -14,6 +14,9 @@ namespace dae {
 		virtual void Render() const {};
 		virtual void Update(float) {};
 		virtual void RenderImGUI() {};
+		virtual void Start(){}
+		virtual void End(){}
+
 	protected:
 		GameObject* GetOwner() const { return m_pOwner; }
 		explicit Component(GameObject* owner) : m_pOwner{ owner } {
