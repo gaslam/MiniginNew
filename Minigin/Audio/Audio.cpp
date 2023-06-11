@@ -171,7 +171,7 @@ void Audio::AudioImpl::PollEvents()
 				const int channel{ Mix_HaltChannel(e.info.channel) };
 				if (channel == -1)
 				{
-					MG_ASSERT_WARNING(channel == -1, "Cannot play audio file!!")
+					MG_ASSERT_WARNING(channel == -1, "Cannot stop audio file!!")
 				}
 				break;
 			}
@@ -360,10 +360,12 @@ int Audio::AudioImpl::Load(const std::string& filePath)
 	}) };
 
 	Mix_Chunk* audioData{ };
-
-	if(sound != m_Sounds.end())
+	int channel{};
+	const bool soundFound{ sound != m_Sounds.end() };
+	if(soundFound)
 	{
 		audioData = sound->pData;
+		channel = sound->channel;
 	}
 	else
 	{
@@ -381,7 +383,7 @@ int Audio::AudioImpl::Load(const std::string& filePath)
 	AudioInfo audioInfo{};
 	audioInfo.pData = audioData;
 	audioInfo.volume = 0.5f;
-	audioInfo.channel = static_cast<int>(m_Sounds.size());
+	audioInfo.channel = soundFound ? channel : static_cast<int>(m_Sounds.size());
 	audioInfo.filePath = filePath;
 
 	m_Sounds.emplace_back(audioInfo);
