@@ -10,7 +10,6 @@ namespace dae
 	{
 	public:
 		LadderComponent(GameObject* pOwner, RectangleShape* pShape);
-		void Render() const override {};
 		void Update(float deltaTime);
 	private:
 		RigidBodyComponent* m_pRigidBodyComp{};

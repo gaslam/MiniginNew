@@ -166,7 +166,7 @@ namespace dae
 					if (itOpen == openList.end())
 					{
 						++currentNode->cost;
-						openList.emplace_front(std::make_unique<NodeRecord>(neighbor->index,currentNode,currentNode->cost + 1));
+						openList.emplace_front(std::make_unique<NodeRecord>(neighbor->index,currentNode));
 					}
 					else if (currentNode->cost + 1 < itOpen->get()->cost)
 					{
@@ -208,14 +208,6 @@ namespace dae
 		void RenderGrid() const;
 		void Render() const override;
 	private:
-
-		float CalculateH(glm::vec2& start, glm::vec2& dest)
-		{
-			const float destXdiff{ start.x - dest.x };
-			const float destYdiff{ start.y - dest.y };
-			float H = (sqrtf(destXdiff * destXdiff + destYdiff * destYdiff));
-			return H;
-		}
 		bool m_DrawGrid{ false };
 
 		const int m_XStep;

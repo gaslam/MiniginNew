@@ -10,7 +10,6 @@ namespace dae
 	{
 	public:
 		PlatformComponent(GameObject* pOwner, RectangleShape* pShape);
-		void Render() const override {};
 		void Update(float) override;
 	private:
 		RigidBodyComponent* m_pRigidBodyComp{};
