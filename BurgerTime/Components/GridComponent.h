@@ -130,28 +130,35 @@ namespace dae
 		}
 
 
-
+	//Source: https://web.archive.org/web/20171022224528/http://www.policyalmanac.org:80/games/aStarTutorial.htm
 		std::vector<Node*> AStar(Node* pStartNode, Node* pGoalNode) {
 			std::deque<std::unique_ptr<NodeRecord>> openList{};
 			std::deque<std::unique_ptr<NodeRecord>> closedList{};
 			std::vector<Node*> path{};
 
+
+			//We create a node record from the starting record and emplace it on the openlist
 			NodeRecord* startRecord{ new NodeRecord{pStartNode->index,nullptr,0} };
 			NodeRecord* currentNode{ startRecord };
 			openList.emplace_back(currentNode);
+
+			//Perform code while list is empty or current node is the goal node
 			while (!openList.empty())
 			{
+
+				//Get the node with the lowest cost, which should be in the back and switch it with the closed list
 				currentNode = openList.back().get();
 				closedList.emplace_back(std::move(openList.back()));
 				openList.pop_back();
 
-				if(pGoalNode->index == currentNode->nodeIndex)
+				if (pGoalNode->index == currentNode->nodeIndex)
 				{
 					break;
 				}
+				// Get the Node neighbors and perform a for loop
 				Node* node{ GetNodeByIndex(currentNode->nodeIndex) };
-				const auto neigbors{ GetNeigbors(node) };
-				for (const auto neighbor : neigbors)
+				const auto neighbors{ GetNeigbors(node) };
+				for (const auto neighbor : neighbors)
 				{
 					if (neighbor->index == startRecord->nodeIndex)
 					{
@@ -162,12 +169,13 @@ namespace dae
 					{
 							return node->nodeIndex == neighbor->index;
 					}) };
-
+					//If it isn't on the openlist, add it to the list
 					if (itOpen == openList.end())
 					{
 						++currentNode->cost;
-						openList.emplace_front(std::make_unique<NodeRecord>(neighbor->index,currentNode));
+						openList.emplace_front(std::make_unique<NodeRecord>(neighbor->index, currentNode));
 					}
+					//Otherwise look if a shorter path is is available
 					else if (currentNode->cost + 1 < itOpen->get()->cost)
 					{
 						itOpen->get()->prevNode = currentNode;
@@ -178,49 +186,47 @@ namespace dae
 							return node->nodeIndex == neighbor->index;
 					}) };
 
-					if(itClosed != closedList.end())
+					//If it it's on the closed list, look if a shorter path is is available
+					if (itClosed != closedList.end() && currentNode->cost + 1 < itClosed->get()->cost)
 					{
-						if(currentNode->cost + 1 < itClosed->get()->cost)
-						{
-							itClosed->get()->prevNode = currentNode;
-							itClosed->get()->cost = currentNode->cost + 1;
-						}
+						itClosed->get()->prevNode = currentNode;
+						itClosed->get()->cost = currentNode->cost + 1;
 					}
 				}
 			}
 
-			if(openList.empty())
-			{
-				Node* node{ GetNodeByIndex(currentNode->nodeIndex) };
-				path.emplace_back(node);
-				return path;
-			}
-
-			while(currentNode != nullptr)
-			{
-				path.emplace_back(GetNodeByIndex(currentNode->nodeIndex));
-				currentNode = currentNode->prevNode;
-			}
-			return path;
+			//If the openlist is empty return no path
+		if (openList.empty())
+		{
+			return {};
 		}
 
-		void RenderImGUI() override;
-		void RenderGrid() const;
-		void Render() const override;
-	private:
-		bool m_DrawGrid{ false };
+		//Else trace back the path through a while loop by using the previous node
+		while (currentNode != nullptr)
+		{
+			path.emplace_back(GetNodeByIndex(currentNode->nodeIndex));
+			currentNode = currentNode->prevNode;
+		}
+		return path;
+	}
 
-		const int m_XStep;
-		const int m_YStep;
-		const int m_MaxX;
-		const int m_MaxY;
-		const int m_Rows;
-		const int m_Cols;
+	void RenderImGUI() override;
+	void RenderGrid() const;
+	void Render() const override;
+private:
+	bool m_DrawGrid{ false };
 
-		glm::vec2 m_StartPos{};
+	const int m_XStep;
+	const int m_YStep;
+	const int m_MaxX;
+	const int m_MaxY;
+	const int m_Rows;
+	const int m_Cols;
 
-		std::vector<std::unique_ptr<Node>> m_Nodes{};
-	};
+	glm::vec2 m_StartPos{};
+
+	std::vector<std::unique_ptr<Node>> m_Nodes{};
+};
 }
 
 
