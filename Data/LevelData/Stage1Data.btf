@@ -141,8 +141,64 @@ Ladder:
 
 Burger:
 Objects/BurgerBunTop.png
-15 5
+15 38
 
 Burger:
 Objects/BurgerSalad.png
-15 30
+15 70
+
+Burger:
+Objects/BurgerMeat.png
+15 118
+
+Burger:
+Objects/BurgerBunBottom.png
+15 150
+
+Burger:
+Objects/BurgerBunTop.png
+64 6
+
+Burger:
+Objects/BurgerSalad.png
+64 86
+
+Burger:
+Objects/BurgerMeat.png
+64 118
+
+Burger:
+Objects/BurgerBunBottom.png
+64 150
+
+Burger:
+Objects/BurgerBunTop.png
+112 6
+
+Burger:
+Objects/BurgerSalad.png
+112 38
+
+Burger:
+Objects/BurgerMeat.png
+112 86
+
+Burger:
+Objects/BurgerBunBottom.png
+112 150
+
+Burger:
+Objects/BurgerBunTop.png
+160 6
+
+Burger:
+Objects/BurgerSalad.png
+160 38
+
+Burger:
+Objects/BurgerMeat.png
+160 70
+
+Burger:
+Objects/BurgerBunBottom.png
+160 102

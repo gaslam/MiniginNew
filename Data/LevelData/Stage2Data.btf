@@ -137,3 +137,67 @@ Ladder:
 195 13
 66
 10
+
+Burger:
+Objects/BurgerBunTop.png
+15 6
+
+Burger:
+Objects/BurgerSalad.png
+15 22
+
+Burger:
+Objects/BurgerCheese.png
+15 38
+
+Burger:
+Objects/BurgerBunBottom.png
+15 70
+
+Burger:
+Objects/BurgerBunTop.png
+64 6
+
+Burger:
+Objects/BurgerCheese.png
+64 22
+
+Burger:
+Objects/BurgerSalad.png
+64 55
+
+Burger:
+Objects/BurgerBunBottom.png
+64 135
+
+Burger:
+Objects/BurgerBunTop.png
+112 6
+
+Burger:
+Objects/BurgerCheese.png
+112 87
+
+Burger:
+Objects/BurgerSalad.png
+112 119
+
+Burger:
+Objects/BurgerBunBottom.png
+112 135
+
+Burger:
+Objects/BurgerBunTop.png
+160 6
+
+Burger:
+Objects/BurgerSalad.png
+160 39
+
+Burger:
+Objects/BurgerCheese.png
+160 55
+
+Burger:
+Objects/BurgerBunBottom.png
+160 71
