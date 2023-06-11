@@ -222,7 +222,7 @@ Objects/BurgerMeat.png
 16 38
 
 Burger:
-Objects/BurgerCheese.png
+Objects/BurgerBunBottom.png
 16 54
 
 Burger:
@@ -234,7 +234,7 @@ Objects/BurgerHotdog.png
 16 134
 
 Burger:
-Objects/BurgerCheese.png
+Objects/BurgerBunBottom.png
 16 150
 
 Burger:
@@ -246,7 +246,7 @@ Objects/BurgerHotdog.png
 63 22
 
 Burger:
-Objects/BurgerCheese.png
+Objects/BurgerBunBottom.png
 63 54
 
 Burger:
@@ -258,7 +258,7 @@ Objects/BurgerMeat.png
 112 22
 
 Burger:
-Objects/BurgerCheese.png
+Objects/BurgerBunBottom.png
 112 54
 
 Burger:
@@ -270,7 +270,7 @@ Objects/BurgerHotdog.png
 160 38
 
 Burger:
-Objects/BurgerCheese.png
+Objects/BurgerBunBottom.png
 160 54
 
 Burger:
@@ -282,5 +282,5 @@ Objects/BurgerMeat.png
 160 134
 
 Burger:
-Objects/BurgerCheese.png
+Objects/BurgerBunBottom.png
 160 150
