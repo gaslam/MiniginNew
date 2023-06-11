@@ -23,7 +23,7 @@ void dae::CharacterComponent::Update(float deltaTime)
 
 void dae::CharacterComponent::RenderImGUI()
 {
-	if (ImGui::CollapsingHeader("Player"))
+	if (ImGui::CollapsingHeader("Player/Controls"))
 	{
 		ImGui::Text("Player:");
 		ImGui::NewLine();
@@ -32,8 +32,10 @@ void dae::CharacterComponent::RenderImGUI()
 		ImGui::Text("WASD (QWERTY)");
 		ImGui::Text("Controller DPAD");
 		ImGui::NewLine();
-		ImGui::Text("Movement sound not in game");
-		ImGui::Text("See states folder for states");
+		ImGui::Text("SceneTransition:");
+		ImGui::NewLine();
+		ImGui::Text("F3/F4");
+		ImGui::Text("Controller Left/Right-shoulder buttons");
 		ImGui::NewLine();
 		auto pTransform = GetOwner()->GetComponent<Transform>();
 		const auto position = pTransform->GetLocalPosition();
