@@ -16,7 +16,6 @@ public:
     void StopAll() override{};
 	int Load(const std::string&) override { return -1; }
     bool IsPlaying(int) override { return false; }
-    void OnSoundEnd(int) override{};
 	void SetVolume(float) override {};
     float GetVolume() const override { return 0.5f; }
 };
