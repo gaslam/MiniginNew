@@ -70,12 +70,17 @@ namespace Utils
 		return platform;
 	}
 
-	inline void ReadLevelData(std::string& file, Scene* scene, glm::vec2& worldPos, float scale)
+	inline void ReadLevelData(std::string& file, Scene& scene, glm::vec2& worldPos, float scale)
 	{
 		std::ifstream stream{ file, std::ios_base::in };
 		std::vector<std::shared_ptr<Observer>> platformObservers{};
 		std::vector<std::shared_ptr<BurgerObserver>> burgerObservers{};
 		std::vector<BurgerComponent*> burgerComponents{};
+
+		const auto sceneObj{ std::make_shared<GameObject>() };
+		const auto pSceneComp{ sceneObj->AddComponent<SceneComponent>() };
+		scene.Add(sceneObj);
+
 		while (stream)
 		{
 			std::string line{};
@@ -86,19 +91,21 @@ namespace Utils
 				const auto platform{ GenerateObjectWithComponent<PlatformComponent>(stream, worldPos, scale) };
 				auto pComponent{ platform->GetComponent<PlatformComponent>() };
 				platformObservers.emplace_back(std::make_shared<PlatformObserver>(pComponent));
-				scene->Add(platform);
+				scene.Add(platform);
 			}
 
-			if (line == "BurgerDropoff:")
+			if (line == "PlayerPos:")
 			{
-				//const auto dropoff{GenerateObjectWithComponent(stream, worldPos, scale);
-				//scene->Add(dropoff);
+				glm::vec2 pos{};
+				stream >> pos.x;
+				stream >> pos.y;
+				pSceneComp->SetPlayerSpawnPos(pos,scale);
 			}
 
 			if (line == "Ladder:")
 			{
 				const auto dropoff{ GenerateObjectWithComponent<LadderComponent>(stream, worldPos, scale) };
-				scene->Add(dropoff);
+				scene.Add(dropoff);
 			}
 			if (line == "Burger:")
 			{
@@ -106,7 +113,7 @@ namespace Utils
 				auto pComponent{ burger->GetComponent<BurgerComponent>() };
 				burgerObservers.emplace_back(std::make_shared<BurgerObserver>(pComponent));
 				burgerComponents.emplace_back(burger->GetComponent<BurgerComponent>());
-				scene->Add(burger);
+				scene.Add(burger);
 			}
 		}
 
@@ -158,14 +165,10 @@ namespace Utils
 		imGuiSoundRenderer->AddComponent<ImGuiSoundRenderer>();
 		scene.Add(imGuiSoundRenderer);
 
-		const auto sceneObj{ std::make_shared<GameObject>() };
-		sceneObj->AddComponent<SceneComponent>();
-		scene.Add(sceneObj);
-
 		glm::vec2 worldPos{ windowSize.x / 2.f - backgroundWidth / 2.f, windowSize.y - backgroundHeight };
 		transform->SetWorldPosition(worldPos);
 		std::string file{ "../Data/LevelData/Stage" + stageIdStr + "Data.btf" };
-		ReadLevelData(file, &scene, worldPos, worldScale);
+		ReadLevelData(file, scene, worldPos, worldScale);
 		scene.Add(player);
 
 	}

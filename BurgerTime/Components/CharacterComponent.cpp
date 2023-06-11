@@ -149,6 +149,21 @@ void dae::CharacterComponent::HandleInput()
 	}
 }
 
+void dae::CharacterComponent::Reset(glm::vec2 pos)
+{
+	auto idleState{ State::idle };
+	auto pOwner{ GetOwner() };
+	m_Lives = 4;
+	SetState(idleState);
+
+	auto pTransform{ pOwner->GetComponent<Transform>() };
+	MG_ASSERT(pTransform != nullptr,"Cannot get player transform!!")
+	if(pTransform)
+	{
+		pTransform->SetLocalPosition(pos);
+	}
+}
+
 void dae::CharacterComponent::SetMovementUpDown(bool canMove)
 {
 	if (m_CanSetMoveUpDown)

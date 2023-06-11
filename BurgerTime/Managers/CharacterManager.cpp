@@ -21,7 +21,6 @@ std::shared_ptr<GameObject> CharacterManager::InitPlayer()
 {
 	auto chef = std::make_shared<GameObject>();
 	auto transform = chef->AddComponent<Transform>();
-	transform->SetLocalPosition({ 150.f,200.f });
 	transform->SetSpeedForMovement(50.f);
 	float frameSec = 0.05f;
 	float scale = 1.5f;

@@ -41,8 +41,9 @@ namespace dae {
 		void SetState(State& state);
 		void SetMovementUpDown(bool canMove);
 		void SetMovementLeftRight(bool canMove);
+		void Reset(glm::vec2 pos);
 	private:
-		void HandleInput();
+		int m_Lives{4};
 		std::unique_ptr<CharacterState> m_CharacterState;
 		State m_State;
 		AnimationComponent* m_pAnimationComponent;
@@ -53,6 +54,7 @@ namespace dae {
 		bool m_IsMoving{ false };
 		
 		std::map< State, AnimationItem> m_Animations{};
+		void HandleInput();
 	};
 }
 
