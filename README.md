@@ -82,3 +82,81 @@ Just like every engine, it needs a rigidbody component for collision detection, 
 A grid consisting out of Nodes that act as it's cells. For navigation, the [A*](https://web.archive.org/web/20171022224528/http://www.policyalmanac.org:80/games/aStarTutorial.htm) path finding algorithm is being used to make sure the enemy goes to the player in this grid.
 
 ### [Burger Component](BurgerTime/Components/BurgerComponent.h)
+
+All the burger parts need their component in order to function as they should. This class contains all the code for setting the correct states according to the [State pattern with a Finite State Machine](https://gameprogrammingpatterns.com/state.html)
+
+### [Level Component](BurgerTime/Components/LevelComponent.h)
+
+All it does is handle the background music for now, but this is a component that handles the state of the level. Is the Game over? Does the level need to restart? This is what I'm trying to reach with that class.
+
+## Managers
+
+All of them are Singletons that can be acessed globally to handle code that is good to be accessed globally
+
+### [Character Manager](BurgerTime/Managers/CharacterManager.h)
+
+A class to handle all character types including the player to allow for easy global access wherever the the game needs them.
+
+### [Scene Manager](Minigin/Managers/SceneManager.h)
+
+I decided to expand this class from the starting project to allow switching between different scene. Before the change, all scenes were rendered and updated together. I made sure to add a number that keeps track of which scene is currently active.
+
+### [Input Manager](Minigin/Managers/InputManager.h)
+
+This is a class that handles all the input and uses the [Keyboard](Minigin/Controls/Keyboard.cpp) and [Xbox controller](Minigin/Controls/XboxController.cpp) classes that constantly update keyboard/controller states in their own way to detect changes in the button presses of both things. To allow for more options, I made sure to add options to check if a button is pressed, down or up via it's own functions. Here is an [example](BurgerTime/States/MovingState.cpp) of a use case:
+
+```cpp
+	const bool isLeftKeyDown{ manager.GetInputKeyDown("left") };
+	const bool isRightKeyDown{ manager.GetInputKeyDown("right") };
+	const bool isUpKeyDown{ manager.GetInputKeyDown("up") };
+	const bool isDownKeyDown{ manager.GetInputKeyDown("down") };
+
+	if(isLeftKeyDown)
+	{
+		m_Dir.x = -1.f;
+	}
+	if (isRightKeyDown)
+	{
+		m_Dir.x = 1.f;
+	}
+
+	if(isUpKeyDown)
+	{
+		m_Dir.y = -1.f;
+	}
+
+	if (isDownKeyDown)
+	{
+		m_Dir.y = 1.f;
+	}
+```
+
+But that is not the only option. The Input can also be triggered via commands in cases where code is not executed over and over and over again. For example, in my [Utils.h](BurgerTime/Utils.h) of the BurgerTime game, I use commands to switch levels: 
+
+```cpp
+	inline void AddScenes()
+	{
+		auto player{ dae::CharacterManager::GetInstance().InitPlayer() };
+		AddScene(1,player);
+		AddScene(2,player);
+		AddScene(3,player);
+
+		dae::SceneManager::GetInstance().SetScene(0);
+		bool moveToNext{false};
+		constexpr int controllerIndex{ 0 };
+		auto controllerButton{ dae::XboxController::ControllerButton::LeftShoulder };
+		SDL_Scancode keyboardButton{ SDL_SCANCODE_F3 };
+		auto keyState{ KeyState::down };
+		dae::InputManager::GetInstance().BindButtonsToCommand(controllerIndex, controllerButton, keyboardButton, keyState, new dae::SceneSwitchCommand{ moveToNext });
+		moveToNext = true;
+		controllerButton = dae::XboxController::ControllerButton::RightShoulder;
+		keyboardButton = SDL_SCANCODE_F4;
+		dae::InputManager::GetInstance().BindButtonsToCommand(controllerIndex, controllerButton, keyboardButton, keyState, new dae::SceneSwitchCommand{ moveToNext });
+	}
+```
+
+### Audio
+
+You can find everything related to audio [here](Minigin/Audio/).
+
+The [audio base class](Minigin/Audio/AudioBase.h) is a class that various potential audio services can inherit from. In this case SDL_Mixer is used. The [audio class](Minigin/Audio/AudioBase.h) receives events from components like the [Audio component](BurgerTime/Components/AudioComponent.cpp), adds them to an event queue/buffer which handles the event on a seperate thread to allow for audio to run independently from the game.
