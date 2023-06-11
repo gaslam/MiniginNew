@@ -19,4 +19,13 @@ namespace utils
 		int result{ index / nrCols };
 		return result;
 	}
+
+	inline bool CompareFloats(float value1, float value2, float epsilon = 0.01f)
+	{
+		if(fabs(value1 - value2) < epsilon)
+		{
+			return true;
+		}
+		return false;
+	}
 }
