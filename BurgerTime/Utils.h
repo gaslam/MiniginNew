@@ -16,17 +16,18 @@
 #include "Components/SceneComponent.h"
 #include "Commands/SceneSwitchCommand.h"
 
+using namespace dae;
 namespace Utils
 {
 	template <typename T>
-	std::enable_if_t<std::is_base_of_v<dae::Component, T>, std::shared_ptr<dae::GameObject>>
+	std::enable_if_t<std::is_base_of_v<dae::Component, T>, std::shared_ptr<GameObject>>
 	 GenerateObjectWithComponent(std::ifstream& stream, glm::vec2& worldPos, float scale)
 	{
 		float x{}, y{};
 		float width{}, height{};
-		auto platform = std::make_shared<dae::GameObject>();
-		auto pTransform = platform->AddComponent<dae::Transform>();
-		platform->AddComponent<dae::RigidBodyComponent>(pTransform);
+		auto platform{ std::make_shared<GameObject>() };
+		auto pTransform{ platform->AddComponent<Transform>() };
+		platform->AddComponent<RigidBodyComponent>(pTransform);
 
 
 		stream >> x;
@@ -42,20 +43,20 @@ namespace Utils
 		pos += worldPos;
 		pTransform->SetWorldPosition(pos);
 		constexpr glm::ivec2 rectStartPos{ 0,0 };
-		auto pShape = new dae::RectangleShape{ rectStartPos,static_cast<int>(width),static_cast<int>(height) };
+		auto pShape{ new RectangleShape{ rectStartPos,static_cast<int>(width),static_cast<int>(height) } };
 		platform->AddComponent<T>(pShape);
 		return platform;
 	}
 
 	template <typename T>
-	std::enable_if_t<std::is_base_of_v<dae::Component, T>, std::shared_ptr<dae::GameObject>>
+	std::enable_if_t<std::is_base_of_v<dae::Component, T>, std::shared_ptr<GameObject>>
 		GenerateObjectWithComponentAndTexture(std::ifstream& stream, glm::vec2& worldPos, float scale)
 	{
 		float x{}, y{};
-		auto platform = std::make_shared<dae::GameObject>();
-		auto pTransform = platform->AddComponent<dae::Transform>();
+		auto platform{ std::make_shared<GameObject>() };
+		auto pTransform{ platform->AddComponent<Transform>() };
 		std::string texturePath{};
-		platform->AddComponent<dae::RigidBodyComponent>(pTransform);
+		platform->AddComponent<RigidBodyComponent>(pTransform);
 
 		stream >> texturePath;
 		stream >> x;
@@ -69,12 +70,12 @@ namespace Utils
 		return platform;
 	}
 
-	inline void ReadLevelData(std::string& file, dae::Scene* scene, glm::vec2& worldPos, float scale)
+	inline void ReadLevelData(std::string& file, Scene* scene, glm::vec2& worldPos, float scale)
 	{
 		std::ifstream stream{ file, std::ios_base::in };
-		std::vector<std::shared_ptr<dae::Observer>> platformObservers{};
-		std::vector<std::shared_ptr<dae::BurgerObserver>> burgerObservers{};
-		std::vector<dae::BurgerComponent*> burgerComponents{};
+		std::vector<std::shared_ptr<Observer>> platformObservers{};
+		std::vector<std::shared_ptr<BurgerObserver>> burgerObservers{};
+		std::vector<BurgerComponent*> burgerComponents{};
 		while (stream)
 		{
 			std::string line{};
@@ -82,29 +83,29 @@ namespace Utils
 
 			if (line == "Platform:")
 			{
-				const auto platform = GenerateObjectWithComponent<dae::PlatformComponent>(stream, worldPos, scale);
-				auto pComponent{ platform->GetComponent<dae::PlatformComponent>() };
-				platformObservers.emplace_back(std::make_shared<dae::PlatformObserver>(pComponent));
+				const auto platform{ GenerateObjectWithComponent<PlatformComponent>(stream, worldPos, scale) };
+				auto pComponent{ platform->GetComponent<PlatformComponent>() };
+				platformObservers.emplace_back(std::make_shared<PlatformObserver>(pComponent));
 				scene->Add(platform);
 			}
 
 			if (line == "BurgerDropoff:")
 			{
-				//const auto dropoff = GenerateObjectWithComponent(stream, worldPos, scale);
+				//const auto dropoff{GenerateObjectWithComponent(stream, worldPos, scale);
 				//scene->Add(dropoff);
 			}
 
 			if (line == "Ladder:")
 			{
-				const auto dropoff = GenerateObjectWithComponent<dae::LadderComponent>(stream, worldPos, scale);
+				const auto dropoff{ GenerateObjectWithComponent<LadderComponent>(stream, worldPos, scale) };
 				scene->Add(dropoff);
 			}
 			if (line == "Burger:")
 			{
-				const auto burger = GenerateObjectWithComponentAndTexture<dae::BurgerComponent>(stream, worldPos, scale);
-				auto pComponent{ burger->GetComponent<dae::BurgerComponent>() };
-				burgerObservers.emplace_back(std::make_shared<dae::BurgerObserver>(pComponent));
-				burgerComponents.emplace_back(burger->GetComponent<dae::BurgerComponent>());
+				const auto burger{ GenerateObjectWithComponentAndTexture<BurgerComponent>(stream, worldPos, scale) };
+				auto pComponent{ burger->GetComponent<BurgerComponent>() };
+				burgerObservers.emplace_back(std::make_shared<BurgerObserver>(pComponent));
+				burgerComponents.emplace_back(burger->GetComponent<BurgerComponent>());
 				scene->Add(burger);
 			}
 		}
@@ -124,7 +125,7 @@ namespace Utils
 			{
 				possibleNextObservers = burgerObservers.size();
 			}
-			std::vector<std::shared_ptr<dae::BurgerObserver>> range{ &burgerObservers[0] + i, &burgerObservers[0]+ possibleNextObservers };
+			std::vector<std::shared_ptr<BurgerObserver>> range{ &burgerObservers[0] + i, &burgerObservers[0]+ possibleNextObservers };
 			for(const auto burger: burgerComponents)
 			{
 				for(const auto observer: range)
@@ -138,30 +139,30 @@ namespace Utils
 		}
 	}
 
-	inline void AddScene(int stageId, std::shared_ptr<dae::GameObject> player)
+	inline void AddScene(int stageId, std::shared_ptr<GameObject> player)
 	{
-		std::string stageIdStr{ std::to_string(stageId) };
-		auto& scene = dae::SceneManager::GetInstance().CreateScene("Stage " + stageIdStr);
+		const std::string stageIdStr{ std::to_string(stageId) };
+		auto& scene{ SceneManager::GetInstance().CreateScene("Stage " + stageIdStr) };
 
-		auto go = std::make_shared<dae::GameObject>();
-		auto render = go->AddComponent<dae::RenderComponent>("Backgrounds/Stage_" + stageIdStr + ".png");
+		const auto go{ std::make_shared<GameObject>() };
+		const auto render{ go->AddComponent<RenderComponent>("Backgrounds/Stage_" + stageIdStr + ".png") };
 		const float worldScale{ 3.f };
 		render->SetScale(worldScale);
-		auto transform = go->AddComponent<dae::Transform>();
-		glm::ivec2 windowSize = dae::Renderer::GetInstance().GetWindowWidthAndHeight();
-		const float backgroundWidth = render->GetWidthScaled();
-		const float backgroundHeight = render->GetHeightScaled();
+		const auto transform{ go->AddComponent<Transform>() };
+		const glm::ivec2 windowSize{Renderer::GetInstance().GetWindowWidthAndHeight()};
+		const float backgroundWidth{ render->GetWidthScaled() };
+		const float backgroundHeight{ render->GetHeightScaled() };
 		scene.Add(go);
 
-		auto imGuiSoundRenderer{ std::make_shared<dae::GameObject>() };
-		imGuiSoundRenderer->AddComponent<dae::ImGuiSoundRenderer>();
+		const auto imGuiSoundRenderer{ std::make_shared<GameObject>() };
+		imGuiSoundRenderer->AddComponent<ImGuiSoundRenderer>();
 		scene.Add(imGuiSoundRenderer);
 
-		auto sceneObj{ std::make_shared<dae::GameObject>() };
-		sceneObj->AddComponent<dae::SceneComponent>();
+		const auto sceneObj{ std::make_shared<GameObject>() };
+		sceneObj->AddComponent<SceneComponent>();
 		scene.Add(sceneObj);
 
-		glm::vec2 worldPos = { windowSize.x / 2.f - backgroundWidth / 2.f,windowSize.y - backgroundHeight };
+		glm::vec2 worldPos{ windowSize.x / 2.f - backgroundWidth / 2.f, windowSize.y - backgroundHeight };
 		transform->SetWorldPosition(worldPos);
 		std::string file{ "../Data/LevelData/Stage" + stageIdStr + "Data.btf" };
 		ReadLevelData(file, &scene, worldPos, worldScale);
@@ -171,21 +172,21 @@ namespace Utils
 
 	inline void AddScenes()
 	{
-		auto player{ dae::CharacterManager::GetInstance().InitPlayer() };
+		auto player{ CharacterManager::GetInstance().InitPlayer() };
 		AddScene(1,player);
 		AddScene(2,player);
 		AddScene(3,player);
 
-		dae::SceneManager::GetInstance().SetScene(0);
+		SceneManager::GetInstance().SetScene(0);
 		bool moveToNext{false};
 		constexpr int controllerIndex{ 0 };
-		auto controllerButton{ dae::XboxController::ControllerButton::LeftShoulder };
+		auto controllerButton{ XboxController::ControllerButton::LeftShoulder };
 		SDL_Scancode keyboardButton{ SDL_SCANCODE_F3 };
 		auto keyState{ KeyState::down };
-		dae::InputManager::GetInstance().BindButtonsToCommand(controllerIndex, controllerButton, keyboardButton, keyState, new dae::SceneSwitchCommand{ moveToNext });
+		InputManager::GetInstance().BindButtonsToCommand(controllerIndex, controllerButton, keyboardButton, keyState, new SceneSwitchCommand{ moveToNext });
 		moveToNext = true;
-		controllerButton = dae::XboxController::ControllerButton::RightShoulder;
+		controllerButton = XboxController::ControllerButton::RightShoulder;
 		keyboardButton = SDL_SCANCODE_F4;
-		dae::InputManager::GetInstance().BindButtonsToCommand(controllerIndex, controllerButton, keyboardButton, keyState, new dae::SceneSwitchCommand{ moveToNext });
+		InputManager::GetInstance().BindButtonsToCommand(controllerIndex, controllerButton, keyboardButton, keyState, new dae::SceneSwitchCommand{ moveToNext });
 	}
 }
