@@ -2,7 +2,7 @@
 
 #include <SDL_render.h>
 
-#include "Renderer.h"
+#include <EngineCore/Renderer.h>
 
 void dae::GridComponent::RenderImGUI()
 {

@@ -1,9 +1,9 @@
 #include "PlatformObserver.h"
-#include "Event.h"
-#include "GameObject.h"
 #include "../Components/RigidBodyComponent.h"
 #include "../Components/BurgerComponent.h"
 #include "../Components/RenderComponent.h"
+#include <Misc/Event.h>
+#include <Misc/GameObject.h>
 
 using namespace dae;
 

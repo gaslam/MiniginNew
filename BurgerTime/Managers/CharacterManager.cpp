@@ -2,18 +2,18 @@
 
 #include <SDL_scancode.h>
 
-#include "Components/CharacterComponent.h"
-#include <Transform.h>
+#include "../Components/CharacterComponent.h"
+#include <Misc/Transform.h>
 
-#include "GameObject.h"
-#include "InputManager.h"
-#include "KeyStructs.h"
-#include "Locator.h"
-#include "Scene.h"
-#include "Shape.h"
-#include "Components/AnimationComponent.h"
-#include "Components/RigidBodyComponent.h"
-#include "Components/SpawnerComponent.h"
+#include <Misc/GameObject.h>
+#include <Managers/InputManager.h>
+#include <Controls/KeyStructs.h>
+#include <Misc/Locator.h>
+#include <Misc/Scene.h>
+#include <Misc/Shape.h>
+#include "../Components/AnimationComponent.h"
+#include "../Components/RigidBodyComponent.h"
+#include "../Components/SpawnerComponent.h"
 
 using namespace dae;
 

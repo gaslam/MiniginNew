@@ -1,5 +1,5 @@
 #pragma once
-#include <Component.h>
+#include <Misc/Component.h>
 
 namespace dae
 {

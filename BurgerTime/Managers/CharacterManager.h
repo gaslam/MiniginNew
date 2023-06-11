@@ -1,8 +1,9 @@
 #pragma once
-#include <Singleton.h>
 #include <memory>
 #include <vector>
 #include <glm/fwd.hpp>
+
+#include <Misc/Singleton.h>
 
 namespace dae
 {

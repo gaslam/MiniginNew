@@ -2,13 +2,11 @@
 #include "../Components/CharacterComponent.h"
 #include "../Components/RigidBodyComponent.h"
 #include "../Components/BurgerComponent.h"
-#include "../CharacterManager.h"
-
-#include "Logger.h"
-#include <GameObject.h>
-
+#include "../Managers/CharacterManager.h"
 #include "BurgerTurningState.h"
-#include "Shape.h"
+#include <Misc/Logger.h>
+#include <Misc/GameObject.h>
+#include <Misc/Shape.h>
 
 dae::BurgerState* dae::BurgerStandingState::HandleInput()
 {

@@ -4,13 +4,13 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include "Locator.h"
-#include "Logger.h"
+#include "../Misc/Locator.h"
+#include "../Misc/Logger.h"
 #include <algorithm>
 
 #include <thread>
 #include <vector>
-#include "CyclicBuffer.h"
+#include "../Misc/CyclicBuffer.h"
 
 class Audio::AudioImpl  final {
 public:

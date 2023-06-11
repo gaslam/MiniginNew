@@ -1,6 +1,6 @@
 #include "FPSComponent.h"
 #include "TextComponent.h"
-#include "GameObject.h"
+#include <Misc/GameObject.h>
 
 void dae::FPSComponent::Update(float deltaTime)
 {

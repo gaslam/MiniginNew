@@ -1,5 +1,5 @@
 #include "SceneManager.h"
-#include "Scene.h"
+#include "../Misc/Scene.h"
 #include <imgui.h>
 
 using namespace dae;

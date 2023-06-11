@@ -1,6 +1,6 @@
 #include "MrHotdogComp.h"
 #include "AnimationComponent.h"
-#include "GameObject.h"
+#include <Misc/GameObject.h>
 
 dae::MrHotdogComp::MrHotdogComp(GameObject* pObject) : EnemyComponent(pObject)
 {

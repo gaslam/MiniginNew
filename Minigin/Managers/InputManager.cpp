@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <backends/imgui_impl_sdl.h>
 #include <Xinput.h>
-#include "Command.h"
+#include "../Command/Command.h"
 #include <iostream>
 
 

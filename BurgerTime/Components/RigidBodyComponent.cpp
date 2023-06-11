@@ -1,9 +1,9 @@
 #include "RigidBodyComponent.h"
 
-#include "GameObject.h"
-#include "Shape.h"
-#include "Logger.h"
-#include "Transform.h"
+#include <Misc/GameObject.h>
+#include <Misc/Shape.h>
+#include <Misc/Logger.h>
+#include <Misc/Transform.h>
 void dae::RigidBodyComponent::Render() const
 {
 	m_Shape->Render();

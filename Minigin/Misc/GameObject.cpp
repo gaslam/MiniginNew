@@ -1,5 +1,5 @@
 #include "GameObject.h"
-#include "Renderer.h"
+#include "../EngineCore/Renderer.h"
 #include <algorithm>
 #include <ranges>
 

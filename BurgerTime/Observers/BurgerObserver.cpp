@@ -1,7 +1,7 @@
 #include "BurgerObserver.h"
 
-#include "Event.h"
-#include "GameObject.h"
+#include <Misc/Event.h>
+#include <Misc/GameObject.h>
 #include "../Components/RigidBodyComponent.h"
 #include "../Components/BurgerComponent.h"
 #include "../States/BurgerFallingState.h"

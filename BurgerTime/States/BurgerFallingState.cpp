@@ -1,8 +1,7 @@
 #include "BurgerFallingState.h"
-
 #include "BurgerStandingState.h"
-#include "Shape.h"
 #include "../Components/BurgerComponent.h"
+#include <Misc/Shape.h>
 
 dae::BurgerState* dae::BurgerFallingState::HandleInput()
 {

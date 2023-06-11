@@ -1,6 +1,7 @@
 #include "MovingState.h"
 #include "IdleState.h"
 #include "../Components/CharacterComponent.h"
+#include <Managers/InputManager.h>
 
 void dae::MovingState::Update(CharacterComponent* pComponent, float deltaTime)
 {

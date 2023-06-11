@@ -4,16 +4,15 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "Minigin.h"
-#include "InputManager.h"
-#include "SceneManager.h"
+#include "../Managers/InputManager.h"
+#include "../Managers/SceneManager.h"
+#include "../Managers/ResourceManager.h"
+#include "../Audio/Audio.h"
+#include "../Misc/Locator.h"
+#include "../Misc/Logger.h"
 #include "Renderer.h"
-#include "ResourceManager.h"
 #include <chrono>
 #include <thread>
-
-#include "Audio.h"
-#include "Locator.h"
-#include "Logger.h"
 
 
 SDL_Window* g_window{};

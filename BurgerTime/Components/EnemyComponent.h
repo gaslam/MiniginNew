@@ -1,8 +1,8 @@
 #pragma once
-#include <Component.h>
+#include <Misc/Component.h>
 #include <glm/vec2.hpp>
 
-#include "Subject.h"
+#include <Misc/Subject.h>
 #include "GridComponent.h"
 
 namespace dae

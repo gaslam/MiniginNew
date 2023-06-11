@@ -1,6 +1,6 @@
 #include "MrPickleComponent.h"
 #include "AnimationComponent.h"
-#include "GameObject.h"
+#include <Misc/GameObject.h>
 
 dae::MrPickleComponent::MrPickleComponent(GameObject* pObject) : EnemyComponent(pObject)
 {

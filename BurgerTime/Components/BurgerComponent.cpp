@@ -1,8 +1,8 @@
 #include "BurgerComponent.h"
 
-#include "Event.h"
-#include "GameObject.h"
-#include "Shape.h"
+#include <Misc/Event.h>
+#include <Misc/GameObject.h>
+#include <Misc/Shape.h>
 #include "../Components/CharacterComponent.h"
 #include "../Components/RenderComponent.h"
 #include "../Components/RigidBodyComponent.h"

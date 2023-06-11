@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <imgui.h>
 
-#include "GameObject.h"
-#include "Audio.h"
+#include <Misc/GameObject.h>
+#include <Audio/Audio.h>
 #include "../States/IdleState.h"
 
 dae::CharacterComponent::CharacterComponent(GameObject* pOwner, AnimationComponent* pComponent) : Component(pOwner),

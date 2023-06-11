@@ -1,7 +1,8 @@
+//Has to be in there, otherwise it gives an error
 #include <windows.h>
 #include "RotationComponent.h"
-#include "GameObject.h"
-#include "Transform.h"
+#include <Misc/GameObject.h>
+#include <Misc/Transform.h>
 
 #define PI 3.14159265358979323846f
 

@@ -13,7 +13,7 @@ namespace dae
         BurgerState* HandleInput() override;
         void OnEnter(BurgerComponent* pComponent) override;
     private:
-        dae::RectangleShape* m_pShape{};
+        RectangleShape* m_pShape{};
     };
 }
 

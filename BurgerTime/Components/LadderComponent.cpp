@@ -1,16 +1,11 @@
 #include "LadderComponent.h"
-
 #include "AnimationComponent.h"
-#include "GameObject.h"
 #include "RenderComponent.h"
 #include "RigidBodyComponent.h"
-#include "Shape.h"
-#include <algorithm>
-
 #include "CharacterComponent.h"
-#include <Transform.h>
-#include "Logger.h"
-#include "../CharacterManager.h"
+#include "../Managers/CharacterManager.h"
+#include <algorithm>
+#include <Misc/GameObject.h>
 
 using namespace dae;
 LadderComponent::LadderComponent(GameObject* pOwner, RectangleShape* pShape) : Component(pOwner)

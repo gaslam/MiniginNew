@@ -2,12 +2,12 @@
 
 #include "BurgerFallingState.h"
 #include "BurgerStandingState.h"
-#include "GameObject.h"
+#include <Misc/GameObject.h>
 #include "../Components/CharacterComponent.h"
-#include "../CharacterManager.h"
+#include "../Managers/CharacterManager.h"
 #include "../Components/RigidBodyComponent.h"
 
-#include "Logger.h"
+#include <Misc/Logger.h>
 #include "../Components/BurgerComponent.h"
 
 

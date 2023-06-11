@@ -1,10 +1,10 @@
 #include "RenderComponent.h"
-#include "Renderer.h"
-#include "Texture2D.h"
-#include "ResourceManager.h"
+
 #include <string>
-#include "GameObject.h"
-#include "Transform.h"
+#include <EngineCore/Renderer.h>
+#include <Managers/ResourceManager.h>
+#include <Misc/Texture2D.h>
+#include <Misc/GameObject.h>
 
 dae::RenderComponent::RenderComponent(GameObject* owner,const std::string& filename) : Component(owner)
 {

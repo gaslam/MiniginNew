@@ -96,6 +96,14 @@
       <AdditionalDependencies>Minigin.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)Data\*" "$(OutputPath)Data\*" /R /Y
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -117,6 +125,14 @@
       <AdditionalDependencies>Minigin.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)Data\*" "$(OutputPath)Data\*" /R /Y
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -134,6 +150,14 @@
       <AdditionalDependencies>Minigin.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)Data\*" "$(OutputPath)Data\*" /R /Y
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -155,19 +179,27 @@
       <AdditionalDependencies>Minigin.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)Data\*" "$(OutputPath)Data\*" /R /Y
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Components\AudioComponent.h" />
     <ClInclude Include="Observers\BurgerObserver.h" />
     <ClInclude Include="Observers\PlatformObserver.h" />
-    <ClInclude Include="SceneComponent.h" />
+    <ClInclude Include="Components\SceneComponent.h" />
     <ClInclude Include="Commands\SceneSwitchCommand.h" />
     <ClInclude Include="States\BurgerFallingState.h" />
     <ClInclude Include="States\BurgerTurningState.h" />
     <ClInclude Include="Components\BurgerComponent.h" />
     <ClInclude Include="States\BurgerStandingState.h" />
     <ClInclude Include="States\BurgerState.h" />
-    <ClInclude Include="CharacterManager.h" />
+    <ClInclude Include="Managers\CharacterManager.h" />
     <ClInclude Include="Components\AnimationComponent.h" />
     <ClInclude Include="Components\CharacterComponent.h" />
     <ClInclude Include="Components\EnemyComponent.h" />
@@ -184,7 +216,6 @@
     <ClInclude Include="Components\SpawnerComponent.h" />
     <ClInclude Include="Components\TextComponent.h" />
     <ClInclude Include="Components\GridComponent.h" />
-    <ClInclude Include="ImGuiTempRenderer.h" />
     <ClInclude Include="States\MovingState.h" />
     <ClInclude Include="States\PlayerState.h" />
     <ClInclude Include="States\IdleState.h" />
@@ -194,12 +225,12 @@
     <ClCompile Include="Components\AudioComponent.cpp" />
     <ClCompile Include="Observers\BurgerObserver.cpp" />
     <ClCompile Include="Observers\PlatformObserver.cpp" />
-    <ClCompile Include="SceneComponent.cpp" />
+    <ClCompile Include="Components\SceneComponent.cpp" />
     <ClCompile Include="States\BurgerFallingState.cpp" />
     <ClCompile Include="States\BurgerTurningState.cpp" />
     <ClCompile Include="Components\BurgerComponent.cpp" />
     <ClCompile Include="States\BurgerStandingState.cpp" />
-    <ClCompile Include="CharacterManager.cpp" />
+    <ClCompile Include="Managers\CharacterManager.cpp" />
     <ClCompile Include="Components\AnimationComponent.cpp" />
     <ClCompile Include="Components\CharacterComponent.cpp" />
     <ClCompile Include="Components\EnemyComponent.cpp" />
@@ -215,7 +246,6 @@
     <ClCompile Include="Components\RotationComponent.cpp" />
     <ClCompile Include="Components\TextComponent.cpp" />
     <ClCompile Include="Components\GridComponent.cpp" />
-    <ClCompile Include="ImGuiTempRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="States\MovingState.cpp" />
     <ClCompile Include="States\IdleState.cpp" />

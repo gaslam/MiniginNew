@@ -2,6 +2,7 @@
 
 #include "MovingState.h"
 #include "../Components/CharacterComponent.h"
+#include <Managers/InputManager.h>
 
 dae::CharacterState* dae::IdleState::HandleInput()
 {

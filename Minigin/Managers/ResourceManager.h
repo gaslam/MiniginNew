@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "Singleton.h"
+#include "../Misc/Singleton.h"
 
 namespace dae
 {

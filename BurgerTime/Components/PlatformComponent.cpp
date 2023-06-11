@@ -1,13 +1,10 @@
 #include "PlatformComponent.h"
-#include "GameObject.h"
 #include "RenderComponent.h"
 #include "RigidBodyComponent.h"
-#include "Shape.h"
-#include <algorithm>
-
 #include "CharacterComponent.h"
-#include "Transform.h"
-#include "../CharacterManager.h"
+#include "../Managers/CharacterManager.h"
+#include <algorithm>
+#include <Misc/GameObject.h>
 
 using namespace dae;
 PlatformComponent::PlatformComponent(GameObject* pOwner, RectangleShape* pShape) : Component(pOwner)

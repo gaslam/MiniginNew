@@ -1,7 +1,6 @@
 #include "MrEggComponent.h"
-
 #include "AnimationComponent.h"
-#include "GameObject.h"
+#include <Misc/GameObject.h>
 
 dae::MrEggComponent::MrEggComponent(GameObject* pObject) : EnemyComponent(pObject)
 {

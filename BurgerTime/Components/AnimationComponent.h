@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL_rect.h>
 
-#include <Component.h>
+#include <Misc/Component.h>
 #include <string>
 namespace dae {
 	class RenderComponent;

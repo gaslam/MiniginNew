@@ -1,10 +1,10 @@
 #pragma once
 #include <glm/glm.hpp>
 
-#include <Component.h>
+#include <Misc/Component.h>
 #include "EnemyComponent.h"
-#include "GameObject.h"
-#include "Transform.h"
+#include <Misc/GameObject.h>
+#include <Misc/Transform.h>
 
 namespace dae
 {

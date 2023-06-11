@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/vec2.hpp>
-#include "Shape.h"
-#include <Component.h>
+#include <Misc/Shape.h>
+#include <Misc/Component.h>
 namespace dae
 {
     class Transform;

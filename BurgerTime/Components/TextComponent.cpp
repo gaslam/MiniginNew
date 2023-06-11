@@ -1,12 +1,12 @@
+#include <Windows.h>
 #include <stdexcept>
 #include <SDL_ttf.h>
 #include "TextComponent.h"
-#include "Renderer.h"
-#include "Font.h"
-#include "Texture2D.h"
-#include "GameObject.h"
+#include <EngineCore/Renderer.h>
+#include <Misc/Font.h>
+#include <Misc/Texture2D.h>
+#include <Misc/GameObject.h>
 #include "RenderComponent.h"
-#include <windows.h>
 
 dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, std::shared_ptr<Font> font, SDL_Color& color)
 	: Component(owner), m_NeedsUpdate(true), m_text(text), m_font(std::move(font)), m_Color{ color }

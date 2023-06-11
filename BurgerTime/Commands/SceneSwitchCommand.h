@@ -1,7 +1,7 @@
 #pragma once
-#include <Command.h>
+#include <Command/Command.h>
 
-#include "SceneManager.h"
+#include <Managers/SceneManager.h>
 
 namespace dae
 {

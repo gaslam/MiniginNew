@@ -2,9 +2,9 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "ResourceManager.h"
-#include "Renderer.h"
-#include "Texture2D.h"
-#include "Font.h"
+#include "../EngineCore/Renderer.h"
+#include "../Misc/Texture2D.h"
+#include "../Misc/Font.h"
 
 void dae::ResourceManager::Init(const std::string& dataPath)
 {

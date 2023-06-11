@@ -1,12 +1,12 @@
 #pragma once
-#include <Component.h>
+#include <Misc/Component.h>
 
-#include "GameObject.h"
-#include "Locator.h"
+#include <Misc/Locator.h>
 class AudioBase;
 
 namespace dae
 {
+	class GameObject;
 	class AudioComponent :
 		public Component
 	{

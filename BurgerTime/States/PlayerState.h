@@ -1,6 +1,4 @@
 #pragma once
-#include <windows.h>
-#include <InputManager.h>
 
 namespace dae
 {

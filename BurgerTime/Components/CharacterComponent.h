@@ -1,5 +1,5 @@
 #pragma once
-#include <Component.h>
+#include <Misc/Component.h>
 #include <map>
 #include <glm/glm.hpp>
 #include "../States/PlayerState.h"

@@ -1,6 +1,6 @@
 #include "EnemyComponent.h"
 
-#include "GameObject.h"
+#include <Misc/GameObject.h>
 
 dae::EnemyComponent::EnemyComponent(GameObject* object) : Component(object)
 {

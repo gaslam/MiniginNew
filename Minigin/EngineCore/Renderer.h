@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL.h>
-#include "Singleton.h"
+#include "../Misc/Singleton.h"
 #include <glm/glm.hpp>
 
 

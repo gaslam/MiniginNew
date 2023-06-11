@@ -5,11 +5,11 @@
 #include <vector>
 #include <Xinput.h>
 
-#include "Singleton.h"
-#include "Command.h"
-#include "Keyboard.h"
-#include "XboxController.h"
-#include "KeyStructs.h"
+#include "../Misc/Singleton.h"
+#include "../Command/Command.h"
+#include "../Controls/Keyboard.h"
+#include "../Controls/XboxController.h"
+#include "../Controls/KeyStructs.h"
 enum class KeyState;
 namespace dae
 {

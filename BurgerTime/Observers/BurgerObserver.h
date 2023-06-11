@@ -1,5 +1,5 @@
 #pragma once
-#include <Observer.h>
+#include <Misc/Observer.h>
 namespace dae
 {
 	class BurgerComponent;

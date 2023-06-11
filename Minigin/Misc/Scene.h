@@ -1,5 +1,5 @@
 #pragma once
-#include "SceneManager.h"
+#include "../managers/SceneManager.h"
 #include "Shape.h"
 
 namespace dae

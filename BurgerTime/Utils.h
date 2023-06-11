@@ -7,12 +7,12 @@
 #include "Components/BurgerComponent.h"
 #include "Observers/BurgerObserver.h"
 #include "Observers/PlatformObserver.h"
-#include <Scene.h>
-#include <GameObject.h>
+#include <Misc/Scene.h>
+#include <Misc/GameObject.h>
 
-#include "CharacterManager.h"
-#include "InputManager.h"
-#include "SceneComponent.h"
+#include "Managers/CharacterManager.h"
+#include "Managers/InputManager.h"
+#include "Components/SceneComponent.h"
 #include "Commands/SceneSwitchCommand.h"
 
 namespace Utils

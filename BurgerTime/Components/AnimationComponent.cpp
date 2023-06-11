@@ -1,7 +1,7 @@
 #include "AnimationComponent.h"
-#include "GameObject.h"
+#include <Misc/GameObject.h>
 #include "RenderComponent.h"
-#include "Transform.h"
+#include <Misc/Transform.h>
 
 using namespace dae;
 

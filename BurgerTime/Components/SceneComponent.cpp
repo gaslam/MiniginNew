@@ -1,7 +1,7 @@
 #include "SceneComponent.h"
 
-#include "Components/AudioComponent.h"
-#include "GameObject.h"
+#include "../Components/AudioComponent.h"
+#include <Misc/GameObject.h>
 
 using namespace dae;
 
