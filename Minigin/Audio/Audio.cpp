@@ -30,7 +30,6 @@ public:
 	void Stop(unsigned int soundID);
 	void StopAll();
 	int Load(const std::string& filePath);
-	void OnSoundEnd(int channel);
 	bool IsPlaying(int channel);
 	void SetVolume(float volume);
 	float GetVolume() const { return m_Volume; }
@@ -51,7 +50,6 @@ private:
 		AudioEventType type{};
 	};
 	void PollEvents();
-	static void EndSound(int channel);
 	AudioEvent GenerateEvent(AudioEventType type, int channel, float volume, Mix_Chunk* pData, int loops) const;
 
 	constexpr static int bufferSize{ 16 };
@@ -112,25 +110,11 @@ void Audio::StopAll()
 	m_Impl->StopAll();
 }
 
-void Audio::OnSoundEnd(int channel)
-{
-	m_Impl->OnSoundEnd(channel);
-}
-
 int Audio::Load(const std::string& filePath)
 {
 	return m_Impl->Load(filePath);
 }
 
-void Audio::AudioImpl::OnSoundEnd(int channel)
-{
-	std::lock_guard lock(m_Mutex);
-	const auto it{ std::ranges::find_if(m_Sounds,[channel](const AudioInfo& info)
-	{
-		return info.channel == channel;
-	}) };
-	it->channel = -1;
-}
 
 bool Audio::AudioImpl::IsPlaying(int channel)
 {
@@ -255,11 +239,6 @@ float Audio::GetVolume() const
 	return m_Impl->GetVolume();
 }
 
-void Audio::AudioImpl::EndSound(int channel)
-{
-	Locator::GetAudio()->OnSoundEnd(channel);
-}
-
 Audio::AudioImpl::AudioEvent Audio::AudioImpl::GenerateEvent(AudioEventType type, int channel, float volume, Mix_Chunk* pData, int loops) const
 {
 	AudioEvent event{};
@@ -313,7 +292,6 @@ void Audio::AudioImpl::Init()
 
 	m_AudioThread = std::jthread([this]() {PollEvents(); });
 
-	Mix_ChannelFinished(&EndSound);
 	m_AudioThread.detach();
 }
 

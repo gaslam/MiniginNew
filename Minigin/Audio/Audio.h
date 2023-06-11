@@ -23,7 +23,6 @@ public:
 	void UnPauseAll() override;
 	void Stop(unsigned int soundID) override;
 	void StopAll() override;
-	void OnSoundEnd(int channel) override;
 	int Load(const std::string& filePath) override;
 	bool IsPlaying(int channel) override;
 	void SetVolume(float volume) override;

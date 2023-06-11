@@ -32,7 +32,6 @@ public:
 	virtual void StopAll() = 0;
 	virtual void Stop(unsigned int soundID) = 0;
 	virtual int Load(const std::string& filePath) = 0;
-	virtual void OnSoundEnd(int channel) = 0;
 	virtual void SetVolume(float) = 0;
 	virtual float GetVolume() const = 0;
 };
