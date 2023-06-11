@@ -32,6 +32,7 @@
     <ClInclude Include="Components\SceneComponent.h" />
     <ClInclude Include="Components\AudioComponent.h" />
     <ClInclude Include="Commands\SceneSwitchCommand.h" />
+    <ClInclude Include="Components\ImGuiSoundRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Managers\CharacterManager.cpp" />
@@ -61,5 +62,6 @@
     <ClCompile Include="Observers\BurgerObserver.cpp" />
     <ClCompile Include="Components\SceneComponent.cpp" />
     <ClCompile Include="Components\AudioComponent.cpp" />
+    <ClCompile Include="Components\ImGuiSoundRenderer.cpp" />
   </ItemGroup>
 </Project>

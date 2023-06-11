@@ -10,6 +10,7 @@
 #include <Misc/Scene.h>
 #include <Misc/GameObject.h>
 
+#include "Components/ImGuiSoundRenderer.h"
 #include "Managers/CharacterManager.h"
 #include "Managers/InputManager.h"
 #include "Components/SceneComponent.h"
@@ -151,6 +152,10 @@ namespace Utils
 		const float backgroundWidth = render->GetWidthScaled();
 		const float backgroundHeight = render->GetHeightScaled();
 		scene.Add(go);
+
+		auto imGuiSoundRenderer{ std::make_shared<dae::GameObject>() };
+		imGuiSoundRenderer->AddComponent<dae::ImGuiSoundRenderer>();
+		scene.Add(imGuiSoundRenderer);
 
 		auto sceneObj{ std::make_shared<dae::GameObject>() };
 		sceneObj->AddComponent<dae::SceneComponent>();

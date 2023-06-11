@@ -190,6 +190,7 @@ xcopy "$(SolutionDir)Data\*" "$(OutputPath)Data\*" /R /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Components\AudioComponent.h" />
+    <ClInclude Include="Components\ImGuiSoundRenderer.h" />
     <ClInclude Include="Observers\BurgerObserver.h" />
     <ClInclude Include="Observers\PlatformObserver.h" />
     <ClInclude Include="Components\SceneComponent.h" />
@@ -223,6 +224,7 @@ xcopy "$(SolutionDir)Data\*" "$(OutputPath)Data\*" /R /Y
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Components\AudioComponent.cpp" />
+    <ClCompile Include="Components\ImGuiSoundRenderer.cpp" />
     <ClCompile Include="Observers\BurgerObserver.cpp" />
     <ClCompile Include="Observers\PlatformObserver.cpp" />
     <ClCompile Include="Components\SceneComponent.cpp" />

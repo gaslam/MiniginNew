@@ -1,5 +1,6 @@
 #include "AudioComponent.h"
 #include "imgui.h"
+#include "Utils/Utils.h"
 
 using namespace dae;
 
@@ -51,21 +52,4 @@ void AudioComponent::StopAll() const
 void AudioComponent::Stop() const
 {
 	m_AudioBase->Stop(m_Id);
-}
-
-void AudioComponent::RenderImGUI()
-{
-	if(ImGui::CollapsingHeader("Sound"))
-	{
-		float volume = m_AudioBase->GetVolume();
-		const float oldVolume = volume;
-		float min = 0.f;
-		float max = 1.f;
-		ImGui::SliderFloat("Volume ", &volume, min, max, "%.1f");
-
-		if (oldVolume != volume)
-		{
-			m_AudioBase->SetVolume(volume);
-		}
-	}
 }

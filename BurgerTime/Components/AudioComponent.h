@@ -13,6 +13,7 @@ namespace dae
 	public:
 		AudioComponent(GameObject* object) : Component(object), m_AudioBase{Locator::GetAudio()}
 		{
+			m_Volume = m_AudioBase->GetVolume();
 		}
 
 		unsigned int Load(const std::string& filePath);
@@ -24,11 +25,12 @@ namespace dae
 		void StopAll() const;
 		void Stop() const;
 		void SetLoops(int loops) { m_Loops = loops; }
-		void RenderImGUI() override;
 
 	private:
+		bool m_IsMuted{ false };
 		unsigned int m_Id{};
 		int m_Loops{ 0 };
+		float m_Volume{};
 		AudioBase* m_AudioBase{};
 	};
 }
