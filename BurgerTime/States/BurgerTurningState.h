@@ -10,6 +10,7 @@ namespace dae
 		void Update(BurgerComponent* pComponent, float deltaTime) override;
 		void OnEnter(BurgerComponent* pComponent) override;
 	private:
+		bool m_PlayerLeft{false};
 		//has to be double to avoid casting the double variable for SDL
 		double m_DegreesTurned{};
 		double m_AngSpeed{ 10 };
