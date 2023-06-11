@@ -2,9 +2,7 @@
 
 #include <Misc/Event.h>
 #include <Misc/GameObject.h>
-#include "../Components/RigidBodyComponent.h"
 #include "../Components/BurgerComponent.h"
-#include "../States/BurgerFallingState.h"
 
 using namespace dae;
 
@@ -20,17 +18,5 @@ void BurgerObserver::OnNotify(GameObject* object, Event& event)
 
 void BurgerObserver::HandleFall(GameObject* pGameObject)
 {
-	const auto pRigidBodyCompObject{ pGameObject->GetComponent<RigidBodyComponent>() };
-	const auto pBurgerRigidBodyCompShape{ pRigidBodyCompObject->GetShape() };
-	const auto pShape{ m_pBurgerComponent->GetShape() };
-
-	if (!pShape->CollidesWith(pBurgerRigidBodyCompShape))
-	{
-		return;
-	}
-	auto pObjectBurgerComponent{ pGameObject->GetComponent<BurgerComponent>() };
-	if (pObjectBurgerComponent && m_pBurgerComponent->GetState() == BurgerComponent::State::standingStill)
-	{
-		m_pBurgerComponent->SetState(new BurgerFallingState{});
-	}
+	m_pBurgerComponent->HandleHitByObject(pGameObject);
 }

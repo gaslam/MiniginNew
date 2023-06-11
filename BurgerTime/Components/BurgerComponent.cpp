@@ -11,7 +11,7 @@
 
 using namespace dae;
 
-BurgerComponent::BurgerComponent(GameObject* pObject, const std::string& file, const glm::vec2& pos, float scale) : Component{ pObject }, m_pBurgerState{ std::make_unique<BurgerStandingState>() }
+BurgerComponent::BurgerComponent(GameObject* pObject, const std::string& file, const glm::vec2& pos, float scale) : Component{ pObject }
 ,m_OriginalPosition{pos}
 {
 	auto pOwner{ GetOwner() };
@@ -43,7 +43,9 @@ void BurgerComponent::Start()
 		pTransform = pOwner->AddComponent<Transform>();
 	}
 	pTransform->SetWorldPosition(m_OriginalPosition);
-	SetState(new BurgerStandingState{});
+	SetState(State::standingStill);
+	m_pBurgerState = std::make_unique<BurgerStandingState>();
+	m_pBurgerState->OnEnter(this);
 	m_DegreesTurned = 0;
 	m_pRenderComp->SetAngle(m_DegreesTurned);
 }
@@ -136,18 +138,30 @@ glm::vec2 BurgerComponent::GetPosition() const
 	return pos;
 }
 
+void BurgerComponent::HandleHitByObject(GameObject* pFallingObject)
+{
+	const auto pRigidBodyCompObject{ pFallingObject->GetComponent<RigidBodyComponent>() };
+	const auto pBurgerRigidBodyCompShape{ pRigidBodyCompObject->GetShape() };
+
+	if (!m_pShape->CollidesWith(pBurgerRigidBodyCompShape))
+	{
+		return;
+	}
+	const auto pObjectBurgerComponent{ pFallingObject->GetComponent<BurgerComponent>() };
+	if (pObjectBurgerComponent && m_State != BurgerComponent::State::falling)
+	{
+		//Never set the burger class directly with a state class. I lost quite some time figuring out why
+		//my ingredients were not landing on the platforms. It still remains a mystery
+		SetState(BurgerComponent::State::falling);
+	}
+}
+
 void BurgerComponent::HandleInput()
 {
 	if (const auto newState = m_pBurgerState->HandleInput())
 	{
-		SetState(newState);
+		m_pBurgerState->OnExit(this);
+		m_pBurgerState = std::unique_ptr<BurgerState>(newState);
+		m_pBurgerState->OnEnter(this);
 	}
-}
-
-void BurgerComponent::SetState(BurgerState* state)
-{
-
-	m_pBurgerState->OnExit(this);
-	m_pBurgerState = std::unique_ptr<BurgerState>(state);
-	m_pBurgerState->OnEnter(this);
 }

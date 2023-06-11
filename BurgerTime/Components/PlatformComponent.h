@@ -11,6 +11,7 @@ namespace dae
 	public:
 		PlatformComponent(GameObject* pOwner, RectangleShape* pShape);
 		void Update(float) override;
+		void HandleHit(GameObject* pFallingObject);
 	private:
 		RigidBodyComponent* m_pRigidBodyComp{};
 	};

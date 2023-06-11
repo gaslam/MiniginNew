@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <Misc/GameObject.h>
 
+#include "BurgerComponent.h"
+
 using namespace dae;
 PlatformComponent::PlatformComponent(GameObject* pOwner, RectangleShape* pShape) : Component(pOwner)
 {
@@ -74,5 +76,26 @@ void PlatformComponent::Update(float)
 		}
 
 		pCharacterComp->SetMovementLeftRight(canMove);
+	}
+}
+
+void PlatformComponent::HandleHit(GameObject* pFallingObject)
+{
+	const auto pRigidBodyCompObject{ pFallingObject->GetComponent<RigidBodyComponent>() };
+	const auto pBurgerRigidBodyCompShape{ pRigidBodyCompObject->GetShape() };
+	const auto pShape{ m_pRigidBodyComp->GetShape() };
+
+	if (!pShape->CollidesWith(pBurgerRigidBodyCompShape))
+	{
+		return;
+	}
+
+	if (const auto pBurgerComponent{ pFallingObject->GetComponent<BurgerComponent>() })
+	{
+		const auto pRenderComp{ pFallingObject->GetComponent<RenderComponent>() };
+		const float height{ pRenderComp->GetFrameHeightScaled() };
+		const float yPosPlaform{ static_cast<float>(pShape->GetPoints()[0].y) };
+		const float yPosForDraw{ yPosPlaform - height };
+		pBurgerComponent->StopFalling(yPosForDraw);
 	}
 }

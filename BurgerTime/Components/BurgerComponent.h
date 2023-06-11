@@ -24,13 +24,13 @@ namespace dae
 			falling
 		};
 		void SetState(State state);
-		void SetState(BurgerState* state);
 		void SetDegreesTurned(double degrees);
 		void StopFalling(const float hitYPos);
 		void SetFallThroughGround(bool isAllowed) const;
 		State GetState() const { return m_State; }
 		double GetDegreesTurned() const { return m_DegreesTurned; }
 		glm::vec2 GetPosition() const;
+		void HandleHitByObject(GameObject* pFallingObject);
 	private:
 		double m_DegreesTurned{};
 

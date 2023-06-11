@@ -82,7 +82,7 @@ namespace Utils
 			if (line == "Platform:")
 			{
 				const auto platform = GenerateObjectWithComponent<dae::PlatformComponent>(stream, worldPos, scale);
-				auto pComponent{ platform->GetComponent<dae::RigidBodyComponent>() };
+				auto pComponent{ platform->GetComponent<dae::PlatformComponent>() };
 				platformObservers.emplace_back(std::make_shared<dae::PlatformObserver>(pComponent));
 				scene->Add(platform);
 			}
