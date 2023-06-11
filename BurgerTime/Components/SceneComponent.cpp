@@ -13,7 +13,6 @@ SceneComponent::SceneComponent(GameObject* gameObject) : Component(gameObject)
 		m_pBackgroundSound = pOwner->AddComponent<AudioComponent>();
 	}
 
-	m_pBackgroundSound->Load("Sound/music.wav");
 	m_pBackgroundSound->Load("Sound/background.wav");
 	m_pBackgroundSound->SetLoops(-1);
 }
