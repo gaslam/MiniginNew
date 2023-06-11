@@ -6,6 +6,7 @@
 
 namespace dae
 {
+	class AudioComponent;
 	class RenderComponent;
 	class BurgerState;
 	class RectangleShape;
@@ -31,6 +32,9 @@ namespace dae
 		double GetDegreesTurned() const { return m_DegreesTurned; }
 		glm::vec2 GetPosition() const;
 		void HandleHitByObject(GameObject* pFallingObject);
+		void PlayBounceSound(bool once);
+		void StopBounceSound();
+
 	private:
 		double m_DegreesTurned{};
 
@@ -42,6 +46,8 @@ namespace dae
 		std::unique_ptr<BurgerState> m_pBurgerState{};
 		void HandleInput();
 		void HandleFall() const;
+
+		AudioComponent* m_pBurgerSound{};
 };
 }
 

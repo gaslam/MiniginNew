@@ -3,6 +3,8 @@
 #include <Misc/Event.h>
 #include <Misc/GameObject.h>
 #include <Misc/Shape.h>
+
+#include "AudioComponent.h"
 #include "../Components/CharacterComponent.h"
 #include "../Components/RenderComponent.h"
 #include "../Components/RigidBodyComponent.h"
@@ -32,6 +34,8 @@ BurgerComponent::BurgerComponent(GameObject* pObject, const std::string& file, c
 	m_pShape = new RectangleShape{ pos, width,height };
 	const auto pRigidBody{ pOwner->AddComponent<RigidBodyComponent>(pTransform) };
 	pRigidBody->SetShape(m_pShape);
+	m_pBurgerSound = pOwner->AddComponent<AudioComponent>();
+	m_pBurgerSound->Load("Sound/bounce.wav");
 }
 
 void BurgerComponent::Start()
@@ -153,7 +157,21 @@ void BurgerComponent::HandleHitByObject(GameObject* pFallingObject)
 		//Never set the burger class directly with a state class. I lost quite some time figuring out why
 		//my ingredients were not landing on the platforms. It still remains a mystery
 		SetState(BurgerComponent::State::falling);
+		constexpr bool isSoundPlayedOnce{ true };
+		pObjectBurgerComponent->PlayBounceSound(isSoundPlayedOnce);
 	}
+}
+
+void BurgerComponent::PlayBounceSound(bool once)
+{
+	const int loops{ once ? 1 : -1 };
+	m_pBurgerSound->SetLoops(loops);
+	m_pBurgerSound->Play();
+}
+
+void BurgerComponent::StopBounceSound()
+{
+	m_pBurgerSound->Stop();
 }
 
 void BurgerComponent::HandleInput()

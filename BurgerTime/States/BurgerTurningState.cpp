@@ -57,4 +57,11 @@ void BurgerTurningState::OnEnter(BurgerComponent* pComponent)
 	m_DegreesTurned = pComponent->GetDegreesTurned();
 	constexpr BurgerComponent::State state {BurgerComponent::State::turning};
 	pComponent->SetState(state);
+	constexpr bool isSoundPlayedOnce{ false };
+	pComponent->PlayBounceSound(isSoundPlayedOnce);
+}
+
+void BurgerTurningState::OnExit(BurgerComponent* pComponent)
+{
+	pComponent->StopBounceSound();
 }
