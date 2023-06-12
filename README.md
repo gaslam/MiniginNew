@@ -17,6 +17,11 @@ Minigin is, despite perhaps the suggestion in its name, not a game engine. It is
 
 Download the latest release of this project and compile/run in visual studio. Since students need to have their work on github too, they can use this repository as a template.
 
+# File format:
+
+
+A custom format called BurgerTimeFile is used to load the level data of the game. You can find the files [here](Data/LevelData)
+
 
 # structure
 
