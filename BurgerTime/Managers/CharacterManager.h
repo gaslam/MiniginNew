@@ -16,7 +16,7 @@ namespace dae
     public:
         CharacterManager() = default;
         std::shared_ptr<GameObject> InitPlayer();
-        void InitEnemies(Scene* scene,GameObject* player, glm::vec2& gridStartPos, int backgroundWidth, int backgroundHeight, float) const;
+        void InitEnemies(Scene& scene, glm::vec2& gridStartPos, int backgroundWidth, int backgroundHeight, float) const;
         std::vector<GameObject*> GetCharacters();
         GameObject* GetPlayer() const { return m_Player; };
     private:

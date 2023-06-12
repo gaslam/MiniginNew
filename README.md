@@ -22,6 +22,14 @@ Download the latest release of this project and compile/run in visual studio. Si
 
 The project that I had to make contains the following decisions/structure I decided to go with:
 
+## Patterns
+The following patterns from the course were implemented:
+- [The Locator](Minigin/Misc/Locator.h)
+- [The Command](Minigin/Command/Command.h)
+- [The Observer](Minigin/Misc/Observer.h)
+- [The Game Object](Minigin/Misc/GameObject.h)
+- [The States](BurgerTime/States/)
+
 ## Components
 
 Every component inherits from this base class
@@ -53,21 +61,21 @@ namespace dae {
 	};
 ```
 
-This contains all the functions you expect from a component. It has virtual update and render functions that the derived classes can override for it's own use. It also has an owner that the derived classes can access via the GetOwner() function. Every time a scene starts or ends, the Start/End function gets called to do whatever needs to be changes when the scene becomes active/inactive.
+This contains all the functions you expect from a component. It has virtual update and render functions that the derived classes can override for it's own use. It also has an owner that the derived classes can access via the GetOwner() function. Every time a scene starts or ends, the Start/End function gets called to do whatever needs to be changed when the scene becomes active/inactive.
 
 ### [Animation Component](BurgerTime/Components/AnimationComponent.h)
 
-This component is responsible for showing sprite animations. It contains some variables and functions that allow the programmer to set the right frames for the animations. It just changes the frame to show an animation instead of the entire sprite-sheet as a whole. It also allows for frames to be locked if needed. All of this is perfect for creating multiple animations with just one spritesheet.
+This component is responsible for showing sprite animations. It contains some variables and functions that allow the programmer to set the right frames for the animations. The chosen frame is set to show an animation instead of the entire spritesheet as a whole. It also allows for frames to be locked if needed. All of this is perfect for creating multiple animations with just one spritesheet.
 
 ### [Enemy Component](BurgerTime/Components/EnemyComponent.h)
-The main part of this component is also a Base class. From there on every enemy enemy can inherit from this class. Allowing it to change it's variables or add any extra components like an animation component. This allows extra enemie components to be created with ease.
+The main part of this component is also a Base class. From there, every enemy can inherit from this class. Allowing it to change it's variables or add any extra components like an animation component. This allows extra enemy components to be created with ease.
 
 ### [Ladder](BurgerTime/Components/LadderComponent.h) and [Platform components](BurgerTime/Components/PlatformComponent.h)
 
-Both are classes with the same purpose. Once the player enters them it can either move up/down or left/right. It also make sure the player doesn't go outside of the boundries for both shapes. Based on whether it is a ladder or platform, the appropriate movement states get set on the player character.
+Both are classes with the same purpose. Once the player enters them, the player can either move up/down or left/right. It also make sure the player doesn't go outside of the boundries for both shapes. Based on whether it is a ladder or platform, the appropriate movement states get set on the player character.
 
 ### [Audio Component](BurgerTime/Components/AudioComponent.h)
-A decorator service that allows for sending events to the [Audio class](Minigin/Audio/Audio.h). This uses the SDL_Mixer library for playing sound
+A decorator service that allows for sending events to the [Audio class](Minigin/Audio/Audio.h). This uses the SDL_Mixer library for playing sound.
 
 ### [Character Component](BurgerTime/Components/CharacterComponent.h)
 
@@ -87,7 +95,7 @@ All the burger parts need their component in order to function as they should. T
 
 ### [Level Component](BurgerTime/Components/LevelComponent.h)
 
-All it does is handle the background music for now, but this is a component that handles the state of the level. Is the Game over? Does the level need to restart? This is what I'm trying to reach with that class.
+All it does is handle the background music for now, but this is a component that is supposed to handle the state of the level. Is the Game over? Does the level need to restart? This is what I'm trying to reach with that class.
 
 ## Managers
 
@@ -155,8 +163,17 @@ But that is not the only option. The Input can also be triggered via commands in
 	}
 ```
 
-### Audio
+## Audio
 
 You can find everything related to audio [here](Minigin/Audio/).
 
 The [audio base class](Minigin/Audio/AudioBase.h) is a class that various potential audio services can inherit from. In this case SDL_Mixer is used. The [audio class](Minigin/Audio/AudioBase.h) receives events from components like the [Audio component](BurgerTime/Components/AudioComponent.cpp), adds them to an event queue/buffer which handles the event on a seperate thread to allow for audio to run independently from the game.
+
+
+## [Shape](Minigin/Misc/Shape.h)
+
+This is a simple interface containing functions like IsPointIn and Collides with to allow classes to inherit from it add their own implementation of the functions. For example, the [RectangleShape class](Minigin/Misc/Shape.h)
+
+## Project utils in [BurgerTime](BurgerTime/Utils.h) and [Minigin](Minigin/Utils/Utils.h)
+
+Contains functions for loading level data or that can be useful anywhere without needing a class. For example: comparing floats.

@@ -14,6 +14,7 @@
 #include "../Components/AnimationComponent.h"
 #include "../Components/RigidBodyComponent.h"
 #include "../Components/SpawnerComponent.h"
+#include "../Components/MrEggComponent.h"
 
 using namespace dae;
 
@@ -97,19 +98,18 @@ std::shared_ptr<GameObject> CharacterManager::InitPlayer()
 	return chef;
 }
 
-void CharacterManager::InitEnemies(Scene* scene,GameObject* player,glm::vec2& gridStartPos,int backgroundWidth, int backgroundHeight, float /*scale*/) const
+void CharacterManager::InitEnemies(Scene& scene,glm::vec2& gridStartPos,int backgroundWidth, int backgroundHeight, float /*scale*/) const
 {
 	const auto pGameObject{ std::make_shared<GameObject>() };
 	const int rowsAndColumns{ 25 };
 	const auto pGrid{ pGameObject->AddComponent<GridComponent>(gridStartPos,backgroundWidth,backgroundHeight,rowsAndColumns,rowsAndColumns) };
-	const glm::vec2 spawnPos{13, 13};
-	const auto pSpawner{ pGameObject->AddComponent<SpawnerComponent<EnemyComponent>>(spawnPos) };
+	const glm::vec2 spawnPos{50, 50};
+	const auto pSpawner{ pGameObject->AddComponent<SpawnerComponent<MrEggComponent>>(spawnPos) };
 	const auto pEnemy{ std::make_shared<GameObject>() };
 	const auto pEnemyComp{ pSpawner->Spawn(pEnemy.get()) };
-	scene->Add(pGameObject);
-	scene->Add(pEnemy);
+	scene.Add(pGameObject);
+	scene.Add(pEnemy);
 	pEnemyComp->SetGrid(pGrid);
-	pEnemyComp->CalculatePath(player);
 }
 
 std::vector<GameObject*> CharacterManager::GetCharacters()

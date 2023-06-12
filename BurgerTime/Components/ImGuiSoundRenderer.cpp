@@ -22,7 +22,7 @@ void ImGuiSoundRenderer::RenderImGUI()
 		float max = 1.f;
 		ImGui::SliderFloat("Volume ", &m_Volume, min, max, "%.1f");
 
-		if (!utils::CompareFloats(oldVolume, m_Volume))
+		if (!utils::CompareFloats(oldVolume, m_Volume) && !m_IsMuted)
 		{
 			m_pAudioBase->SetVolume(m_Volume);
 		}

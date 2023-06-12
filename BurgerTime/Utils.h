@@ -170,6 +170,8 @@ namespace Utils
 		std::string file{ "../Data/LevelData/Stage" + stageIdStr + "Data.btf" };
 		ReadLevelData(file, scene, worldPos, worldScale);
 		scene.Add(player);
+		//Does not belong here, but was not finished, so it's unfortunately here
+		CharacterManager::GetInstance().InitEnemies(scene,worldPos,static_cast<int>(backgroundWidth),static_cast<int>(backgroundHeight),worldScale );
 
 	}
 
@@ -191,5 +193,6 @@ namespace Utils
 		controllerButton = XboxController::ControllerButton::RightShoulder;
 		keyboardButton = SDL_SCANCODE_F4;
 		InputManager::GetInstance().BindButtonsToCommand(controllerIndex, controllerButton, keyboardButton, keyState, new dae::SceneSwitchCommand{ moveToNext });
+
 	}
 }
